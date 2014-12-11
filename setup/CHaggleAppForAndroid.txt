@@ -1,0 +1,112 @@
+Instructions for compiling a dynamically-linked program with the prebuilt Android toolchain. 
+============================================================================================
+(this is normally not needed for building Haggle and our test apps for Android but might
+be of interest for some folks)
+
+1. Get the Android prebuilt toolchain
+
+	1.1 Prepare build env. (Refer http://source.android.com/source/initializing.html for details)
+
+                Assuming Ubuntu 10.11 and sun-java6-jdk is already installed (see e.g. AshishSetupGuide.txt)
+
+                sudo apt-get install git-core gnupg flex bison gperf build-essential \
+                                     zip curl zlib1g-dev libc6-dev lib32ncurses5-dev ia32-libs \
+                                     x11proto-core-dev libx11-dev lib32readline-gplv2-dev lib32z-dev \
+                                     libgl1-mesa-dev g++-multilib mingw32 tofrodos python-markdown \
+                                     libxml2-utils xsltproc
+
+                sudo apt-get install libx11-dev:i386
+
+                Or if you use Ubuntu 12.04 ... (not recommended)
+
+                sudo apt-get install git-core gnupg flex bison gperf build-essential \
+                                     zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev \
+                                     libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 \
+                                     libgl1-mesa-dev g++-multilib mingw32 openjdk-6-jdk tofrodos \
+                                     python-markdown libxml2-utils xsltproc zlib1g-dev:i386
+
+                sudo ln -s /usr/lib/i386-linux-gnu/mesa/libGL.so.1 /usr/lib/i386-linux-gnu/libGL.so
+
+	1.2. Download the Android source (Refer http://source.android.com/source/downloading.html for details) 
+
+   		mkdir ~/bin
+   		PATH=~/bin:${PATH}
+
+   		curl https://dl-ssl.google.com/dl/googlesource/git-repo/repo > ~/bin/repo
+   		chmod a+x ~/bin/repo
+
+		cd $HOME
+   		mkdir android-toolchain
+   		cd android-toolchain
+	
+   		repo init -u https://android.googlesource.com/platform/manifest
+   		repo init -u https://android.googlesource.com/platform/manifest -b android-2.3.7_r1
+		repo sync
+
+	1.3. Now you can find a prebuilt toolchain with a compiler named arm-eabi-gcc 
+                (on Ubuntu 12.04 you may need to change version number below, and some paths in agcc script below)
+
+		export PATH=${HOME}/android-toolchain/prebuilt/linux-x86/toolchain/arm-eabi-4.2.1/bin:${PATH}
+		arm-eabi-gcc
+
+2. Compile "at least" the bionic libc  
+	
+	2.1. Fix your build to support Ubuntu 11.10 
+
+		repo forall platform/build -c git cherry-pick fddf23f19e7604e6c5b3c5377e7ff6293539a1da
+
+		cd $HOME/android-toolchain
+
+		Change frameworks/base/libs/utils/Android.mk
+
+			LOCAL_CFLAGS += -DLIBUTILS_NATIVE=1 $(TOOL_CFLAGS)
+		to 
+			LOCAL_CFLAGS += -DLIBUTILS_NATIVE=1 $(TOOL_CFLAGS) -fpermissive
+
+	2.2. Build the system (Refer http://source.android.com/source/building.html for details)
+
+	        cd $HOME/android-toolchain
+ 		source build/envsetup.sh
+
+		lunch full-eng
+
+		make -j4 	 
+
+3. Cross-compile an application and link it to bionic. 
+
+	3.1. Download a perl script written by Andrew Ross from 
+		
+		cd ~/bin
+		wget http://plausible.org/andy/agcc
+		chmod +x agcc
+
+	3.2. Compile  
+
+	        export HAGGLE=<path-to-haggle-source>
+		agcc  -I${HAGGLE}/src/libhaggle/include -c mos_test.c
+		
+	3.3. Link 
+
+		agcc -o mos_test mos_test.o ${HAGGLE}/android/PhotoShare/obj/local/armeabi/libhaggle.a ${HAGGLE}/android/PhotoShare/obj/local/armeabi/libhaggle-xml2.a -llog
+
+		Note: if you have not compiled PhotoShare for Android then compile it first 
+			cd ${HAGGLE}/android/PhotoShare
+			ndk-build 
+
+4. Push to an Android phone and execute 
+
+	4.1. Push 
+
+		adb push mos_test /sdcard/
+
+		adb shell 
+		# mkdir -p /data/data/test 
+		# cp /sdcard/mos_test /data/data/test/
+
+	4.2. Execute 
+
+		# am startservice -a android.intent.action.MAIN -n org.haggle.kernel/org.haggle.kernel.Haggle 		// or you can execute PhotoShare to start Haggle  
+		# cd /data/data/test 
+	        # ./mos_test 
+
+

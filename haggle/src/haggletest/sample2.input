@@ -1,0 +1,5 @@
+0.00,pub,"s1=s1;purge_after_seconds=300;ContentType=DelByRelTTL","/tmp/10KB"
+0.00,pub,"sa=sa;ContentOrigin=none;ContentType=TotalOrder;ContentType=DelByRelTTL;purge_after_seconds=30;RoutingType=Flood","/tmp/10KB"
+3.61,pub,"sl=sl;tag=survive;nolongerdeleting=600","/tmp/10KB"
+3.61,pub,"sl=sl;tag=survive_dontstopbeleiving;nolongerdeleting=600","/tmp/10KB"
+1.00,pub,"s1=s1;purge_after_seconds=300;ContentType=DelByRelTTL","/tmp/10KB"

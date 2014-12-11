@@ -1,0 +1,141 @@
+--------- Haggle limitations/bugs/fixes ---------
+
+Currently, haggle shutdowns do not save scratchpad information (not related
+to utility based caching).
+None (with respect to utility based caching).
+
+--------- Significant Haggle modifications ------
+
+Added scratchpad functionality: In order to keep history/flags/values for
+each DataObject, a scratchpad (per DO) was added.    This is the same feature
+as attributes, but does not change the DO ID, nor will scratchpad features
+will be transmitted/used outside of the local Haggle kernel.   This is
+for internal use, to record data points, keep track of state per DO, etc.
+   Limitations/facts of the scratchpad (currently) are as follows:
+1.   Scratchpad information is not saved during shutdown.  Likewise, it
+is not restored during startup. 
+2.   Scratchpad information is not saved in the database, it is saved in a memory shim.
+3.   We (currently) save scratchpad info of the type <string>=<string> and <string>=<double>.   As this is a 
+template, later types may be added.
+4.   setAttribute() has become either setScratchpadAttributeString() or setScratchpadAttributeDouble().    We use a DO or string
+as the key value.
+5.   In order to make it thread safe, all scratchpad attributes use mutex locks.  
+6.   The string <key> is unique, for all implementations (string, double).   Thus, you cant use the same string for both implementations.
+
+ 
+Future planned modifications:
+1.  Save/load scratchpad during shutdown/startup.
+2.  CacheGlobalOptimizer can adjust thresholds and
+utility function weights in response to network feedback. 
+
+
+hagglekernel/CacheStrategyFactory.{cpp,h}
+- Added ability to instantiate "CacheStrategyUtility" strategy for utility
+based caching.
+
+
+--------- New files ---------
+
+hagglekernel/CacheStrategyUtility.{cpp,h}
+- Implements the utility based content pipeline. It derives from the CacheStrategyAsynchronous class 
+(derived from the CacheStrategy abstract class) and allows a user to specify a maximum cache capacity 
+and a watermark to bound the amount of space used by data objects with files. 
+The pipeline may can be executed whenever a new data object is inserted, or
+periodically (or both). Upon pipeline execution, a user specified threshold 
+allows immediate eviction from the cache. All data objects who have
+not recently had their utilities computed will then have their utilities 
+recomputed using the specified utility function (which may be an aggregate
+of other utility functions, and may use the global optimizer for weights), 
+and if the watermark is exceeded then the knapsack optimizer is activated
+to select a subset of the data objects to be evicted (least utility first) 
+until the watermark is not exceeded.
+
+hagglekernel/CacheUtilityFunction.{cpp,h}
+- Provides an abstract utility function class. A utility function simply
+returns a value between 0-1 for a particular data object, and uses a global
+optimizer to weight this value. A lower value means that the data object
+does not have very much utility for storage at that node, and it should be 
+evicted from the cache before a data object with higher utility. This file
+implements the: 1) CacheUtilityAggregateMin/Max/Sum, 2) CacheUtilityNeighborhood, 3) 
+CacheUtilityPopularity, 4) CacheUtilityNewTimeImmunity, 5) CacheUtilityPurgerRelTTL/AbsTTL, 
+6) CacheUtilityReplacementTotalOrder, 7) CacheUtilityAttribute, 8) CacheUtilityRandom, 
+and 9) CacheUtilityNOP utility functions. 
+1) are basic combinator for other utility functions, and returns the min/max/sum 
+of its constituents and ensures the value is in [0,1].  
+2) uses Bloom filter neighborhood information to typically decrease the utility
+of a data object. 
+3) uses data object usage metrics to perform either LRU-k or LRFU.
+4) gives a positive value if the DO was received within a
+certain timeframe.  
+5) computes a 1,0 utility based on whether the
+data object has expired by a relative/absolute received date.
+6) computes a 1,0 utility based on whether
+the data object is subsumed by another data object. 
+7) computes a utility based on a specific attribute.
+8) computes a random utility in [0,1]. 
+9) corresponds to the NOP function (returns 1). 
+- Additional utility functions for cooperative caching are implemented:   
+1) CacheUtilityNeighborhoodSocial, CacheUtilityNeighborhoodOtherSocial 
+2) CacheUtilityHopCount
+3) CacheUtilityLocal.
+1) allows weighting based upon content distribution in social groups.
+CacheUtilityNeighborhoodSocial requires social_identifier as attributes while
+the other uses a node description to find a node's social group.   
+2) computes a 1,0 utility based on whether the content is locally created.
+3) uses hop count a data object traversed to reach the current node.   
+- Added a configuration option, 'linear_declining' to ImmunityNewByTime,
+  RelTTL, and AbsTTL to allow utility declines in linear function (instead of a
+  1,0 utility).   
+
+hagglekernel/CacheUtilityFunctionFactory.{cpp,h}
+- Factory class to instantiate and configure utility function classes by name.
+
+hagglekernel/CacheGlobalOptimizer.{cpp,h}
+- This file implements the 1) CacheGlobalOptimizerFixedWeights concrete class that allows a user
+to specify fixed weights (in range [-1, 1]) for utility functions, via config.xml.
+
+hagglekernel/CacheGlobalOptimizerFactory.{cpp,h}
+- Factory class to instantiate and configure global optimizer classes by name.
+
+hagglekernel/CacheKnapsackOptimizer.{cpp,h}
+- Provides an abstract class for knapsack optimizers. Practically speaking, 
+this class returns a list of data objects to be removed from the cache. 
+This file implements the "CacheKnapsackOptimizerGreedy" to heuristically fill
+the cache by inserting data objects with the highest marginal utility first 
+(utility/size), until the capacity constraint is violated. Upon ties, data
+objects that were created earlier are inserted first (creation time).
+
+hagglekernel/CacheKnapsackOptimizerFactory.{cpp,h}
+- Factory class to instantiate knapsack optimizer classes by name.
+
+hagglekernel/EvictStrategyLRFU.{cpp,h}
+- This module implements LRFU function, calculating a raw score.   LRFU is
+based, roughly, on the formula CRF(now) = f(0)+f(now-lastaccess)*CRF(lastaccess),
+where f(x) = (1/p)^(lamda*x).   Note: CRF = combined recency and frequency    
+The value ONLY changes after an access.
+
+hagglekernel/EvictStrategyLRU_K.{cpp,h}
+- This module implements the LRU-k.   In simple terms, LRU-k keeps track of past k accesses. 
+Evictions are based on the k-th-to-last access timestamp.  
+
+hagglekernel/EvictStrategy.{cpp,h}
+- This module is a base class for the popularity-based cache eviction modules, in particular, to both 
+EvictStrategyLRFU and EvictStrategyLRU_K modules.  
+
+hagglekernel/EvictStrategyManager.{cpp,h}
+- This module manages the various popularity-based cache eviction modules.  When a DO is matched with
+a node, it is sent to this module.   This module will pass the DO to each
+LRU module to update the internal scratchpad information.   In addition, this module can be set 
+to a default popularity-based cache eviction, so only the default LRU module results will be returned per DO.
+
+hagglekernel/EvictStrategyFactory.{cpp,h}
+- Factory class to instantiate LRUEvictStrategyManager, and populate it,
+based upon config.xml, with LRFU/LRU_K EvictStrategy modules.
+
+hagglekernel/NodeStore.{cpp,h}
+- Node store now stores which nodes belong to which social group, allowing the user to know how many
+social groups encountered, how many nodes in each social group, and which nodes belongs to which group.
+
+hagglekernel/NodeManager.{cpp.h}
+- Now accepts a configuration option for a social label. 
+

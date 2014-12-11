@@ -1,0 +1,35 @@
+= Memory constraint support
+James Mathewson <james@suns-tech.com>
+v1.0, 2013-15
+
+This document describes supported added to encoders, to help improve memory management,
+especially when using an in-memory database.
+
+NOTE: This document is written in 'asciidoc' format and can generate html
+or latex output. Please install `source-highlight` for syntax highlighting. 
+
+== Intent/Purpose
+The utility caching keeps disk constraints on content
+
+== Haggle limitations/bugs/fixes
+. Self test file name is hard coded.
+. Self test will shutdown haggle when finished.
+
+
+== Significant Haggle modifications
+None noted.
+
+
+== New files
+None
+
+
+== Modified files
+----
+~/cbmen-encoders/src/hagglekernel/CacheStrategyUtility.{cpp,}
+----
+Added options to support:
+. Memory constraint 
+. self test
+
+ 

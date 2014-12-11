@@ -1,0 +1,74 @@
+<Haggle persistent="no">
+	<Attr name="ManagerConfiguration">*</Attr>
+	<SecurityManager security_level="MEDIUM"/>
+	<DebugManager>
+		<DebugTrace enable="true"/>
+	</DebugManager>
+	<NodeManager>
+		<Node matching_threshold="0" max_dataobjects_in_match="10"/>
+		<NodeDescriptionRetry retries="3" retry_wait="10.0"/>
+	</NodeManager>
+	<ProtocolManager>
+		<TCPServer port="9697" backlog="30"/>
+	</ProtocolManager>
+	<DataManager set_createtime_on_bloomfilter_update="true">
+		<Aging period="3600" max_age="86400"/>
+		<Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+	</DataManager>
+	<ConnectivityManager>
+	  <Bluetooth scan_base_time="120" scan_random_time="60" read_remote_name="false">
+			<ClearBlacklist/>
+			<ClearWhitelist/>
+			<Blacklist>
+				<Interface name="Lego robot" type="bluetooth" mac="00:16:53:0d:f5:7E"/>
+			</Blacklist>
+			<Whitelist>
+			  <Interface name="NexusOne-01" type="bluetooth" mac="00:23:76:9f:94:0a"/>
+			  <Interface name="NexusOne-02" type="bluetooth" mac="00:23:76:9f:7e:9b"/>
+			  <Interface name="NexusOne-03" type="bluetooth" mac="00:23:76:9f:95:cf"/>
+			  <Interface name="NexusOne-04" type="bluetooth" mac="00:23:76:9f:6c:8e"/>
+			  <Interface name="NexusOne-05" type="bluetooth" mac="00:23:76:9f:93:3a"/>
+			  <Interface name="NexusOne-06" type="bluetooth" mac="00:23:76:9f:7e:32"/>
+			  <Interface name="NexusOne-07" type="bluetooth" mac="00:23:76:9f:96:bc"/>
+			  <Interface name="NexusOne-08" type="bluetooth" mac="00:23:76:9f:d1:b2"/>
+			  <Interface name="NexusOne-09" type="bluetooth" mac="00:23:76:9f:84:46"/>
+			  <Interface name="NexusOne-10" type="bluetooth" mac="00:23:76:9f:82:8d"/>
+			  <Interface name="NexusOne-11" type="bluetooth" mac="00:23:76:a5:aa:fb"/>
+			  <Interface name="LG-01" type="bluetooth" mac="00:1e:75:15:78:82"/>
+			  <Interface name="LG-02" type="bluetooth" mac="00:1c:62:fa:ec:ee"/>
+			  <Interface name="LG-03" type="bluetooth" mac="00:1c:62:fb:c0:b9"/>
+			  <Interface name="LG-04" type="bluetooth" mac="61:0F:D0:0D:20:7D"/>
+			  <Interface name="LG-05" type="bluetooth" mac="00:1e:75:00:42:90"/>
+			  <Interface name="LG-06" type="bluetooth" mac="00:1e:75:00:c8:e5"/>
+			  <Interface name="LG-07" type="bluetooth" mac="00:1c:62:fe:62:1f"/>
+			  <Interface name="LG-08" type="bluetooth" mac="00:1e:75:00:1e:86"/>
+			  <Interface name="LG-09" type="bluetooth" mac="00:1e:75:00:79:f0"/>
+			  <Interface name="LG-10" type="bluetooth" mac="00:1e:75:29:92:08"/>
+			  <Interface name="LG-11" type="bluetooth" mac="00:1c:62:ff:0e:2b"/>
+			  <Interface name="LG-12" type="bluetooth" mac="00:1e:75:00:4e:0c"/>
+			  <Interface name="LG-13" type="bluetooth" mac="00:1e:75:3f:39:43"/>
+			  <Interface name="LG-14" type="bluetooth" mac="00:1e:75:0d:4f:f6"/>
+			  <Interface name="LG-15" type="bluetooth" mac="00:1e:75:0c:ef:d5"/>
+			  <Interface name="LG-16" type="bluetooth" mac="00:1c:62:fd:ed:7c"/>
+			  <Interface name="LG-17" type="bluetooth" mac="00:1c:62:fb:15:92"/>
+			  <Interface name="LG-18" type="bluetooth" mac="00:1c:62:ff:f9:af"/>
+			  <Interface name="LG-19" type="bluetooth" mac="00:1c:62:ff:95:d4"/>
+			  <Interface name="LG-20" type="bluetooth" mac="00:1e:75:0d:16:e7"/>
+			  <Interface name="LG-21" type="bluetooth" mac="00:1c:62:ff:e7:3f"/>
+			  <Interface name="LG-22" type="bluetooth" mac="00:1e:75:0c:69:f9"/>
+			  <Interface name="LG-23" type="bluetooth" mac="00:1c:62:fc:4c:e9"/>
+			  <Interface name="LG-24" type="bluetooth" mac="00:1c:62:fb:36:14"/>
+			  <Interface name="LG-25" type="bluetooth" mac="00:1e:75:0f:bd:c5"/>
+			  <Interface name="LG-26" type="bluetooth" mac="00:1c:62:fd:d0:ad"/>
+			  <Interface name="Magic 2" type="bluetooth" mac="00:22:15:c0:5c:5a"/>
+			  <Interface name="Daniels Mac" type="bluetooth" mac="00:1e:52:e7:19:ac"/>
+			</Whitelist>
+			<IgnoreNonListedInterfaces>yes</IgnoreNonListedInterfaces>
+		</Bluetooth>
+	</ConnectivityManager>
+	<ForwardingManager query_on_new_dataobject="false" periodic_dataobject_query_interval="0">
+	  <Forwarder max_generated_delegates="1" max_generated_targets="1" protocol="Prophet">
+	    <Prophet strategy="GRTR" P_encounter="0.75" alpha="0.5" beta="0.25" gamma="0.999"/>
+	  </Forwarder>
+	</ForwardingManager>
+</Haggle>

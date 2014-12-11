@@ -1,0 +1,79 @@
+Haggle on iPhone
+================
+
+There are two alternative ways of running Haggle on the iPhone. Either
+Haggle is embedded into a regular iPhone application developed in
+XCode, or Haggle is installed and run as a daemon. The first
+alternative is clearly suboptimal, since Haggle must run in the
+foreground and supports only one application. The second option is
+better for running Haggle as intended, but it requires you to
+jailbreak the iPhone. Here we describe the second alternative and
+therefore assume that the phone to run on is jailbroken.
+
+First, install the latest iPhone SDK, then run from the top Haggle
+source code directory:
+
+> ./iphone/iphone-crosscompile.sh
+
+This will configure the build system for cross-compilation against the
+iPhone. If there are problems, make sure that the script targets the
+SDK you have installed (edit the bash script to suit your needs). Then
+simply type 'make' to compile the code. The Haggle binary will end up
+in './bin/'.
+
+Copy the binary to the iPhone (e.g., using scp by first installing
+OpenSSH on the iPhone):
+
+> scp ./bin/haggle root@<myIphoneIP>:/usr/bin/
+
+Before running Haggle, the binary needs to be signed (or rather, it
+needs to have a fake signature). If the iPhone is Jailbroken, the
+signature verification is disabled such that third party applications
+can be installed and run. However, all applications still need a
+signature, although it can be any signature. The easiest way to fake a
+signature is to install 'ldid' on the iPhone using Cydia. Then login
+on the iPhone and run
+
+> ldid -S /path/to/haggle
+
+You should now be able to run Haggle.
+
+You might also wish to install the libhaggle library on the iPhone if
+it is built as a dynamic library. It has to be copied to the iPhone in
+the same way as the Haggle executable.
+
+> scp src/libhaggle/.libs/libhaggle.0.dylib root@<myIphoneIP>:/usr/lib/
+
+You are now ready to develop and run Haggle applications on the
+iPhone. 
+
+
+Developing applications in XCode without developer program registration
+-----------------------------------------------------------------------
+
+To develop applications in XCode without being registered with the
+Apple iPhone developer program you need to create a code signing
+certficate in the key-chain manager. You also need to edit your XCode
+settings in order to by-pass the usage of provisioning profiles and
+install the MobileInstaller patch on the jailbroken iPhone.
+
+Create the developer certificate by following this guide:
+
+http://developer.apple.com/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html#//apple_ref/doc/uid/TP40005929-CH4-SW2
+
+Make sure the name on the certificate matches your developer profile
+in XCode (e.g., default 'iPhone developer').
+
+Add the following two settings in the configuration of your XCode
+project by clicking 'Add User-Defined Setting' (lower left button in
+the Build settings for the project):
+
+PROVISIONING_PROFILE_ALLOWED NO
+PROVISIONING_PROFILE_REQUIRED NO
+
+On your iPhone, add the following Cydia source
+'http://iphone.org.hk/apt' and install 'MobileInstallation
+Path'. Reboot the iPhone.
+
+Now you should be able to develop and run applications on your iPhone
+from within XCode.

@@ -1,0 +1,56 @@
+hagglekernel/Event.{cpp,h} 
+
+- Added the `EVENT_TYPE_REPL_MANAGER` used by the factory to generate
+  replication manager events.  This factory is called by the NodeManager,
+  Protocol, and ProtocolSocket to communicate with the replication manager
+  in an asychronous way.
+
+hagglekernel/NodeManager.{cpp,h} 
+
+- Intercepted the DATAOBJECT_SEND event for node descriptions in the function
+  `sendIndividualNodeDescriptions` by instead posting the event
+  from the factory `ReplicationManagerFactory::getSendNodeDescriptionEvent`
+  This allows the replication manager to add metadata to the node description
+  to communicate with replication managers running on other nodes.
+
+- Added a line to post the event `ReplicationManagerFactory::getNodeStatsEvent`
+  in `onNeighborInterfaceDown` to communicate to the replication manager
+  node connection statistics.
+
+- Added a line to post the event `ReplicationManagerFactory::getNewNodeDescriptionEvent`
+  in `nodeUpdate` to communicate to the replication manager that a new node
+  description was received and should be processed to parse connection
+  statistics. 
+
+hagglekernel/Protocol.{cpp,h}
+
+- Added a line to post the event `ReplicationManagerFactory::getSendStatsEvent`
+  in `run()` that communicates to the replication manager the duration to
+  send the data object and the number of bytes that were sent.
+
+hagglekernel/ReplicationUtilityFunction.{cpp,h}
+
+- Added 'Local' utility function, to allow replication of locally published content only.
+- Added 'SocialOther' utility function, to consider the diversity index for the social group the node belongs.
+  Two options are supported:
+  a.   'exclude_my_group' - Exclude nodes in my social group for value
+(=1-diversity) calculation.
+  b.   'max_group_count' - How many members in a social group to be
+  considered a diversity value of '1'.
+
+hagglekernel/ReplicationManagerUtility.{cpp,h}
+
+- Added three options. 
+'replication_cooldown_ms'::
+     This option sets how long to wait, before the knapsack will be used to
+replicate again (in millisecons).
+
+'max_repl_tokens'::
+      This sets how many tokens, maximum.    This affects either how many data
+objects, total, or how many data objects, per node, to be considered for the
+knapsack.
+
+'token_per_node'::
+     This sets either the tokens to be counted per node (true), or, as data
+objects total (false).
+ 

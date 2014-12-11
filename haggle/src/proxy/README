@@ -1,0 +1,20 @@
+Mail proxy
+===========================
+
+Configuration of mail client
+----------------------------
+
+You need to configure an account on your mail client with the
+following information:
+
+Username: same as email (e.g., john.doe@haggle.org)
+SMTP server: localhost port 2525
+POP server: localhost port 11011
+
+Start the mail proxy by executing ./haggleproxy.
+Haggle must of course also be running first.
+
+You can now connect with the mail client.
+
+When you connect to the proxy you will be asked for a password.
+You can then enter anything.

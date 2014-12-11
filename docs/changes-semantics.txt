@@ -1,0 +1,110 @@
+--------- Significant Haggle modifications ---------
+
+hagglekernel/Node.h, hagglekernel/Node.cpp
+- Nodes can be flagged as belonging to local applications (as opposed to remote apps).
+- Nodes have an optional proxy id field which should point to the underlying device node id.
+- Bloomfilters are not included in the metadata for app nodes (and hence not transmitted).
+  Hence app node descriptions are essentially representing the application interests.
+- Peer bloomfilters are still maintained for application nodes.
+- NODE_DEFAULT_MATCH_THRESHOLD is set to 0 (for a disjunctive interpretation)
+- NODE_DEFAULT_DATAOBJECTS_PER_MATCH remains at 10
+
+hagglekernel/ApplicationManager.cpp
+- Avoid aggregation if first-class application option is turned on.
+- Disable application filter if first-class application option is turned on.
+  The forwarding manager will use the normal mechanism to forward to first-class applications.
+- App nodes inserted as data objects (but this becomes unnecessary with in-memory node descriptions).
+- New function sendCopyToApplication and corresponding event EVENT_TYPE_DATAOBJECT_SEND_TO_APP is responsible
+  for sending data objects to apps (with suitable control metadata).
+
+hagglekernel/ForwardingManager.cpp
+- The forwarding manager uses EVENT_TYPE_DATAOBJECT_SEND_TO_APP instead of EVENT_TYPE_DATAOBJECT_SEND to
+  send data objects to applications (with application manager as intermediary).
+- It also performs translation (see shouldForward) of application node targets to their corresponding proxies 
+  (the forwarding destination) and uses those proxies for additional Bloomfilter checks.
+
+hagglekernel/NodeStore.cpp
+- update sets new local application node fields (localApplication and proxyId).
+- Extended with functions to retrieve local application nodes.
+
+hagglekernel/SQLDataStore.cpp
+- Added proxy ids to the node table.
+- insertNode ignores attributes with weight 0 (e.g. the NodeDescription attribute) which 
+  could otherwise interfere with the matching semantics
+- Allow application nodes be returned in node queries.
+- Use proxy id for additional Bloomfilter checks in data object queries.
+
+hagglekernel/Event.h, hagglekernel/Event.cpp
+- Added above-mentioned event EVENT_TYPE_DATAOBJECT_SEND_TO_APP.
+
+hagglekernel/Protocol.cpp
+- Allow selection of interface to application (first-class application support).
+
+hagglekernel/DataObject.h, hagglekernel/Node.cpp
+- Added function setNodeDesc for data objects.
+
+hagglekernel/HaggleKernel.h, hagglekernel/ApplicationManager.cpp
+- Added firstClassApp configuration option as field in HaggleKernel.
+- It is set in the application manager configuration.
+
+hagglekernel/ForwarderProphet.cpp
+- Optimization not to disseminate routing info for new app nodes.
+
+hagglekernel/ApplicationManager.cpp
+- added configuration parameter reset_bloomfilter_at_registration (default true)
+  to disable Haggle default bloomfilter reset, so that applications only receive
+  data objects they have not received before (except they request an
+  explicit Bloomfilter reset using CTRL_TYPE_GET_DATAOBJECTS).
+- Make sure that all control messages are flagged as such using setControlMessage.
+- Implement CTRL_TYPE_SET_PARAM control message to allow each application to control 
+  maxDataObjectsInMatch and matchingThreshold. In the previous version this was
+  done as part of CTRL_TYPE_REGISTER_INTEREST, but it is better to separate it.
+- Make sure that in CTRL_TYPE_REGISTER/REMOVE_INTEREST application node descriptions
+  are property inserted into the data base (for backward compatibility) and 
+  propagated through the network. NodeDescription attribute is
+  added to app nodes for backward compatibility with Vanilla Haggle routing.
+- Add similar code for CTRL_TYPE_REMOVE_INTEREST and CTRL_TYPE_GET_DATAOBJECTS
+
+hagglekernel/DataObject.cpp
+- Added setControlMessage to flag data objects correctly.
+- Use weight zero as default in xml representation to save some header overhead
+  (weight zero is intended for attributes that do not need matching).
+
+hagglekernel/Node.cpp
+- Allow for application nodes without interfaces, because they are not
+  needed for remote applications.
+- Removed serialization of remote application node interfaces.
+  because they are not relevant outside of local device context
+- Support setting of create time not only for local device but 
+  also for local applications.
+
+hagglekernel/NodeManager.cpp
+- Generalized sendIndividualNodeDescription to take node argument.
+- First push local device node description, then all local application
+  node descriptions in sendNodeDescription.
+- Special treatment of local application node updated in onReceiveNodeDescription.
+  Make sure local application node are flagged as such.
+- Allow replacement of nodes in node store even if received node description
+  does not belong to a neighbor.
+- Ignore local application updates that are not in node store,
+  e.g. because they have deregistered already.
+
+hagglekernel/NodeStore.cpp
+- Used node ids to find previous version of node to update before
+  resorting to interfaces.
+- If previous version of node is found make sure that all important
+  features are inherited by the new version.
+
+hagglekernel/SQLDataStore.cpp
+- Attributes with weight 0 are not intended for matching and hence can
+  be excluded from insertion into the database with
+  exclude_zero_weight_attributes to improve performance.
+- As in the setting without first-class applications, we do no 
+  bound the number of results returned from the local data base.
+- Small fix in the Bloom filter check of results.
+- Implemented exclude_node_descriptions parameter to never
+  return node descriptions as results (normally not
+  needed with in_memory_node_descriptions).
+- Implemented parameter count_node_descriptions = false to avoid
+  counting node descriptions towards the user-specified bound
+  (normally not needed with in_memory_node_descriptions).

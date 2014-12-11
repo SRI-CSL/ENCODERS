@@ -1,0 +1,1 @@
+echo "#define GIT_REF \"`git log "--pretty=format:%H %an %aD" | head -1`\"" > src/hagglekernel/git_ref.h

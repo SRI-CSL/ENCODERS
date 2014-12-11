@@ -1,0 +1,30 @@
+Oct 4, 2013:
+--------- Haggle limitations/bugs/fixes ---------
+
+None (with respect to memdb).
+
+--------- Significant Haggle modifications ------
+
+hagglekernel/BenchmarkManager.{cpp,h}
+- Drastically refactored / cleaned up benchmark code. Also added deletion
+tests to record more metrics for DB comparisons. 
+
+hagglekernel/DataStore.{cpp,h}
+- Added reportRemoval parameter for "insertDataObject", as occasionally an
+insertion of a data object may trigger a deletion of a data object.
+
+hagglekernel/SQLDataStore.cpp
+- Added ability to retrieve nodes without trying to fetch them from the node
+store (useful when retrieving all nodes during shutdown, `fromScratch` param).  
+- Added benchmark metrics for data object deletion and insertion. 
+- Added functions to retrieve all of the data objects, nodes and repository
+entries from the database.
+
+--------- New files ---------
+
+hagglekernel/MemoryDataStore.{cpp,h}
+- Utilizes the MemoryCache to implement the DataStore interface and interact
+with the other managers.
+
+hagglekernel/MemoryCache.{cpp, h}
+- Stores the state for the in memory NoSQL data base. 

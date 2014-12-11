@@ -1,0 +1,88 @@
+1.	Install VirtualBox 4.1.12.
+
+2.	Install 64-bit Ubuntu 11.10.
+
+3.	Update the distribution:
+
+		sudo apt-get dist-upgrade
+
+4.	Add Android development dependencies:
+
+	        sudo add-apt-repository ppa:ferramroberto/java
+	      	sudo apt-get update
+			sudo apt-get install sun-java6-jdk sun-java6-plugin ia32-libs ant g++ mercurial libswt-gtk-3-jni
+
+5.	Add Android development tools:
+
+		wget http://www.csl.sri.com/users/gehani/cbmen/eclipse-jee-indigo-SR2-linux-gtk-x86_64.tar.gz
+		wget http://www.csl.sri.com/users/gehani/cbmen/android-sdk_r16-linux.tgz
+
+		tar xvfz eclipse-jee-indigo-SR2-linux-gtk-x86_64.tgz
+		tar xvfz android-sdk_r16-linux.tgz
+
+		Start the SDK GUI with 'android' and install
+			Android 2.3.3 (API 10) and 4.0 (API 14)
+			Platform tools
+
+		wget http://www.csl.sri.com/users/gehani/cbmen/android-ndk-r7b-linux-x86.tar.gz
+		tar xvfz android-ndk-r7b-linux-x86.tgz
+
+6.	Install Haggle:
+
+		sudo apt-get install automake autoconf build-essential libtool libsqlite3-dev libxml2-dev libbluetooth-dev libdbus-1-3 libdbus-1-dev libssl-dev
+		hg clone https://code.google.com/p/haggle/
+		autogen.sh
+		configure
+		make
+
+	In haggle/src/libhaggle/Makefile, haggle.h is listed twice (on line 297 for me), generating an install error. Remove the second occurrence and then in the top-level 'haggle' directory:
+
+		make install
+
+7.	Build the Haggle external libraries:
+
+		 sudo apt-get install git gawk
+
+	In 'haggle/android/extlib' run:
+
+		echo "NDK_PATH=<path-to-ndk>/android-ndk-r7b" > .ndkconfig
+		build.sh
+
+8.	 Install data collection tools:
+
+		sudo apt-get install qtcreator qt4-qtconfig
+		sudo apt-get install wireshark traceroute
+
+9.	Install CORE dependencies:
+
+		sudo apt-get install libxss1
+		wget http://security.ubuntu.com/ubuntu/pool/main/t/tk8.5/tk8.5_8.5.11-1_amd64.deb
+		sudo dpkg -i tk8.5_8.5.11-1_amd64.deb
+		sudo apt-get install bridge-utils ebtables libev4 libtk-img
+
+10.	Install CORE:
+
+		wget http://www.csl.sri.com/users/gehani/cbmen/core-4.3-0ubuntu1_oneiric_amd64.deb
+		sudo dpkg -i core-4.3-0ubuntu1_oneiric_amd64.deb
+
+11.	Run CORE:
+
+		sudo /etc/init.d/core start
+		core
+
+12.	Install Quagga:
+
+		sudo apt-get install libnl1
+		wget http://www.csl.sri.com/users/gehani/cbmen/quagga-mr_0.99.20mr2.1_amd64.deb
+		sudo dpkg -i quagga-mr_0.99.20mr2.1_amd64.deb
+
+13.	Install EMANE dependencies:
+
+		sudo apt-get install libssl-dev libxml-libxml-perl libxml-simple-perl
+
+14.	Install EMANE:
+
+		wget http://www.csl.sri.com/users/gehani/cbmen/emane-0.7.3-release-1.ubuntu-11_10.amd64.tgz
+		tar xvfz emane-0.7.3-release-1.ubuntu-11_10.amd64.tgz
+		cd emane-0.7.3-release-1/deb/ubuntu-11_10/amd64
+		sudo dpkg -i *.deb

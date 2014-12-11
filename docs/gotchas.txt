@@ -1,0 +1,301 @@
+------------- Usage Gotchas ------------
+
+Startup
+- Clean data base at startup with -dd to have well defined initial state
+  (this is for linux, see instructions on real phone setup below).
+
+Applications
+- Use new application name for each haggle client on the same node
+  (see haggletest where app name is parameter).
+
+NodeManager
+- In Vanilla Haggle node descriptions are not disseminated without interest
+  but Prophet and Direct assume that node descriptions are flooded.
+  - Temporary solution for Vanilla Haggle: Register common interest on all nodes 
+    (see also default interest feature). 
+  - Solution using DIRECT: Using the latest version of DIRECT 
+    node descriptions are classified as lightweight traffic and flooded.
+
+Prophet
+- For Vanilla Haggle recursive routing updates needed in config.xml 
+  (use haggle/resources/config-prophet.xml).
+- Note that Prophet is based on encounters and not on current link state
+  so it can easily get stuck hoping for future connectivity.
+- The problem is solved in Prophet-S which performs periodic 
+  routing updates (no need for recursive updates).
+
+config.xml
+- Make sure it is correctly interpreted (see log file) -
+  otherwise default values may be used.
+- Limitation on data object matching might lead to missing or delayed 
+  objects. Solution: set max_dataobjects_in_match high enough, e.g. 100 (default is 10).
+- Make sure that query_on_new_dataobject="true". 
+- Use periodic_dataobject_query_interval="0" for our purposes.
+- These settings are in haggle/resources/config-prophet.xml and haggle/resources/config-direct.xml.
+
+Node.h
+- Note the default limitations for matching data objects (10) and
+  default setting for match threshold (10). Defaults can be configured
+  in the config file.
+
+DataManager.cpp - shutdown fails.    Due to how haggle tracks threads, the current shutdown methods on 
+  multiple modules using threads (of type CacheStrategyAsynchronous) causes haggle to 'hang' during shutdown.
+  A solution is highest priority, but due to massive architectural changes, retracing is necessary.
+
+EvictStrategyLRFU.cpp - TIME is bad for given default values, as using time()
+  starts the count at over a billion on first use.    
+
+EvictStrategyLRU_K.cpp - Time value used is only updated after 'k' updates (definition of LRU-k, here for reminder). 
+
+ForwardingManager.h
+- MAX_NODES_TO_FIND_FOR_NEW_DATAOBJECTS was defined as 10 (now 30) which may be too
+  small. Note that this should be at least as large as the maximum number
+  of target nodes (not only delegates) for a data object. The right setting 
+  is especially important if no routing is used (e.g. with noForward).
+  Note that each requesting application counts as target node if first-class
+  applications are used.
+
+SQLDataStore.cpp
+- Hardwired limitations for filter (10) has been removed (no gotcha anymore).
+
+Contents of Sqlite database (if you inspect it using an sqlite browser)
+- Database node table is not always in sync with node store.
+- For current info on local node use Haggle debugging commands.
+- Database mapping table keeps all attributes (intentional).
+
+ApplicationManager.cpp
+- Each application node has its own Bloomfilter but it is reset at the
+  beginning of each session so a reconnecting application may receive
+  previously received data objects again if they are locally cached.
+  This is intended behavior (and useful if the application crashes), 
+  but might be confusing for some.
+
+ApplicationManager.cpp
+- Interest weights are taken into account, but weights on content attributes are irrelevant.
+- Threshold (should be 0...100) is a per node static config parameter, rather than per 
+  application and dynamic (the extended API with first-class applications resolves this).
+- Semantics of interest is not intuitive in Vanilla Haggle if threshold is > 0 due to
+  - other attributes, e.g. "NodeDescription=" which is part of every node
+  - naive aggregation of interest from multiple applications (non-compositional)
+- With threshold = 0 (as in the default config) just think of interests as a disjunction.
+- Subscribing to existing interest on a node (either from same of different app) does not increase it's weight.
+- One might focus on the case of single app per node to avoid confusion.
+- Drexel's naming should ultimately used for complex queries so these issues might become less relevant.
+
+Note: The first-class application feature solves these issues by
+avoiding aggregation of interests and keeping application interest
+separate from device node descriptions (which are essentially
+containing the device Bloom filter).
+
+SQLDataStore.cpp
+- Filters (e.g. local queries) use different matching conditions 
+  than the forwarder (which is using the above semantics).
+- Potential performance bottleneck (see below).
+- Some tables grow indefinitely over time (no cleanup).
+
+Note: With the first-class application feature filters are not needed
+anymore to forward data objects to applications. Instead the normal
+matching and forwarding logic is used to forward to local applications.
+
+Application.cpp DataObject.cpp ProtocolUDP.cpp
+- Haggle assumes ownership of each file passed to the daemon via the API to avoid unnecessary copying.
+- Hence the file, once passed to haggle, should only be deleted though the API (delete data object).
+- If haggle encounters exactly the same content again (modulo hashing) it will delete the file (seems to be a bug)
+  Normally this will not happen if content is at least equipped with a timestamp
+  (which is the case with the latest version).
+
+ProtocolTCP.cpp
+UPDATE: The following has been found not to be a problem anymore in the latest 
+version where the number of protocol instances are limited.
+- If neighbors are discovered but show up as unnamed (no node descriptions received)
+  the backlog parameter may not be high enough (for a 30 nodes network we use at least
+  200 instead of the default 20). Note that multiple instances of TCP (at least 2)
+  will typically run between each pair of nodes.
+- Similarly, the default length of the connection request queue for TCP (kernel 
+  parameter) may not be enough. This can be changed, e.g. 
+  using "sudo sysctl -w net.core.somaxconn=2048".
+- There problems show up especially if you are running Haggle on CORE lxc 
+  with many nodes clustered together.
+
+In scnearios with a large number of nodes clustering together (e.g. up
+to 30) it is recommended to limit protocol instances for UDP and TCP
+and impose rate limits (as documented in README-udp). TCP-only
+configurations can have problems in those scenarios, due the the
+individual node description disseminations to a large number of
+neighbors and the waste of bandwidth. We have however sucessfully
+tested UDP/TCP configurations where lightweight UDP broadcast (without
+reliability) is used for all node descriptions and TCP for other data
+objects.
+- The default number of protocol instances is 3 per link. If TCP 
+  is used it is recommended to use the kernel setting
+          sysctl -w net.ipv4.tcp_syn_retries=0 
+  to make sure that interrupted connections are quickly timed out.
+  This will also lead to faster and cleaner shutdown behaviour.
+  To futher save resources, the limit maxProtocolInstancesPerLink
+  can be set to 1 (but only in combination with the above setting).
+- The limit for UDP protocol instances is 3 per link, but since there
+  is no connection overhead we recommend to set maxProtocolInstancesPerLink
+  to 1 in all cases.
+- Without such limits is is possible that Haggle runs out of resources
+  which can result in an EMERGENCY SHUTDOWN (grep the log file for this).
+- Beaconing,which uses UDP broadcast, can be in problem in large
+  clusters due to contention induced-losses. In that case is is
+  advisable to reduce the 5s beaconing period to e.g. 2.5s and
+  adjust other parameters correspondingly (see README-udp for an
+  example).
+
+------------ Haggle on Phones Setup Gotchas/Debugging ------------
+
+- First make sure that the network is configured correctly using 
+  "busybox ifconfig" in the adb shell (especially make sure that each
+  node has a unique IP address and they can ping each other when
+  the network is emulated through CORE and usb tethering).
+
+- We are not using or activating BATMAN to minimize the 
+  interfaces that Haggle detects (Haggle should only see usb0 and lo).
+- You can launch the Haggle daemon using the Photoshare app
+  or explicitly through the adb shell using
+    am startservice -a android.intent.action.MAIN -n org.haggle.kernel/org.haggle.kernel.Haggle.
+  You may also use the clitool to launch Haggle.
+
+- Make sure that all neighbors are properly discovered by name
+  otherwise it might be wise to relaunch Haggle.
+
+- Do not trust that Haggle shuts down by itself if you quit
+  (always kill Haggle and Photoshare explicitly through "Manage Applications")
+  this is a minor bug on Android which needs to be fixed.
+
+- CHANGE TO THE ORIGINAL HAGGLE BEHAVIOUR:
+  If no log file is found Haggle will conduct an EMERGENCY SHUTDOWN (grep
+  for it in the log file). This is to avoid frequent problems with forgotten
+  configuration files.  Sample config files are in haggle/resource, 
+  but make sure to rename your preferred file to config.xml if necessary
+  and install it in /data/data/org.haggle.kernel/files/config.xml.
+  This needs to be done each time after Haggle is installed 
+  using adb install, because the files directory is removed together
+  with the app when Haggle is uninstalled (adb uninstall org.haggle.kernel).
+  IMPORTANT: It is important that the "files" directory has full access
+  permissions, otherwise the config file cannot be accessed (adp push
+  creates the folder with too restrictive permissions).
+
+- Before running Haggle better make sure to remove files from previous runs
+  to start from a clean slate. Files will be cached in the
+  storage path, e.g. /sdcard/haggle. Better make sure that
+  this directory is empty before launching Haggle.
+   	rm /data/data/org.haggle.kernel/files/haggle.db 
+   	rm /data/data/org.haggle.kernel/files/haggle.log 
+   	rm /data/data/org.haggle.kernel/files/trace.log 
+   	rm /sdcard/haggle/* 
+
+- Better make sure that debugging is enabled (when compiling
+  and in the config.xml file). To this end, use 
+	cd haggle/android/Haggle
+    ndk-build clean
+    ndk-build EXTRA_DEFINES=-DDEBUG
+  to build Haggle, do "make clean" and "make" to create the apks in bin
+  and install Haggle-debug.apk (not Haggle.apk).
+	make clean
+   	make 
+   	adb install bin/Haggle-debug.apk 
+  You can also use the build_android.sh and clean_android.sh
+  scripts in the haggle directory to automate this.
+  
+  NOTE: DEBUG is enabled by DEFAULT with the SRI build files.
+
+- Log files are written to /data/data/org.haggle.kernel/files
+  which also contain the sqlite database. For debugging is it
+  convenient to pull haggle.log and haggle.db to your host
+  and inspect them, e.g. the latter using an SQLite browser.
+	adb pull /data/data/org.haggle.kernel/files/haggle.log .
+   	adb pull /data/data/org.haggle.kernel/files/haggle.db .
+
+- If Haggle is started as an Android service it will be automatically
+  restarted when terminated abnormally. In the latest version 
+  log files are always opened in append-mode so that previous logging
+  is not lost. The way to identify restarts is to look for STARTUP
+  messages (grep in the log file).
+
+- During testing it is advisable to look for abnormal behaviour
+  in the log file (and potential tombstones to diagnose the cause).
+  The normal sequence is (please grep for these)
+    *** HAGGLE STARTUP ***
+    *** PREPARE SHUTDOWN EVENT ***
+    *** SHUTDOWN EVENT ***
+    *** SHUTDOWN COMPLETED ***
+  In addition various checks have been added to detect fatal
+  errors which lead to an EMERGENCY SHUTDOWN (altough without
+  any gurantee of success). Hence, it is always advisable to grep
+  for this to detect potential misconfigurations. It is also
+  advisable to check it there are unexpected restarts.
+
+- There are cases (usually caused by misconfiguration) where Haggle
+  can run out of cricial resources (e.g. memory, filedescriptions)
+  before an EMERGENCY SHUTDOWN can be initiated or completed. In that
+  case, a tombstone will be produced and the log file will be
+  truncated (altough not necessarily immediatedly, because other
+  threads may continue to run).
+
+- If there are problems with the underlying network
+  try to stop core and the core service (sometimes you need to do
+  a ps and kill them explicitly) and relaunch both.
+
+- If encryption is used, make sure to copy the charm_state.pickle file
+  /data/data/org.haggle.kernel/files/. Any encryption/decryption
+  attributes are stored in this file. If Haggle is reinstalled, make sure
+  to save and restore this file if the attributes will be needed later.
+  Also, the Haggle corresponding database (/data/data/org.haggle.kernel/files/haggle.db)
+  is must be saved and restored. If these two files are not restored
+  encryption and decryption will fail (since attributes will not be available).
+  
+------------ Development Gotchas/Guidelines ------------
+
+We perform most development in the Linux version of Haggle running in CORE lxc containers
+- See instructions in our cbmen-encoders-all svn repo in the setup directory
+- We also recommend to use an sqlite browser such as the Firefox SQLite Manager to 
+  inspect the database haggle.db during execution (but make sure not to use
+  the in-memory data base mode in this case).
+- Testing with CORE/linux should shorten the development cycle but cannot 
+  replace testing with Android (some issues will only show up there).
+
+Multi-threading and locking
+- Don't forget to lock where essential, e.g. nodes, node interfaces
+- It is easy to lock Haggle up with nested locks. It is very important
+  to understand how References in connection with LockProxies work in Haggle
+  before making any modifications, because these bugs are hard to find.
+- Always think of concurrency issues, e.g. race conditions that 
+  may only show up in a demo when you don't need them.
+- Be careful not to use events with -1 type (default value) on Android (may lock up)
+- Avoid doing any heavy computation in the event handlers/callbacks
+  - Instead use as task queue pattern with a worker thread (as in the SQLDataStore).
+  - Use callbacks or events for continuations.
+
+Database Queries
+- All access is serialized through a single task queue and
+  processed in a helper thread.
+- The results returned asynchronously may only be partially 
+  initialized based on what is available in the database 
+  (e.g. NodeQueryResult can leave interface uninitialized 
+  if node if not in node store).
+- The database is a potential performance bottleneck
+  (testing on real phones is important to detect performance
+   problems, which can manifest themselves as files delivered very late).
+- The in-memory mode of sqlite is significantly faster and 
+  can now be configured in the config file. 
+  This in-memory data base will be written the haggle.db
+  file at shutdown so that it is only available for inspection after that.
+
+Collaborative Development
+- Keep changes localized and encapsulated if possible.
+- Do not rely on internals of other components, e.g. 
+  ProtocolTCP, because they will likely change.
+- Always use different branches for different features.
+- Try to avoid reformatting existing code eve if it is ugly,
+  because otherwise merging can become a nightmare.
+- Write git friendly code to make merging painless.
+- Also when adding new components please add them to the 
+  build files in a git-friendly way.
+- Please mark changes with your initials and keep track of them
+  in the changes.txt or changes-branch.txt files (docs directory) 
+  for the corresponding branch.
+- Please document branch features and config options in a 
+  README-branch file (docs directory).

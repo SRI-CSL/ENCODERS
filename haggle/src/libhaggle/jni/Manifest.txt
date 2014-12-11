@@ -1,0 +1,8 @@
+Name: org/haggle/
+Specification-Title: Java JNI classes for Haggle
+Specification-Version: 1.0
+Specification-Vendor: haggleproject.org
+Implementation-Title: org.haggle
+Implementation-Version: 1.0
+Implementation-Vendor: Uppsala University
+Main-Class: org.haggle.TestApp

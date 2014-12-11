@@ -1,0 +1,134 @@
+Haggle Architecture Reference Implementation
+============================================
+
+NOTE: Always check http://code.google.com/p/haggle/w/list for the most
+up to date information about Haggle, how to compile, supported
+hardware, etc.
+
+See AUTHORS for information on which people are responsible for
+writing this code. You are encouraged to read this file in case you
+are confused about what Haggle is, is not, and who you should contact
+in case you have questions.
+
+Target operating systems for Haggle are currently Windows/Windows
+Mobile, Linux, MacOS X and Android.
+
+The code should run on similar operating systems with little effort.
+
+Tested hardware platforms:
+
+* Linux computers
+* Windows
+* Nokia 770 (Linux on ARM)
+* Any MacOS X machine (PPC/Intel)
+* Samsung SGH-i600 (Windows Mobile on ARM)
+* HTC Touch Diamond
+* HTC S-620
+* LG KS20 (experimental Bluetooth support)
+* iPhone (limited functionality, needs jailbreak)
+* T-Mobile G1 (or the Google Android developer phone)
+* HTC Magic
+* Google Nexus One
+
+Complete functionality may not be supported on all platforms at all
+times (e.g., Bluetooth or WiFi functionality may differ, or not work
+at all, depending on platform).
+
+Structure and overview
+======================
+
+See doc/CodeOverview.txt for a brief overview of the code.
+
+Building
+========
+
+Linux and MacOS X requires standard build environments. Install XCode
+in MacOS X and standard development headers and libraries in Linux
+(and of course GCC). Linux and MacOS X use autotools. See the
+autotools.HOWTO for instructions.
+
+General dependencies:
+---------------------
+
+Currently, Haggle depends on the following libraries:
+
+* libxml2 
+* sqlite3
+* libcrypto (part of OpenSSL)
+
+These libraries are usually available on UNIX-like systems (e.g.,
+Linux and Mac OS X). For Windows there are bundled versions of these
+libraries along with Visual Studio project files to build them
+automatically.
+
+See, for example, the 'winmobile' directory for Visual Studio project
+files that build the Windows Mobile version.
+
+Windows mobile:
+---------------
+
+The following software packages need to be installed to build Haggle:
+
+* Visual Studio 2008
+* Windows Mobile 6 Standard or Professional SDK 
+* ActiveSync 4.5 (not needed with Windows Vista as it uses mobile device 
+center instead)
+
+Project files to build Haggle are found in the "winmobile" directory.
+
+Windows:
+--------
+
+You need Visual Studio 2008 or later.
+
+Project files to build Haggle are found in the "windows" directory.
+
+Mac OS X:
+---------
+
+Install XCode. You can build Haggle either using XCode project files
+or by using autotools and make ("./configure && make"). In recent Mac
+OS X versions you might have to install the Java developer package to
+be able to build the Java bindings for libhaggle. This package is
+available from http://connect.apple.com/.
+
+Linux:
+------
+
+Most Linux distributions have modular software package systems that
+allow only minimal development environments to be installed. This
+frequently leads to problems of missing development packages when
+trying to compile Haggle. The goal is that the autotools system should
+capture these dependencies and inform the user exactly which
+development packages need to be installed. However, sometimes during
+development, this system is not updated to cope with new dependencies.
+
+To minimize the problems, please make sure that at least the following
+packages are installed (list is for debian based distributions, e.g.,
+Ubuntu):
+
+* build-essential (meta-package that includes libc6-dev, gcc, g++, 
+  make, etc.)
+* automake
+* autoconf
+* libtool
+* libsqlite3-dev
+* libxml2-dev
+* libbluetooth-dev
+* libdbus-1-3
+* libdbus-1-dev 
+* libssl-dev
+
+The exact package names may of course vary.
+
+Building for Android
+--------------------
+
+See android/README
+
+Building for iPhone
+-------------------
+
+See iphone/README
+
+Written by: Erik Nordström <erik.nordstrom@gmail.com>

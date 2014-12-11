@@ -1,0 +1,142 @@
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_l_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3236:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_l_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3258:20: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_sock_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3296:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_sock_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3318:20: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_signal_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3351:40: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_signal_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3377:34: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_session_id_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3407:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_session_id_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3429:25: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_num_handlers_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3459:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_num_handlers_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3481:25: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_event_loop_running_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3511:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_event_loop_running_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3533:25: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_handle_free_final_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3563:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_handle_free_final_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3585:25: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_th_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3596:3: error: ‘thread_handle_t’ was not declared in this scope
+haggle_wrap.cxx:3596:19: error: expected ‘;’ before ‘arg2’
+haggle_wrap.cxx:3618:25: error: ‘temp’ was not declared in this scope
+haggle_wrap.cxx:3618:50: error: expected type-specifier before ‘thread_handle_t’
+haggle_wrap.cxx:3618:50: error: expected ‘>’ before ‘thread_handle_t’
+haggle_wrap.cxx:3618:50: error: expected ‘(’ before ‘thread_handle_t’
+haggle_wrap.cxx:3618:68: error: expected primary-expression before ‘>’ token
+haggle_wrap.cxx:3618:76: error: expected ‘)’ before ‘;’ token
+haggle_wrap.cxx:3619:7: error: ‘arg2’ was not declared in this scope
+haggle_wrap.cxx:3620:39: error: type ‘<type error>’ argument given to ‘delete’, expected pointer
+haggle_wrap.cxx:3623:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx:3623:26: error: ‘arg2’ was not declared in this scope
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_th_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3637:3: error: ‘thread_handle_t’ was not declared in this scope
+haggle_wrap.cxx:3637:19: error: expected ‘;’ before ‘result’
+haggle_wrap.cxx:3645:3: error: ‘result’ was not declared in this scope
+haggle_wrap.cxx:3645:20: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx:3646:15: error: expected type-specifier before ‘thread_handle_t’
+haggle_wrap.cxx:3646:15: error: expected ‘)’ before ‘thread_handle_t’
+haggle_wrap.cxx:3646:155: error: expected ‘)’ before ‘;’ token
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_name_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3676:11: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx:3676:32: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx:3679:9: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx:3681:9: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_name_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3706:28: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_id_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3720:14: error: ‘ID_LEN’ was not declared in this scope
+haggle_wrap.cxx:3731:33: error: ‘temp2’ was not declared in this scope
+haggle_wrap.cxx:3736:24: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx:3737:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_id_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3759:36: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx:3761:19: error: ‘ID_LEN’ was not declared in this scope
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_id_base64_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3779:14: error: ‘ID_BASE64_LEN’ was not declared in this scope
+haggle_wrap.cxx:3790:33: error: ‘temp2’ was not declared in this scope
+haggle_wrap.cxx:3795:24: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx:3796:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_id_base64_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3818:36: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx:3820:19: error: ‘ID_BASE64_LEN’ was not declared in this scope
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_start_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3862:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_start_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3884:20: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_stop_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3922:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_stop_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3944:20: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_arg_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3972:19: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_arg_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:3994:28: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_handlers_set(PyObject*, PyObject*)’:
+haggle_wrap.cxx:4005:3: error: ‘handler_data’ was not declared in this scope
+haggle_wrap.cxx:4005:17: error: ‘arg2’ was not declared in this scope
+haggle_wrap.cxx:4023:28: error: expected type-specifier before ‘handler_data’
+haggle_wrap.cxx:4023:28: error: expected ‘>’ before ‘handler_data’
+haggle_wrap.cxx:4023:28: error: expected ‘(’ before ‘handler_data’
+haggle_wrap.cxx:4023:43: error: expected primary-expression before ‘>’ token
+haggle_wrap.cxx:4023:51: error: expected ‘)’ before ‘;’ token
+haggle_wrap.cxx:4027:60: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_haggle_handle_handlers_get(PyObject*, PyObject*)’:
+haggle_wrap.cxx:4045:3: error: ‘handler_data’ was not declared in this scope
+haggle_wrap.cxx:4045:17: error: ‘result’ was not declared in this scope
+haggle_wrap.cxx:4053:27: error: expected primary-expression before ‘)’ token
+haggle_wrap.cxx:4053:43: error: expected primary-expression before ‘)’ token
+haggle_wrap.cxx:4053:52: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_new_haggle_handle(PyObject*, PyObject*)’:
+haggle_wrap.cxx:4066:47: error: invalid use of incomplete type ‘struct haggle_handle’
+/usr/local/include/libhaggle/ipc.h:59:16: error: forward declaration of ‘struct haggle_handle’
+haggle_wrap.cxx: In function ‘PyObject* _wrap_delete_haggle_handle(PyObject*, PyObject*)’:
+haggle_wrap.cxx:4087:10: warning: possible problem detected in invocation of delete operator: [enabled by default]
+haggle_wrap.cxx:4076:18: warning: ‘arg1’ has incomplete type [enabled by default]
+/usr/local/include/libhaggle/ipc.h:59:16: warning: forward declaration of ‘struct haggle_handle’ [enabled by default]
+haggle_wrap.cxx:4087:10: note: neither the destructor nor the class-specific operator delete will be called, even if they are declared when the class is defined

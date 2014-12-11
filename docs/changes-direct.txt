@@ -1,0 +1,260 @@
+--------- Haggle limitations/bugs/fixes ---------
+
+hagglekernel/ForwardingManager.cpp
+- Fixed a bug where non-Prophet forwarder modules were not loaded correctly
+from config.xml.
+- Added initialization "punts" to avoid race conditions where certain 
+initialization events were raised prior to a forwarder module loading its
+saved state from the repository.
+
+hagglekernel/ForwardingManager.cpp [< 10/10/12]
+- Delayed calling "newNeighbor" for Forwarder until the latest node 
+description has been received; this avoids calling "newNeighbor" with undefined
+node descriptions.
+
+hagglekernel/DataObject.cpp [< 10/10/12]
+- Added a helper function to convert a string DO hash to DataObjectId_t.
+
+hagglekernel/ProtocolUDP.cpp 
+- Removed bloomfilter check for ProtocolUDP, and set peernode for accurate
+logging.
+
+hagglekernel/DataManager.cpp
+- Fix to keep control messages out of bloomfilter.
+
+hagglekernel/ConnectivityEthernet.cpp
+- Fixed beaconing reliability issue. 
+
+hagglekernel/NodeManager.cpp, hagglekernel/Node.{cpp,h}, 
+hagglekernel/DataObject.{cpp,h}, hagglekernel/DataManager.cpp, 
+hagglekernel/Bloomfilter.{cpp,h}
+- Optimizations to avoid unnecessary node table insertions.
+
+hagglekernel/DataManager.cpp, hagglekernel/Protocol.cpp
+- Fixed bug where bloomfilter was not unset upon send error, and data object
+was not removed upon receive error. 
+
+hagglekernel/Protocol.cpp
+- Fixed bug where cleanup code was bypassed upon receiveDataObject error.
+
+hagglekernel/ProtocolManager.cpp
+- Added ENABLE_PROTOCOL_NODE_UPDATE flag to disable setting peerNode for
+UDP broadcast (caused a race condition).
+
+hagglekernel/ProtocolSocket.cpp
+- Fixed segfault due to NULL interface name in resolvePeerInterface.
+
+hagglekernel/ForwarderFlood.cpp
+- Fixed unnecessary database queries in ForwarderFlood.
+
+hagglekernel/NodeManager.cpp 
+- Fixed race condition on data object of "this" node in "sendDataObjectNow()" 
+
+--------- Significant Haggle modifications ---------
+
+hagglekernel/Forwarder.cpp
+- Added functions to check if a forwarder is interested in repository data,
+and to save repository data on an existing list of repository entries. This
+is used mainly by ForwarderAggregate.
+
+hagglekernel/ForwarderAsynchronous.cpp
+- Removed many functions and placed them in ForwarderAsynchronousInterface.
+This class is primarily responsible for maintaining the task queue which
+multiple ForwarderAsynchronousInterfaces can share.
+
+hagglekernel/ForwarderProphet.cpp
+- Modified to derive from ForwarderAsynchronousInterface.
+
+hagglekernel/ForwardingManager.cpp
+- Modified to use the forwarder factory for forwarder module initialization. 
+- Changed order of forwarder module instantiation to avoid race conditions 
+during initialization (when loading data from the repository).
+- Changed repository loading for forwarding modules to work well with
+ForwarderAggregate.
+
+hagglekernel/NodeManager.cpp
+- Added node description refresh.
+- Added node description purge.
+
+hagglekernel/NodeStore.cpp
+- Added a method to return all nodes in the node store. Useful for flooding.
+
+hagglekernel/SQLDataStore.cpp
+- Added a "filter cache" which is used to avoid database accesses when
+handling node descriptions. This allows "in memory node descriptions" where
+node descriptions are _not_ stored in the DB. Note that this only works
+with flooding based dissemination of node descriptions, since DB resolution to
+determine targets for a particular node description data object is disabled. 
+
+hagglekernel/DataStore.cpp, hagglekernel/SQLDataStore.cpp [< 10/10/12]
+- Added a new function to access the database, "retrieveDataObjectById", which
+returns the data object in the database specified by its id hash.
+
+hagglekernel/DataManager.cpp
+- Added periodic bloomfilter abstraction from counting bloomfilter to
+non-counting.
+
+hagglekernel/ForwardingManager.{cpp,h}
+- Added option to forwarding manager, "enable_target_generation" to enable /
+disable target generation.
+
+hagglekernel/ForwardingManager.cpp
+- Added node description push on contact to ensure flooded propagation. 
+Node descriptions can now travel across connected components via a message
+ferry (among other increased functionality).
+
+hagglekernel/NodeManager.cpp
+- Avoid copying of node descriptions before sending as this has
+  been identified as an inefficiency (the implications of using
+  a shared object are quite significant).
+
+hagglekernel/ForwarderFlood.ccp
+- Added config parameters enable_delegate_generation and reactive_flooding (both false by default).
+  If both are turned on flooding takes place reactively (instead of proactively) that is
+  only if interest in the content is detected (from a remote node which is not a neighbor).
+
+hagglekernel/ForwardingManager.{h,cpp}
+- Added config parameter max_forwarding_delay (default 0).
+  This is used to add a randomized delay to data objects (excluding 
+  node descriptions) that are sent to multiple nodes at the same time.
+
+hagglekernel/HaggleKernel.cpp
+hagglekernel/ForwardingManager.{h,cpp}
+- Added logging for kenel event queue.
+- Added new config parameters load_reduction_min_queue_size, load_reduction_max_queue_size
+  for probabilisitc load reduction based on kernel event queue size.
+
+hagglekernel/ForwardingManager.{h,cpp}
+- Added config parameter dataobject_retries_shortcircuit similar
+  to dataobject_retries but for fast path data objects.
+
+hagglekernel/ForwarderAlphaDirect.cpp
+- Disabling check in generateDelegatesFor to support
+  neighborForwardingShortcut config option.
+
+hagglekernel/ForwarderAsynchronous.cpp
+- Added task execution statistics.
+
+hagglekernel/ForwarderFactory.cpp
+- Better handing of no forwarder case.
+
+hagglekernel/ForwardingManager.cpp
+- Added config parameters max_node_desc_forwarding_delay_base and
+  max_node_desc_forwarding_delay together with a function
+  to introduce randomized forwarding delays.
+- Similar paramters max_node_desc_forwarding_delay_base and
+  max_node_desc_forwarding_delay for node descriptions.
+- Added config parameter neighbor_forwarding_shortcut (default true).
+  If false, the routing algorithm will be consulted
+  even for the single hop case.
+
+hagglekernel/NodeManager.cpp
+- config option accept_neighbor_node_descriptions_from_third_party
+  to accept node description for a neighbor that is conveyed
+  through a third party.
+
+hagglekernel/ForwardingManager.cpp
+hagglekernel/DataManager.cpp
+- Many noncritical functions are now checking the manager state for
+  potential shutdown to avoid unnecessary work during that phase.
+
+hagglekernel/Node.{h,cpp)
+hagglekernel/NodeStore.{h,cpp}
+hagglekernel/NodeManager.cpp
+- Added second Bloom filter abstraction for each peer to improve
+  continuitty and reduce unnecessary transmissions caused by
+  Bloom filter jumps.
+
+hagglekernel/ApplicationManager.cpp
+hagglekernel/SQLDataStore.cpp
+- Added special treatment for monitoring application registering
+  under the name "MONITOR". The application remains passive, does not
+  actively push interest into the network and only monitors local
+  data objects, if it subscibes to a special interest "*=*"
+  in all content.
+
+--------- New files ---------
+
+tests/AlphaDIRECT*
+- Various test cases for DIRECT.
+
+hagglekernel/ForwarderAlphaDirect.cpp
+- The AlphaDIRECT forwarder module implementation.
+
+hagglekernel/ForwarderFlood.cpp
+- A flooding based forwarder module. Useful to flood interests by flooding
+node descriptions. 
+
+hagglekernel/ForwarderFactory.cpp
+- A helper factory class used to instantiate and initialize forwarders.
+
+hagglekernel/ForwarderAggregate.cpp
+- A forwarder which encapsulates multiple forwarders. This forwarder
+interfaces with the ForwardingManager to minimize the amount of code changes
+in ForwardingManager.
+
+hagglekernel/ForwarderAsynchronousInterface.cpp
+- Contains code previously found in ForwarderAsynchronous. Defines an 
+interface for asynchronous forwarders to implement. For example, AlphaDirect
+and Prophet derive from this class.
+
+hagglekernel/ForwardingClassifier.cpp
+- A base class used to classify content by assigning "tags" to the content.
+Forwarder modules then register for a specific "tag." This enables content
+specific forwarding.
+
+hagglekernel/ForwardingClassifierBasic.cpp
+- A concrete class that derives from ForwardingClassifier. It categorizes 
+content as either light-weight or heavy-weight. Node descriptions are tagged
+as light-weight, while all other data objects are tagged as heavy-weight.
+
+hagglekernel/ForwardingClassifierFactory.cpp
+- A helper factory class used to instantiate and initialize forwarders.
+
+hagglekernel/ForwarderAggregate.cpp
+- A forwarder which encapsulates multiple forwarders. This forwarder
+interfaces with the ForwardingManager to minimize the amount of code changes
+in ForwardingManager.
+
+hagglekernel/ForwarderAggregate.cpp [< 10/10/12]
+- Added additional error checks if a user passes a bad config.
+
+hagglekernel/ForwarderAlphaDirect.cpp [< 10/10/12]
+- Added a function to print DIRECT routing tables.
+
+hagglekernel/ForwarderFlood.cpp [< 10/10/12]
+- Added an option "push_on_contact" to support flooding of arbitrary data
+objects in a fashion similar to node description flooding.
+
+hagglekernel/ForwardingClassifierAllMatch.cpp [< 10/10/12]
+- Added a classifier, similar to ProtocolClassifierAllMatch, which tags
+all data objects with the same tag (useful with ClassifierPriority).
+
+hagglekernel/ForwardingClassifierAttribute.cpp [< 10/10/12]
+- Added a classifier that looks for an attribute and assigns a specific tag.
+
+hagglekernel/ForwardingClassifierBasic.cpp [< 10/10/12]
+- Deprecated this class, replaced by ClassifierNodeDescription.
+
+hagglekernel/ForwardingClassifierFactory.cpp [< 10/10/12]
+- Updated factory to include new classifiers.
+
+hagglekernel/ForwardingClassifierNodeDescription.cpp [< 10/10/12]
+- Added a classifier that tags node description data objects with a specific
+tag.
+
+hagglekernel/ForwardingClassifierPriority.cpp [< 10/10/12]
+- A meta-classifier, similar to ProtocolClassifierPriority, which establishes
+an ordering over a set of classifiers.
+
+hagglekernel/ForwardingClassifierSizeRange.cpp [< 10/10/12]
+- Added a classifier that tags data objects within a certain size range with
+a specific tag.
+
+--------- New directories ---------
+
+tests/AlphaDIRECT
+- DEPRECATED: Directory for test cases of an old version of DIRECT. 
+
+tests/AlphaDIRECT++
+- Directory for up-to-date tests of DIRECT.

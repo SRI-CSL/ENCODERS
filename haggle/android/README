@@ -1,0 +1,128 @@
+==================
+Haggle for Android
+==================
+
+NOTE: Always check http://code.google.com/p/haggle/w/list for the
+latest information on building for Android.
+
+Haggle for Android runs as a service and works with WiFi and
+Bluetooth.
+
+---------------------------
+Writing Haggle Applications
+---------------------------
+
+Haggle applications are developed as any other Android applications
+(see the Android tutorials for that). However, to be able to interact
+with Haggle from your application, you also have to include the
+org.haggle.jar class library in your Android application project
+(e.g., in Eclipse). The Haggle class library allows your application
+to interact with Haggle using a Java API. Unless the native Haggle
+application libraries have been installed on your device, they also
+need to be bundled with your application.
+
+One example application, called "PhotoShare", should be bundled with
+this source package in the 'android' directory. PhotoShare is an
+Android Eclipse project. Once it is opened in Eclipse, it is probably
+necessary to configure local paths to org.haggle.jar, the Android SDK,
+etc.
+
+--------
+Building
+--------
+
+Prerequisites: 
+
+* Android NDK version r5 or greater
+* Android SDK (installed and in PATH)
+* Eclipse with Android development plugin or Ant
+* Java
+
+Steps (all paths relative top directory):
+
+1. Run configure in top-level directory
+   - Make sure "Android applications = yes" in case you want to build
+     Android applications with Ant rather than Eclipse. For this to 
+     succeed, both Ant and the Android SDK need to be in the PATH.
+
+2. First build the external library dependencies:
+   $ cd android/extlibs
+   $ ./build.sh
+
+3. Build native Haggle code:
+   $ cd android/Haggle
+   $ <path_to_NDK>/ndk-build
+
+4. Build native application code (e.g.):
+   $ cd android/PhotoShare
+   $ <path_to_NDK>/ndk-build
+
+Repeat step 4 for all Android applications that require native code to
+be built (e.g., LuckyMe).
+
+5. Build Haggle's Java component (in Eclipse or using Ant)
+   Eclipse:
+   - Import the directory 'android/Haggle' as an Android project (New
+     Android Project, import from directory).
+   - Build (should be automatic)
+   Ant:
+   - Make sure the Ant is installed
+   - Run make in application directories (e.g., android/Haggle)
+   
+6. Build Haggle applications (in Eclipse or using Ant)
+   Eclipse:
+   - Import application code in Eclipse as an Android project 
+     (e.g., android/PhotoShare)
+   - Build org.haggle.jar (should be enough to just run 
+     "./configure && make" in the top dir)
+   - Copy src/libhaggle/jni/org.haggle.jar to android/<MyApp>/libs
+   - Add src/libhaggle/jni/org.haggle.jar as a referenced library:
+     Eclipse->Project->Properties->Java Build Path->Libraries->
+     ->Add External Jar
+   Ant:
+   - Follow general instructions under 5 (with modified paths, of
+     course).
+
+Repeat step 6 for all other applications.
+
+Install on device with adb, e.g., "adb install Haggle.apk".
+
+--------------------
+Enabling Debug Build
+--------------------
+
+Pass the argument EXTRA_DEFINES=-DDEBUG to ndk-build, e.g.:
+
+$ <path_to_NDK>/ndk-build EXTRA_DEFINES=-DDEBUG
+
+Make sure you do 'ndk-build clean' first, in case you already built
+with debugging disabled.
+
+-------------------
+Setting Ad hoc mode
+-------------------
+
+NOTE: This applies to phones with the TI wlan wireless chip (e.g., G1,
+Magic, Hero). The Nexus One uses the Linux wireless extensions and
+require the wireless tools to set ad hoc mode. These tools have to be
+compiled separately.
+
+At the time of writing of this document, Android has no GUI for
+setting ad hoc mode on the WiFi interface. However, ad hoc mode can be
+manually set through the shell by modifying the file
+/system/etc/wifi/tiwlan.ini with the following settings.
+
+WiFiAdhoc = 1
+dot11DesiredSSID = HTCG1Default
+dot11DesiredBSSType = 0 
+
+The driver module has to be reloaded into the kernel using this new
+configuration.
+
+Alternatively, use the script 'adhoc.sh'. Install the script on the
+device and run it as 'root', e.g.:
+
+# ./adhoc.sh start [ #nodeNR ]
+
+The WiFi interface should be turned off in the Android GUI before this
+script is run.

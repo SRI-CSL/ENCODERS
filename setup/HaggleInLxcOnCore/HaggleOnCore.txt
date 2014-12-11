@@ -1,0 +1,192 @@
+
+      A Quick Tutorial in Running Haggle on Core in Linux Containers
+      
+            by Ian A. Mason (iam@csl.sri.com)
+
+
+This tutorial is in three parts:
+
+     0. Two nodes connected
+
+     1. Two nodes talking via haggle, by hand.
+
+     2. Two nodes talking via haggle, by a custom service.
+
+It presupposes that you have installed core, and built and 
+installed haggle. 
+
+
+=== 0.  Two nodes connected ===
+
+0.1 First start the core daemon:
+
+$sudo /etc/init.d/core start
+
+
+0.2 Then start core:
+
+$core 
+
+0.3 Using the "network layer" selector (fourth button down, on the l.h.s) place
+two laptops on the grid. These will be our Linux container nodes.
+
+0.4 Now with the "link layer" selector (fifth button down, on the l.h.s) place 
+a wireless LAN (the cloud icon) between and below the two laptops on the grid.
+
+0.5 Right-click on the cloud and select "link to all routers", your laptops should
+now have antennas, and IPs.
+
+06. Start the experiment (second button down on the right), if a green line does
+not appear between your laptops, then move them closer together until it does.
+
+[[Aside: before you start the experiment you can double click on the cloud,
+and configure its range to increase the LAN's reach.]]
+
+0.7. Double click on the first laptop, this should bring up a shell 
+running on the node. Now these nodes need to be manually configured.
+Do the following two commands:
+
+$route add default eth0
+$ifconfig eth0 broadcast 10.0.0.255
+
+Once this is done of BOTH laptop nodes, you should be able to
+successfully ping one node from the other. For example. from the first
+laptop node try pinging the other node:
+
+$ping 10.0.0.21
+PING 10.0.0.21 (10.0.0.21) 56(84) bytes of data.
+64 bytes from 10.0.0.21: icmp_req=1 ttl=64 time=83.5 ms
+64 bytes from 10.0.0.21: icmp_req=2 ttl=64 time=40.2 ms
+^C
+--- 10.0.0.2 ping statistics ---
+
+
+0.8 Stop the experiment (that second button again), but don't shut down core!
+
+=== 1. Two nodes talking via Haggle ===
+
+
+1.1 Double-click on the first node to bring up it's configuration
+menu. Press the "Services" button, and in the Utility column press the
+"UserDefined" button.  It should now look like white, like a the
+"DefaultRoute" button a bit above it.  others there. Now press the
+little spanner icon *just* to the right of the UserDefined
+button. Select the "Directories" tab. Press the white button with the
+yellow start down by the bin in the lower right hand corner, and
+navigate the file chooser to your .Haggle directory.  Mine is:
+/home/iam/.Haggle, and press OK. Now apply this and the parent menus
+until you are back at the top level of core.
+
+1.2 Repeat 1.1 for the other laptop node.
+
+1.3 Start the experiment. You should get your green line again.
+
+1.4 Double click on each laptop node to bring up a shell. If you do an
+"ls" now you will see that you have a subdirectory called:
+
+home.<yourusername>..Haggle 
+
+which is where haggle is going to put its
+stuff.
+
+
+1.5 In each shell look at the result of ifconfig. If your eth0 bcast
+address is 0.0.0.0 then do:
+
+$ifconfig eth0 broadcast 10.0.0.255
+
+similary if 
+
+$route -v 
+
+shows no routes, then also do
+
+$route add default eth0
+
+This is just like step 0.7 above.
+
+1.6 Now in each shell you need to su to yourself, since haggle won't
+run as root:
+
+$su <yourusername>
+
+
+1.5 Now launch haggle:
+
+$haggle -dd 
+
+
+in both nodes, and let the dust settle. Hit a return in one of the
+shells to get a prompt. Type 'n' to see your neighbors. You should
+have discovered your neighbor.
+
+
+1.6 Stop the haggles (s at the prompt), and stop the experiment. Quit core too.
+
+
+=== 2. Two nodes talking via Haggle, using a custom service ===
+
+2.1  First read the README.txt in ~/.core/myservices
+
+2.2 Now copy the sample.py to haggle.py and edit it so that it looks like 
+mine, make sure your use your login name, not mine (iam). See the attached file,
+haggle.py.
+
+2.3 Edit the __init__.py, so that it includes haggle.py:
+
+__all__ = ["haggle", ]
+
+2.4 Uncomment out the line in /etc/core/core.conf mentioned in the README.txt.
+
+    To make sure that the shell for each node is started under your
+    username (i.e. the same user that the haggle daemon is running) please
+    modify .core/config/prefs.conf so that the shell setting
+    becomes "bash -c 'su username'" instead of just "bash".
+    Without this applications started in the shell window cannot connect
+    to the haggle daemon. Please make sure that core is NOT running
+    because it will overwrite the prefs.conf on exit.
+
+    The shared config.xml file nneds to be placed in the /tmp directory.
+    The default config file can be found in the resources directory of haggle.
+    Note that for Prophet to work you must set recursive_routing_updates="true"
+    as in the sample config file that can be found in the current directory.
+
+2.5 Restart core:
+
+$sudo /etc/init.d/core restart
+
+[[Aside: I usually run a separate xterm window running:
+
+tail -f /var/log/coredpy.log
+
+So I can see if my syntax was less than stellar.]]
+
+2.6 Start core again, and put down your two laptops, and LAN cloud.
+Now configure each laptop by double-clicking on it, pressing the
+"Services" button, and choosing the new item "HaggleService"
+over on the right. Apply your way back up to the top.
+Link your cloud to both laptops.
+
+2.7 Now start the experiment. Click on a node to bring up a shell.
+Make sure haggle is running:
+
+$ps aux
+
+2.8 The output of your haggles should be in the 
+
+home.<yourusername>..Haggle/haggle.log
+
+directory.
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <library name="org.haggle" file="/system/framework/haggle.jar"/>
+</permissions>

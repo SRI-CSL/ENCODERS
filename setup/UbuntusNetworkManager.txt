@@ -1,0 +1,33 @@
+
+
+In going through the CBMEN Smartphone Network Guide we encountered some
+unwanted interference from Ubuntu's network manager. I recommend the following
+approach:
+
+1. Backup a working version of your /etc/resolv.conf, to say
+
+/etc/resolve.conf.bak
+
+
+2. Disable ubuntu's network manager by editing 
+
+/etc/NetworkManager/NetworkManager.conf
+
+and changing the true to false.
+
+3. Stop the puppy
+
+sudo service network-manager stop
+
+4. Make sure the puppy never gets restarted (for example by pluggin
+an android phone into a usb port). We did this by adding the 
+line 
+
+service network-manager stop
+
+to rc.local
+
+
+There might be a better way, if so let us all know.
+
+

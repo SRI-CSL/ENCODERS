@@ -1,0 +1,12 @@
+Haggle release checklist
+
+This file contains a list of things to do to verify that haggle is ready for release.
+
+Check the following:
+
+- That haggle compiles with configure parameters:
+	(none)
+	--enable-debug --enable-debug-leaks
+	--disable-ethernet
+	--disable-bluetooth
+	--disable-media

@@ -1,0 +1,39 @@
+
+v0.43 beta release (infrastructure changes) 
+-------------------------------------------
+- simplified benchmarking interface -- breaks compatibility and see docs
+- added new schemes (some external contributions from Nikos Fotiou, Fan Zhang, Hoeteck Wee)
+- added pre-computation optimization for group exponentiation in pairing-based modules -- see docs 
+- fixed several memory leaks and segmentation faults
+- switched from SHA1 to SHA2 for hashing operations
+- improved serialization -- now using JSON instead of Pickle (security vulnerability)
+- significant improvements to all base modules -- several fixes to integer and ecmodule functions
+- more robust Android build for Charm
+- significant fixes to 2.7 version of Charm
+
+v0.42 beta release (infrastructure changes)
+-------------------------------------------
+- Several bug fixes to base modules (mem leaks, interface issues): pairing (PBC & Miracl), ecc, and integer
+- Added new base module for RELIC and fixed bugs for MIRACL (Note: unified abstract interface for base modules coming in v0.43)
+- Refactored charm package structure. This affects schemes, toolbox, adapters, etc.
+- setup.py now creates Python egg
+- Integrated pytest to replace unit testing framework
+- Added doctests to all Charm schemes
+- Updated documentation 
+
+v0.4 beta release
+-----------------
+- Several bug fixes to base modules: pairing (PBC & Miracl), ecc, and integer
+- Major changes to base module API. Recommend using the group abstraction wrappers: PairingGroup, ECGroup, and IntegerGroup
+- Removed pairing curve params in favor of a unified 'toolbox/pairingcurve.py' with curve identifiers (e.g., SS512, MNT224, etc)
+- Deleted the 'params' dir (See previous bullet)
+- Added high-level serialization API to simplify managing ciphertexts and keys in applications
+- Added PKCS #7 padding to toolbox
+- Added public key encryption schemes: 2 new IBE schemes (ibenc_ckrs09, ibenc_lsw08)
+- Added signature schemes: CL04 (anony. creds)
+- Added verifiable random function (VRF) scheme
+- Updates to KPABE scheme with new adapter
+- Improved protocol engine: automatically store data transmitted between parties and more flexibility in state transition map  
+- Updated CNS07 scheme 
+- Name updates to authenticated crypto abstraction
+- Updated documentation for generating group parameters and using our serialization interface

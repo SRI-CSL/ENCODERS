@@ -1,0 +1,383 @@
+hagglekernel/SecurityManager.cpp
+
+- The Security Task constructor was extended to pass the list of nodes 
+to which the data object is to be sent after it is signed.
+
+- signDataObject() is now invoked from a security task instead of in 
+onIncomingDataObject() and onSendDataObject(), where it would previously 
+cause the main Haggle thread to block.
+
+- A new instance of EVENT_TYPE_DATAOBJECT_SEND is now generated after 
+a signing task completes.
+
+- The Security Manager was extended to allow signing of node 
+descriptions to be disabled. onSendDataObject() was modified to disable 
+signing of outgoing node descriptions and inclusion of the node's 
+digital certificate. onIncomingDataObject() and onReceivedDataObject() 
+were modified so incoming node descriptions are treated as if they had 
+been signed.
+
+- If the security level is MEDIUM or higher, then signatures are being 
+verified. If a check fails, an EVENT_TYPE_DATAOBJECT_DELETED is 
+generated to remove the data object's record from the local data store.
+
+- Three new types of SecurityTasks were added to handle the SecurityData 
+request/response mechanisms:
+    SECURITY_TASK_SEND_SECURITY_DATA_REQUEST,
+    SECURITY_TASK_HANDLE_SECURITY_DATA_REQUEST,
+    SECURITY_TASK_HANDLE_SECURITY_DATA_RESPONSE
+
+- Three new CertificateStores were added. mySignedCerts stores the signed
+certificates that the current node has received from authorities. caCertStore
+stores the certificates of the authorities that the node has encountered. 
+caCertCache stores the signed certificates that an authority has issued.
+
+- storeCertificate() and retrieveCertificate() were modified so that they
+can store and retrieve from a given CertificateStore.
+
+- A SecurityDataRequestTimer Callback event was added to periodically
+broadcast the SecurityDataRequest DataObject which is sent to neighbors in
+the hope of getting back a signed certificate. This event calls the 
+onSecurityDataRequestTimer() method.
+
+- The RSAPrivKeyToString() method was renamed to RSAKeyToString() and changed
+to work with both public and private keys.
+
+- In onReceivedDataObject(), incoming data objects are accepted without 
+signature if they have the SecurityDataResponse or SecurityDataRequest 
+attributes, to allow certificate distribution to work correctly.
+
+- In onSendDataObject(), all the node's signed certificates are now sent
+along with node descriptions.
+
+- In onIncomingDataObject(), all the incoming signed certificates are 
+now checked if a node description is received. These are also
+verified appropriately using authority certificates.
+
+- The onSecurityDataRequestTimer(), onReceivedSecurityDataResponse(), 
+and onReceivedSecurityDataRequest() methods were added to the SecurityManager.
+
+- The sendSecurityDataRequest(), handleSecurityDataRequest(), and
+handleSecurityDataResponse() methods were added to the SecurityHelper class, to
+offload work from the main kernel thread.
+
+- SecurityDataRequests and SecurityDataResponses are now encrypted and 
+HMACed with the shared secret.
+
+- Data Objects can now have an associated signature chain, which is 
+updated on a per hop basis. The updateSignatureChain() method was added 
+to the SecurityManager for this functionality.
+
+- The SecurityTask constructor was extended to pass the AES key for encryption
+and decryption purposes.
+
+- Five new types of SecurityTasks were added to handle the encryption 
+and decryption mechanisms:
+    SECURITY_TASK_GENERATE_CAPABILITY,
+    SECURITY_TASK_USE_CAPABILITY,
+    SECURITY_TASK_ENCRYPT_DATAOBJECT,
+    SECURITY_TASK_DECRYPT_DATAOBJECT,
+    SECURITY_TASK_UPDATE_WAITING_QUEUES
+
+- A pendingDecryption set is maintained to track which data objects are
+already scheduled for decryption (to avoid redundant operations).
+
+- The interval between sending attribute requests is specified
+with updateWaitingQueueDelay. The corresponding onWaitingQueueTimer()
+was added.
+
+- onNewNodeContact() was added to send pending security data requests to
+new nodes in case they are authorities.
+
+- The number of outstanding security requests allowed before new ones
+will be dropped is specified by maxOutstandingRequests.
+
+- The generateCapability(), useCapability(), encryptDataObject(), and 
+decryptDataObject() methods were added to the SecurityHelper.
+
+- The onSendDataObject() now appropriately enqueues encryption or decryption
+tasks if the DataObject has the Access attribute.
+
+- The signDataObject() and verifyDataObject() methods were changed so that
+signatures are now tied to the hash of the encrypted file contents as well.
+
+- The getAttributes(), getAuthorityAndAttribute(), hashMapToMetadata() and 
+metadataToHashMap() utility methods were added.
+
+- startPython() was added and is invoked before any operations that require
+Charm functionality.
+
+- getPolicy() was added to allow ABE access policies to use _ instead of space.
+
+- tooManyOutstandingSecurityDataRequests() checks if too many pending
+requests exist, in which case the caller can opt not to queue more requests.
+
+- The generateCapability() and useCapability() methods will now issue a request
+for public/private keys if the Charm call fails due to a lack of keys.
+
+- SecurityDataRequests and SecurityDataResponses are now directly forwarded
+to the target if possible, instead of being broadcast to all neighbors.
+
+- Handlers were implemented for the requests relating to key distribution.
+
+- The requestSpecificKeys(), requestAllKeys(), signCertificate(),
+sendSpecificPublicKeys(), sendSpecificPrivateKeys(), sendAllPublicKeys(),
+sendAllPrivateKeys(), saveReceivedKeys(), issuePublicKey(), issuePrivateKey(),
+and updateWaitingQueues() methods were added to the SecurityHelper.
+
+- Shared Secrets can now be configured on a per-node and per-authority basis.
+
+- Access control lists were added to allow authorities to scope access for
+certification (certificationACL), encryption attributes (publicKeyACL), 
+and decryption attributes (privateKeyACL).
+
+- The verifyAuthorityCertificate() method was added to verify an authority
+certificate and all certificates signed by it.
+
+- A new SecurityTask of type SECURITY_TASK_VERIFY_AUTHORITY_CERTIFICATE was added
+to invoke verifyAuthorityCertificate() asynchronously.
+
+- handleSecurityDataRequest() and handleSecurityDataResponse() will now only
+verify signatures with verified certificates.
+
+- The generateCertificateSigningRequest() was added to the SecurityManager
+class to generate a certificate signing request for the given authority,
+if needed.
+
+- handleSecurityDataRequest() was modified to verify the requester's self signed
+certificate if a certificate signature request is received and the requester
+is authorized for certification.
+
+- onRepositoryData() was modified to ensure that the node's self signed certificate
+in caCerts if it is configured as an authority.
+
+- onRepositoryData() now verifies transitive trust relationships using the authority
+certificates present in caCerts to verify as many certificates as possible.
+
+- onIncomingDataObject() will not verify a certificate if we already have a verified
+copy of that certificate stored.
+
+- onNewNodeContact() will only update waiting queues if the new node is an authority.
+It will also potentially generate a certificate signing request, if needed.
+
+- The decryptAttributeKey() method was added to the SecurityHelper to decrypt a received
+attribute key by trying all the stored role shared secrets.
+
+- The decryptAttributeBuckets() method was added to the SecurityHelper to decrypt every
+attribute in the public and private key buckets, for when a shared secret is added.
+
+- startPython() was modified to call decryptAttributeBuckets(); in case a new role
+shared secret was added and the attributes need to be passed in to python.
+
+- SecurityDataRequests now pass in a list of roles as well, so that the authority
+knows which roles a node is authorized for.
+
+- sendSpecificPublicKeys() and sendSpecificPrivateKeys() now do a check to see
+whether the roles are authorized for the given attributes, and encrypt with the
+appropriate role key before sending it.
+
+- sendAllPublicKeys() and sendAllPrivateKeys() now iterate over all the attributes
+that the given roles are authorized for, and send all of them, encrypted appropriately.
+
+- saveReceivedKeys() stores received attribute keys in the appropriate buckets,
+and tries to decrypt them if possible.
+
+- onRepositoryData()/onPrepareShutdown() were modified to enable persistence of the
+attribute key buckets as well as the role shared secrets.
+
+- onConfig() was modified to support declarative authorization based on roles,
+and to support adding role shared secrets.
+
+- The control flow for an authority issuing attributes for itself was changed
+so that it now follows the whole SecurityDataRequest/Response mechanism,
+resulting in one unified control flow.
+
+- sendSecurityDataRequest() and handleSecurityDataRequest() were modified to issue
+the appropriate security task instead of sending the data object, if an authority
+is making a request to itself.
+
+- A new security task of type SECURITY_TASK_DECRYPT_ATTRIBUTE_BUCKETS was added,
+which is used to invoke decryptAttributeBuckets() asynchronously.
+
+- The onSecurityConfigure() method was added to parse and update new security
+configuration coming in from an application when EVENT_TYPE_SECURITY_CONFIGURE 
+is issued.
+
+- SECURITY_TYPE_VERIFY_DATAOBJECT will verify node descriptions with the self signed
+certificate if a verified certificate is not present, in order to facilitate
+bootstrapping.
+
+- SECURITY_TYPE_VERIFY_CERTIFICATE will verify a self signed certificate if a 
+verified remote attestation certificate is present for a node.
+
+- SecurityDataRequests and SecurityDataResponses are now sent multi-hop
+
+- Shared secrets are now passed through PBKDF2 to derive an AES key and an HMAC key
+which are then used for the actual symmetric encryption and authentication.
+
+hagglekernel/ProtocolManager.cpp
+
+- When the Protocol Manager handles EVENT_TYPE_DATAOBJECT_SEND, it 
+invokes onSendDataObject(). Since this event may be received a second 
+time after a data object is signed, the method was modified to ignore 
+the case when the data object is unsigned but the pass control through 
+if the data object is signed or a control message.
+
+- Similar to the above, the Protocol Manager now ignores the cases where
+the data object needs encryption or decryption, so that it can be resent
+once those are complete.
+
+hagglekernel/Certificate.h
+hagglekernel/Certificate.cpp
+
+- The constructor that creates a Certificate given a public key and 
+subject, owner, issuer, and validity information was made public instead of 
+private so that the SecurityManager could create certificates for signing
+with just the public key.
+
+- The getEVPPubKey() method was added to the Certificate class.
+
+hagglekernel/DataObject.h
+
+- The ABEStatus_t type was defined to store whether a Data Object has been
+encrypted, decrypted, or neither.
+
+- The encryptedFilePath, encryptedFileLength, encryptedFileHash and 
+ABEStatus variables were added to the DataObject class; along with 
+getters and setters (where appropriate).
+
+hagglekernel/SecurityManager.h
+hagglekernel/SecurityManager.cpp
+- Config paramter certificate_signing_request_retries
+  has been added to limit the initial security request phase.
+
+hagglekernel/SecurityManager.h
+- Number of outstanding requests increased to make sure to accomodate
+  additional specific key requests.
+
+hagglekernel/DataObject.cpp
+
+- The deleteData() method now deletes the encrypted file, if it exists.
+
+- The createEncryptedFilePath() method was added, analogous to createFilePath().
+
+- putData() now writes to an encrypted file if required.
+
+- DataObjectRetrieverImplementation() now provides the encrypted data if 
+required.
+
+- verifyData() now verifies the encryptedDataHash if it only has the 
+encrypted file.
+
+- parseMetadata() now handles ABE metadata and stores it appropriately.
+
+hagglekernel/SQLDataStore.cpp
+
+- The encrypted file path and encrypted data length of data objects are 
+persisted in the Haggle data store.
+
+hagglekernel/Makefile.am
+
+- The Charm crypto bridge files were added to the makefile so that they can be 
+built as part of the haggle kernel.
+
+- The Charm Crypto Bridge python file is now embedded inside the haggle binary.
+
+hagglekernel/Android.mk
+
+- The Charm Crypto Bridge python file is now embedded inside the haggle binary.
+
+- libdbus and libbluetooth were removed from the build as they are un-used
+and cause linker errors since they are not present.
+
+hagglekernel/main.cpp
+
+- The -s parameter now also handles the "very high" security level.
+
+hagglekernel/ApplicationManager.cpp
+
+- When an application de-registers, all data objects intended for it in 
+the pendingDOs queue are removed. This fixes a bug where the kernel 
+would refuse to shutdown if there was a DataObject intended for an 
+application that could not be decrypted (as it was waiting for secret 
+keys).
+
+- A handler was added for a new control message of type
+CTRL_TYPE_CONFIGURE_SECURITY, which simply issues an event of type
+EVENT_TYPE_SECURITY_CONFIGURE with the control message; so that the
+SecurityManager can handle it.
+
+haggle/android/PhotoShare/src/org/haggle/PhotoShare/PhotoView.java
+
+- PhotoShare adds Picture:<Attribute> key-value pairs for all 
+attributes provided through its user interface. This was modified
+to check if an attribute begins with "Access=", in which case the
+key is changed from Picture to Access, and the suffix after "="
+becomes the associated value. This allows ABE policies to be
+specified when publishing photos.
+
+hagglekernel/SecurityManager.cpp
+hagglekernel/ProtocolManager.cpp
+- Added special support for MONITOR applications. In particular
+  applications registered as MONITOR with subscription "*=*" will
+  receive plaintext and encrypted versions of the data objects
+  that can be locally observed.
+
+hagglekernel/Event.h
+hagglekernel/Event.cpp
+
+- A new type of event, EVENT_TYPE_SECURITY_CONFIGURE, was added,
+so that the ApplicationManager can signal to the SecurityManager
+that an application wishes to change the security configuration.
+
+libhaggle/include/libhaggle/ipc.h
+libhaggle/ipc.c
+
+- A new control message of type CTRL_TYPE_CONFIGURE_SECURITY was added
+to signal that an application wishes to change security configuration.
+
+- Two new API calls, haggle_ipc_add_role_shared_secret() and 
+haggle_ipc_add_role_shared_secrets(),
+were added to add one and multiple role shared secrets, respectively.
+
+- Two new API calls, haggle_ipc_add_node_shared_secret() and
+haggle_ipc_add_node_shared_secrets(),
+were added to add one and multiple node shared secrets, respectively.
+
+- Two new API calls, haggle_ipc_add_authority() and
+haggle_ipc_add_authorities(),
+were added to add one and multiple authorities, respectively.
+
+- Two new API calls, haggle_ipc_authorize_node_for_certification()
+and haggle_ipc_authorize_nodes_for_certification(),
+were added to authorize one and multiple nodes for certification, respectively.
+
+- A new API call, haggle_ipc_authorize_role_for_attributes()
+was added to authorize a role for cryptographic attributes.
+
+haggletest/haggletest.c
+
+- Support for the addRoleSharedSecrets command was added, which issues a call
+to libhaggle to add the role shared secrets passed in on the command
+line.
+
+- Support for the addNodeSharedSecrets command was added, which issues a call
+to libhaggle to add the node shared secrets passed in on the command
+line.
+
+- Support for the addAuthorities command was added, which issues a call
+to libhaggle to add the authorities passed in on the command
+line.
+
+- Support for the authorizeNodesForCertification command was added, 
+which issues a call to libhaggle to authorize the nodes passed in on the
+command line for certification.
+
+- Support for the authorizeRoleForAttributes command was added,
+which issues a call to libhaggle to authorize the role passed in on the
+command line for the given encryption and decryption attributes.
+
+tests/Security/*
+
+- A new unit testing framework was added for unit testing Security 
+functionality.

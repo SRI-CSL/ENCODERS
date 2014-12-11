@@ -1,0 +1,71 @@
+Haggle
+======
+
+Architecture design and implementation by Uppsala University.
+
+People:
+
+Erik Nordström <erikn@it.uu.se> (Architecture, design, coding)
+Christian Rohner <chrohner@it.uu.se> (Architecture, design, coding)
+Daniel Aldman <daniel@aldman.se> (Coding)
+
+A bit of History and Background
+-------------------------------
+
+Some people may be confused by what Haggle is, what this software
+package provides, and who is responsible for creating it. If you feel
+that you are one of those persons, keep on reading.
+
+Haggle is a EU-funded research project on opportunistic networking (a
+concept similar to delay-tolerant networking (DTN)). The project has
+many partners and this software package is the contribution of one of
+those partners, namely Uppsala University.
+
+While Haggle as a research project examines many issues related to
+opportunistic networking, one main goal of the project is to create a
+content-oriented network architecture for opportunistic
+communication. This software package is the final implementation of
+that architecture.
+
+The first implementation of Haggle was created mainly by Intel
+Research Cambridge -- a lab which was closed in 2006. That
+implementation was written in Java and should be considered a testing
+platform for some of the concepts and ideas that Haggle
+incorporates. The Intel implementation is no longer maintained, or
+used by any partner in the project.
+
+The Java implementation had a number of issues and drawbacks, such as
+being quite heavy weight and not being well adapted for mobile
+platforms. Some platforms that was targeted did not have a Java
+virtual machine to begin with. Further, Java did not give easy access
+to many of the low level APIs that Haggle needed. A solution would
+have been to write a lot of native code that interacted with Java
+through JNI. But this raised the question why Haggle was not
+implemented in native code altogether?
+
+After the closure of the Intel lab, the responsibility for the Haggle
+architecture and implementation fell on Uppsala University. It was
+decided that instead of trying to fix and maintain the code created by
+someone else, a complete redesign of the architecture was necessary
+along with a switch to C++. This gave better access to lower lever
+APIs and allowed a clean slate design that built on the lessons from
+the first implementation. The redesign has very little in common with
+the previous Intel version of Haggle.
+
+The bottom line is that, although the name remains the same, this new
+version of Haggle should be considered something entirely different
+from the Intel implementation. The authors here claim no
+responsibility for the Intel code.
+
+For those interested in the Intel version of Haggle:
+
+A technical report describing the Intel version of Haggle can be found
+here:
+
+http://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-680.pdf
+
+The Java code of the Intel version of Haggle can be found on
+Sourceforge.net
+
+http://sourceforge.net/projects/haggle/
+

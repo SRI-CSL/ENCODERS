@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "haggleutils", "haggleutils\haggleutils.vcproj", "{0B6CFBC2-AD41-4C95-BB67-CFE3A97593A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B6CFBC2-AD41-4C95-BB67-CFE3A97593A3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0B6CFBC2-AD41-4C95-BB67-CFE3A97593A3}.Debug|Win32.Build.0 = Debug|Win32
+		{0B6CFBC2-AD41-4C95-BB67-CFE3A97593A3}.Release|Win32.ActiveCfg = Release|Win32
+		{0B6CFBC2-AD41-4C95-BB67-CFE3A97593A3}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

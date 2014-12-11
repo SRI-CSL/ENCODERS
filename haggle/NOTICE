@@ -1,0 +1,14 @@
+Haggle architecture reference implementation
+Copyright 2007 Uppsala University.
+
+This product includes software developed at Uppsala University.
+
+Portions of the software are developed elsewhere. See the COPYING file
+for information on the licences for that software.
+
+Apart from standard libraries, this software links against libxml2
+(http://www.xmlsoft.org/), sqlite (http://www.sqlite.org/) and openssl
+(http://www.openssl.org). Depending on the distribution method, the
+source code for these libraries may or may not be included with this
+software package. In this case the library source code may contain
+minor changes aimed at increasing compatibility with some platforms.

@@ -1,0 +1,208 @@
+--------- Haggle limitations/bugs/fixes ---------
+
+hagglekernel/ProtocolSocket.cpp
+- Fixed segfault where interface name was not set properly in
+  resolvePeerInterface.
+- Fixed socket flag to mask SIGPIPE for sendData(), using MSG_NOSIGNAL
+
+utils/utils.{c,h}
+- Fixed race condition on linux version of "get_peer_mac_address" due
+  to parsing arp file descriptor. 
+- Added a helper function, "has_peer_mac_address" to return whether
+  or not there is an arp entry in the arp cache for a IP address.
+
+--------- Significant Haggle modifications ---------
+
+hagglekernel/ProtocolManager.{cpp,h}
+- Modified instantiation of protocol classes to use the ProtocolFactory. 
+- Added data object classification when sending data objects, for
+  content-specific protocol selection.
+- Added server instantiation for UDPUnicast and UDPBroadcast.
+
+hagglekernel/Protocol.{cpp,h}, hagglekernel/ProtocolTCP.{cpp,h}
+- Removed hard-coded constants for parameters, and switched to a configuration
+  object to determine parameters at run-time.
+
+hagglekernel/Protocol.{cpp,h}
+- Added a retry mechanism when there is a timeout for sending a data object. 
+  This is useful for UDP based protocols where transport is unreliable. 
+
+hagglekernel/ConnectivityEthernet.cpp
+- Modified default Interface transport from TCP to None.
+- Added ARP insertion upon neighbor discovery. 
+
+hagglekernel/Protocol.{cpp,h}
+- Probabilistic load reduction for protocols uses per-protocol config 
+  parameters load_reduction_min_queue_size and load_reduction_max_queue_size 
+  to probabilistically discard data objects.
+
+hagglekernel/NodeManager.cpp
+hagglekernel/ProtocolUDPBroadcast.cpp
+- Added two-hop neighborhood info to node descriptions
+  with config parameter send_neighborhood. This information
+  is used by UDP broadcast receivers to optimistically set peer
+  Bloom filters.
+
+hagglekernel/Protocol.cpp
+- Close and clear queue only in detached state.
+- Added closeQueue to quickly stop a protocol.
+- getWaitTimeBeforeDoneMillis added to allow 
+  protocol-specific time outs.
+- Catching some unexpected conditions
+  e.g. sender receiving unexpected message.
+- Added session and sequence numbers and better
+  checks for data objects and control messages.
+- Added early peer bloomfilter addition in receiveDataObject.
+- Added hooks for protocol subclasses.
+- Keeping track of send/receive time.
+- Avoiding unnecessary unregistration in cleanup.
+
+hagglekernel/Protocol.cpp
+hagglekernel/ProtocolUDP.cpp
+hagglekernel/ProtocolTCP.cpp
+hagglekernel/ProtocolUDPBroadcast.cpp
+hagglekernel/ProtocolUDPUnicast.cpp
+- Various logging improvements, e.g. all messages should
+  include the protocol name.
+- Added many protocol statistics logged at level level STAT.
+
+hagglekernel/ProtocolTCP.cpp
+hagglekernel/ProtocolUDPBroadcastProxy.cpp
+hagglekernel/ProtocolUDPUnicastProxy.cpp
+hagglekernel/ProtocolConfiguration.{h,cpp}
+- Added protocol configuration parameters to limit the number of
+  protocol instances.  This is important, because file descriptors are
+  limited, and running out of file descriptors is a fatal error leading
+  to emergency shutdown in the best possible case.
+- The default setting for protocols (including TCP) is to allow ONLY 3
+  instances per link and 100 instances in total. Hence, it is advisable
+  to use proper kernel parameters to make TCP more dynamic
+  (e.g. syn retries = 0) to avoid bottlenecks.
+
+hagglekernel/ProtocolManager.cpp
+- Protocol killer has been replaced by forced shutdown after timeout.
+- Protocol shutdown mechanism has been improved to shutdown
+  protocols in three stages (clients, applications, and finally servers).
+- Added protocol_prepare_shutdown_timeout_event to attempt shut down
+  even if some client protocols are stuck/delayed (this can
+  happen e.g. due to syn retries). This behaviour can be
+  controlled using the config parameter forced_shutdown_after_timeout (default 15s).
+- Various changes to make protocol shutdown more robust,
+  especially if detached protocols are around.
+
+hagglekernel/ProtocolTCP.cpp
+- New destructor to remove cached senders.
+
+hagglekernel/ProtocolSocket.cpp
+hagglekernel/ProtocolTCP.cpp
+- Added fatal error checks with emergency shutdown,
+  especially if running out of file descriptors,
+  but also if bind fails.
+
+hagglekernel/Protocol.cpp
+- Added fatal error checks for data objects (e.g. too many
+  open files) to initiate emergency shutdown.
+
+hagglekernel/ProtocolManager.cpp
+hagglekernel/ProtocolTCP.cpp
+hagglekernel/ProtocolUDPBroadcastProxy.cpp
+hagglekernel/ProtocolUDPUnicastProxy.cpp
+- Many noncritical functions are now checking the manager state for
+  potential shutdown to avoid unnecessary work during that phase.
+
+hagglekernel/Protocol.{cpp}
+hagglekernel/ProtocolConfiguration.{cpp,h}
+- Configurable random delay just before sending a data object.
+  The config parameter is maxRandomSendDelayMillis (default is 100ms).
+
+--------- New files ---------
+
+hagglekernel/ProtocolClassifier.{cpp,h}
+- Added a base classifier class that the protocol manager uses to determine
+  which protocol to use for data object transport.
+
+hagglekernel/ProtocolClassifierAllMatch.{cpp,h}
+- A classifier that tags all data objects to have a specific tag. Useful with
+  the PriorityClassifier.
+
+hagglekernel/ProtocolClassifierAttribute.{cpp,h}
+- A classifier that tags only data objects with a certain attribute 
+  (name, value) pair.
+
+hagglekernel/ProtocolClassifierBasic.{cpp,h}
+- DEPRECATED: A classifier that assigns one tag for node descriptions, and
+  another tag for all other data objects. 
+
+hagglekernel/ProtocolClassifierFactory.{cpp,h}
+- A factory class to construct and initialize classifiers, based on the 
+  classifier name. 
+
+hagglekernel/ProtocolClassifierNodeDescription.{cpp,h}
+- A classifier that tags only node descriptions with a specific tag.
+
+hagglekernel/ProtocolClassifierPriority.{cpp,h}
+- A meta-classifier that ranks classifiers, so that the highest-ranked
+  classifier that classifies the content will assign the tag.
+
+hagglekernel/ProtocolClassifierSizeRange.{cpp,h}
+- A classifier that tags a data object that is within a certain size range.
+
+hagglekernel/ProtocolConfiguration.{cpp,h}
+- A configuration object used by classes that inherit from Protocol.cpp to
+  retrieve configuration settings, at run-time.
+
+hagglekernel/ProtocolConfigurationFactory.{cpp,h}
+- A factory class to construct and initialize ProtocolConfiguration objects, 
+  given a configuration name. 
+
+hagglekernel/ProtocolConfigurationUDPBroadcast.{cpp,h}
+- A ProtocolConfiguration for ProtocolUDPBroadcast instances. 
+
+hagglekernel/ProtocolConfigurationUDPUnicast.{cpp,h}
+- A ProtocolConfiguration for ProtocolUDPUnicast instances. 
+
+hagglekernel/ProtocolFactory.{cpp,h}
+- A factory class to construct and initialize protocols.
+- Added support for multiple instances of a single protocol type, using
+  different ProtocolConfiguration objects. 
+
+hagglekernel/ProtocolUDPBroadcast.{cpp,h}
+- An unreliable protocol to broadcast node descriptions using UDP.
+- Added control protocol support with passive receivers.
+
+hagglekernel/ProtocolUDPBroadcastProxy.{cpp,h}
+- An interface to ProtocolUDPBroadcast to the ProtocolManager, used to 
+  demultiplex UDP packets to the respective ProtocolUDPBroadcast instance.
+- Enabled support to snoop IP and MAC from node descriptions.
+
+hagglekernel/ProtocolUDPGeneric.{cpp,h}
+- An abstract class that both ProtocolUDPUnicast and ProtocolUDPBroadcast
+  derive from. 
+
+hagglekernel/ProtocolUDPUnicast.{cpp,h}
+- An alternative, unreliable, protocol to TCP.
+- Added control protocol support.
+
+hagglekernel/ProtocolUDPUnicastProxy.{cpp,h}
+- An interface to ProtocolUDPUnicast to the ProtocolManager, used to
+  demultiplex UDP packets to the respective ProtocolUDPUnicast instance.
+- Enabled support to snoop IP and MAC from node descriptions.
+
+hagglekernel/SocketWrapper.{cpp,h} 
+- An abstract helper class to interact with Linux TCP and UDP sockets.
+
+hagglekernel/SocketWrapperTCP.{cpp,h} 
+- A wrapper for TCP sockets. Used by ProtocolTCP.
+
+hagglekernel/SocketWrapperUDP.{cpp,h} 
+- A wrapper for UDP sockets. Used by classes that inherit from
+  ProtocolUDPGeneric.
+- Enabled support to snoop IP and MAC from node descriptions.
+
+--------- New directories ---------
+
+arphelper/*
+- A simple C program wrapper for the "arp -s" command. This program can
+be used by ProtocolUDPUnicast and ProtocolUDPBroadcast as a performance
+optimization, by directly inserting ARP entries in the ARP cache without
+sending explicit ARP request packets. The program should be setuid root.

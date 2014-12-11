@@ -1,0 +1,23 @@
+--------- Significant Haggle modifications ---------
+
+All modifications outside of SendPriorityManager* are wrapped in comments of
+the form: "// SW: START: SendPriorityManager" and "// SW: END: SendPriorityManager".
+
+hagglekernel/main.cpp
+- Added SendPriorityManager instantiation and initialization.
+
+hagglekernel/Event.{cpp,h}
+- Added "EVENT_TYPE_SEND_PRIORITY" event type used by the ProtocolManager
+to add data objects to the send queue.
+
+hagglekernel/ProtocolManager.{cpp,h}
+- Modified to raise "EVENT_TYPE_SEND_PRIORITY" instead of triggering on_send_actual
+on the protocol. Also, added "EVENT_TYPE_SEND_PRIORITY_SUCCESS" and 
+"EVENT_TYPE_SEND_PRIORITY_FAILURE" events to allow protocol manager to indicate
+send success or failure to the SendPriorityManager.
+
+--------- New files ---------
+
+hagglekernel/SendPriorityManager.{cpp,h} 
+- The main implementation for the send priority feature. It is responsible for
+grabbing elements off the send queue and passing them to the proper Protocol.

@@ -1,0 +1,24 @@
+/* Copyright (c) 2014 SRI International and GPC
+ * Developed under DARPA contract N66001-11-C-4022.
+ * Authors:
+ *   Joshua Joy (JJ, jjoy)
+ *   Mark-Oliver Stehr (MOS)
+ */
+
+#ifndef FRAGMENTATIONCONSTANTS_H_
+#define FRAGMENTATIONCONSTANTS_H_
+
+/*
+ * indicates dataobject is fragmented
+ */
+const char* const HAGGLE_ATTR_FRAGMENTATION_NAME = "_FR_FRAGMENT_";
+
+const char* const HAGGLE_ATTR_FRAGMENTATION_PARENT_DATAOBJECT_ID = "_FR_ORIG_ID_";
+const char* const HAGGLE_ATTR_FRAGMENTATION_SEQUENCE_NUMBER = "_FR_SEQ_NUM_";
+const char* const HAGGLE_ATTR_FRAGMENTATION_PARENT_ORIG_LEN = "_FR_ORIG_DATA_LEN_";
+const char* const HAGGLE_ATTR_FRAGMENTATION_PARENT_ORIG_NAME = "_FR_ORIG_FILE_NAME_";
+const char* const HAGGLE_ATTR_FRAGMENTATION_PARENT_CREATION_TIME = "_FR_ORIG_CREATE_TIME_";
+const char* const HAGGLE_ATTR_FRAGMENTATION_PARENT_ORIG_SIGNEE = "_FR_ORIG_SIGNEE_";
+const char* const HAGGLE_ATTR_FRAGMENTATION_PARENT_ORIG_SIGNATURE = "_FR_ORIG_SIGNATURE_";
+
+#endif /* FRAGMENTATIONCONSTANTS_H_ */

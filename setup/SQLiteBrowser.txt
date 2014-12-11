@@ -1,0 +1,16 @@
+For debugging and understanding how Haggle works it is
+helpful to use a SQLite data base browser such as the
+Firefox plugin:
+
+1. Inside Firefox install Firefox SQLite Manager add-on
+   https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager
+
+2. Launch SQLite manager from the Firefox Tools menu
+
+3. Click File Open icon to open your haggle.db file 
+   e.g. from /tmp/pycore.xxxxx/n1.conf/home.user..Haggle./haggle.db
+   if you are using CORE lxc containers.
+
+   You now can see the haggle database structure and inside the tables and
+   also execute SQL statements (but be careful please).
+

@@ -1,0 +1,40 @@
+<Haggle persistent="no">
+	<Attr name="ManagerConfiguration">*</Attr>
+	<SecurityManager security_level="LOW"/>
+	<DebugManager>
+		<DebugTrace enable="true" type="STAT"/>
+	</DebugManager>
+	<NodeManager>
+		<Node matching_threshold="0" max_dataobjects_in_match="10" node_description_attribute="type"
+		      send_neighborhood="true"/>
+		<NodeDescriptionRetry retries="3" retry_wait="10.0"/>
+	</NodeManager>
+	<ConnectivityManager use_arp_manual_insertion="true" />
+	<ProtocolManager>
+	<ProtocolClassifier name="ProtocolClassifierPriority">
+		<ProtocolClassifierPriority>
+			<ProtocolClassifier name="ProtocolClassifierNodeDescription" priority="3">
+				<ProtocolClassifierNodeDescription outputTag="bcast" />	
+			</ProtocolClassifier>
+			<ProtocolClassifier name="ProtocolClassifierAllMatch" priority="1">
+				<ProtocolClassifierAllMatch outputTag="tcp" />	
+			</ProtocolClassifier>
+		</ProtocolClassifierPriority>
+	</ProtocolClassifier>
+	<Protocol name="ProtocolUDPBroadcast" inputTag="bcast">
+		<ProtocolUDPBroadcast waitTimeBeforeDoneMillis="60000" use_arp_manual_insertion="true" />
+	</Protocol>
+	<Protocol name="ProtocolTCP" inputTag="tcp">
+		<ProtocolTCP waitTimeBeforeDoneMillis="60000" connectionWaitMillis="60000" backlog="30"
+			     load_reduction_min_queue_size="100" load_reduction_max_queue_size="200" />
+	</Protocol>
+	</ProtocolManager>
+	<DataManager set_createtime_on_bloomfilter_update="true">
+		<Aging period="3600" max_age="86400"/>
+		<Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+	</DataManager>
+	<ForwardingManager query_on_new_dataobject="true" periodic_dataobject_query_interval="0">
+	  <Forwarder protocol="noForward">
+	  </Forwarder>
+	</ForwardingManager>
+</Haggle>

@@ -1,0 +1,25 @@
+Charm-Crypto: Installation Instructions
+---------------------------------------
+
+# Install dependencies:
+
+sudo apt-get install python2.7 python2.7-dev libgmp-dev flex bison
+
+# Install pbc:
+
+wget -c http://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz
+tar xvzf pbc-0.5.14.tar.gz
+cd pbc-0.5.14/
+./configure
+make
+sudo make install
+cd /usr/lib
+sudo ln -s /usr/local/lib/libpbc.so.1 .
+
+# Test:
+
+cd /path/to/cbmen/ccb/c++
+make
+./test
+
+# This should work without any problems

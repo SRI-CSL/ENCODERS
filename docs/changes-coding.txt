@@ -1,0 +1,279 @@
+--------- Significant Haggle modifications ---------
+
+In all our built scripts DEBUG is enabled by default in all cases.
+Also the android build scripts consistently define OS_ANDROID.
+Note that EXTRA_DEFINES will overwrite the defaults.
+
+hagglekernel/ApplicationManager.h/cpp
+- onApplicationFilterMatchEvent added check to stop Network Coding blocks and Fragmentation blocks from being sent to application
+
+hagglekernel/BloomFilter.h/cpp
+- added check to examine if fragmentation or network coded object if parent object is in bloom filter
+- added method addParentDataObject to check if fragmentation or network coded object and add parent object to bloom filter
+
+hagglekernel/ForwardingManager.h/cpp
+- added Network Coding and Fragmentation hooks
+- requeue data object for onSendDataObjectResult for Network Coding and Fragmentation
+
+hagglekernel/ProtocolManager.h/cpp
+- when sending object in onSendDataObject add fragmentation and network coding hooks to generate events to be processed by fragmentation and network coding managers respectively 
+
+hagglekernel/Event.cpp
+- Generalized some events to allow empty (NULL) node parameter.
+
+hagglekernel/ProtocolManager.cpp
+- Cleaned up event rescheduling in onSendDataObject
+  to deal with each target separately.
+
+hagglekernel/Protocol.cpp
+- Added peer bloom filter check for parent object 
+  directly before send.
+
+hagglekernel/ConnectivityEthernet.cpp
+- Raise an event to notify loss rate estimation module the receipt of a beacon
+
+--------- New files ---------
+
+.gitignore
+- added gitignore by taking mercurial ignore from googlecode repository
+
+valgrind.sh
+- added valgrind with full inspection options and writing summary to log file
+
+haggle/resources
+config-coding.xml
+- Network Coding sample config file
+config-fragmentation.xml
+- Fragmentation sample config file
+
+hagglekernel/fragmentation/bloomfilter/FragmentationBloomFilterInterface.h
+- interface for fragmetnation bloom filter. also avoids forward declaration
+
+hagglekernel/fragmentation/bloomfilter/FragmentationBloomFilterHelper.cpp
+- utilities to help get fragmentation related properties from dataobject
+
+hagglekernel/fragmentation/concurrent/decoder/FragmentationDecodingTaskType.h
+- enum for fragmentation decoding task types
+
+hagglekernel/fragmentation/concurrent/decoder/FragmentationDecodingTask.cpp
+- fragmetnation decoding task object
+
+hagglekernel/fragmentation/concurrent/encoder/FragmentationEncodingTask.cpp
+- fragmentation encoding task object
+
+hagglekernel/fragmentation/concurrent/encoder/FragmentationEncodingTaskType.h
+- enum for fragmentation encoding task types
+
+hagglekernel/fragmentation/configuration/FragmentationConfiguration.cpp
+- fragmentation configuration to be used across fragmentation module
+
+hagglekernel/fragmentation/forwarding/FragmentationForwardingManagerHelper.cpp
+- fragmentation utility for forwarding. generates appropriate fragmentation events
+
+hagglekernel/fragmentation/fragment/FragmentationFileUtility.cpp
+- utility for fragmentation file names
+
+hagglekernel/fragmentation/manager/FragmentationManager.cpp
+- reads in fragmentation configuration, adds listener for fragmentation related events
+- initializes objects necessary for fragmentation module and passes to each constructor
+- added source_fragmentation_whitelist and target_fragmentation_whitelist
+- reconstructed data objects will not be anymore associated with an incoming node
+  because they may have multiple sources (this also means that the peer
+  Bloom filter will not be set, avoiding unnecessary delays)
+
+hagglekernel/fragmentation/manager/FragmentationSendSuccessFailureHandler.cpp
+- utility for fragmentation for success and failure events
+
+hagglekernel/fragmentation/managermodule/decoder/FragmentationDecoderAsynchronousManagerModule.cpp
+- manager module for asynchronous fragmentation decoder tasks
+- adds fragmentation decoding tasks, decodes fragments
+
+hagglekernel/fragmentation/managermodule/encoder/FragmentationEncoderAsynchronousManagerModule.cpp
+- manager module for asynchronous fragmentation encoder tasks
+- adds fragmentation encoding tasks, encodes fragments
+
+hagglekernel/fragmentation/protocol/FragmentationProtocolHelper.cpp
+- utility for Protocol to generate fragmentation events for send
+
+hagglekernel/fragmentation/service/FragmentationDecoderService.cpp
+- service for fragmentation decoding
+
+hagglekernel/fragmentation/service/FragmentationEncoderService.cpp
+- service for fragmentation encoding
+
+hagglekernel/fragmentation/storage/FragmentationDecoderStorage.cpp
+- fragmentation decoding caching/storage layer
+
+hagglekernel/fragmentation/storage/FragmentationEncoderStorage.cpp
+- fragmentation encoding caching/storage layer
+
+hagglekernel/fragmentation/utility/FragmentationDataObjectUtility.cpp
+- utility for fragmentation data objects
+
+hagglekernel/fragmentation/FragmentationConstants.h
+- constants for fragmentation attributes
+
+hagglekernel/dataobject/DataObjectTypeIdentifierUtility.h/cpp
+- utilities for data object
+
+hagglekernel/networkcoding/application/ApplicationManagerHelper.h/cpp
+- utility for application manager to check if network coding or fragmentation object should not send to application
+
+hagglekernel/networkcoding/bloomfilter/NetworkCodingBloomFilterHelper.cpp
+- retrieves network coding parent dataobject information
+
+hagglekernel/networkcoding/bloomfilter/NetworkCodingBloomFilterInterface.h
+- interface methods for network coding bloom filter. also avoid forward declarations
+
+hagglekernel/networkcoding/concurrent/NetworkCodingDecodingTaskType.h
+- enum for network coding decoding task types
+
+hagglekernel/networkcoding/concurrent/NetworkCodingDecodingTask.cpp
+- network coding decoding task object
+
+hagglekernel/networkcoding/concurrent/encoder/NetworkCodingEncoderTaskType.h
+- enum for network coding encoding task types
+
+hagglekernel/networkcoding/concurrent/encoder/NetworkCodingEncoderTask.cpp
+- network coding encoding task object
+
+hagglekernel/networkcoding/databitobject/DataObjectIdRef.h
+- typedef for unsigned char string object
+
+hagglekernel/networkcoding/databitobject/DataObjectReceivedFlagsEnum.h
+- enum for Event flags data object received
+
+hagglekernel/networkcoding/databitobject/NetworkCodingDataObjectUtility.cpp
+- utility for network coding data objects
+
+hagglekernel/networkcoding/forwarding/NetworkCodingForwardingManagerHelper.cpp
+- forwarding manager helper to create event with delay for send network coding
+
+hagglekernel/networkcoding/manager/NetworkCodingConfiguration.cpp
+- network coding configuration to be used across network coding module
+
+hagglekernel/networkcoding/manager/NetworkCodingManager.cpp
+- reads in network coding configuration, registers network coding events
+- constructs and initializes network coding classes
+- added source_encoding_whitelist and target_encoding_whitelist
+- reconstructed data objects will not be anymore associated with an incoming node
+  because they may have multiple sources (this also means that the peer
+  Bloom filter will not be set, avoiding unnecessary delays)
+
+hagglekernel/networkcoding/manager/NetworkCodingSendSuccessFailureEventHandler.cpp
+- utility for network coding manager for success and failure network coding data object events
+
+hagglekernel/networkcoding/managermodule/decoder/NetworkCodingDecoderManagerModuleProcessor.cpp
+- network coding decoding method to be used by single or asynchronous network coding decoding
+
+hagglekernel/networkcoding/managermodule/encoder/INetworkCodingEncoderManagerModule.h
+- interface for network coding encoding manager module
+
+hagglekernel/networkcoding/managermodule/encoder/NetworkCodingEncoderAsynchronousManagerModule.cpp
+- network coding manager module for asynchronous encoding
+- adds tasks and processes network coding encoding task queue
+
+hagglekernel/networkcoding/managermodule/encoder/NetworkCodingEncoderManagerModule.cpp
+- network coding manager module for single threaded encoding
+- adds tasks and processes network coding encoding task queue
+
+hagglekernel/networkcoding/managermodule/encoder/NetworkCodingEncoderManagerModuleProcessor.cpp
+- common functionality for network coding encoding for single or asynchronous
+
+hagglekernel/networkcoding/managermodule/INetworkCodingDecoderManagerModule.h
+- interface for network coding decoding manager module
+
+hagglekernel/networkcoding/managermodule/NetworkCodingDecoderAsynchronousManagerModule.cpp
+- network coding asynchronous decoding
+- adds task to queue and processes decoding tasks
+
+hagglekernel/networkcoding/managermodule/NetworkCodingDecoderManagerModule.cpp
+- network coding decoding manager module allows plugin of single or asynchronous processing
+
+hagglekernel/networkcoding/protocol/NetworkCodingProtocolHelper.cpp
+- network coding protocol helper to check if data object parent exists
+- generates appropriate send event for network coding data object
+
+hagglekernel/networkcoding/service/NetworkCodingDecoderService.cpp
+- network coding service decodes data object
+
+hagglekernel/networkcoding/service/NetworkCodingEncoderService.cpp
+- network coding service encodes data object
+
+hagglekernel/networkcoding/storage/NetworkCodingDecoderStorage.cpp
+- network coding cache/storage layer for decoding related tasks
+
+hagglekernel/networkcoding/storage/NetworkCodingEncoderStorage.cpp
+- network coding cache/storage layer for encoding related tasks
+
+hagglekernel/networkcoding/codetorrent.cpp
+- original codetorrent api
+
+hagglekernel/networkcoding/codetorrentdecoder.cpp
+- wrapper for codetorrent decoding related tasks
+
+hagglekernel/networkcoding/codetorrentencoder.cpp
+- wrapper for codetorrent encoding related tasks
+
+hagglekernel/networkcoding/CodeTorrentUtility.cpp
+- helps with free up codetorrent related memory
+
+hagglekernel/networkcoding/galois.cpp
+- galois initialization
+
+hagglekernel/networkcoding/nc.cpp
+- codetorrent encode/decode
+
+hagglekernel/networkcoding/NetworkCodingConstants.h
+- network coding attribute name constants
+
+hagglekernel/networkcoding/NetworkCodingFileUtility.cpp
+- utility for network coding file names
+
+hagglekernel/LossEstimateManager.h
+- interface for loss estimate manager
+
+hagglekernel/LossEstimateManager.cpp
+- reads in loss rate estimation configuration, registers loss estimation events
+- constructs and initializes loss rate estimator classes for each neighbor
+- monitor node beacon event raised by ConnectivityEthernet module and records the beacon receipt
+- periodically update and examine loss estimation of each neighbor
+- enable network coding for target nodes whose loss rate is higher than the given threshold by raising network coding enable event
+
+hagglekernel/LossRateSlidingWindowEstimator.h
+- interface for loss rate sliding window estimator
+
+hagglekernel/LossRateSlidingWindowEstimator.cpp
+- maintain sliding windows indicating the receipt of beacons for all neighbors
+- define the interface for accessing loss rates for given neighbor
+
+hagglekernel/LossRateSlidingWindowElement.h
+- interface for loss rate sliding window element
+
+hagglekernel/LossRateSlidingWindowElement.cpp
+- defines the loss rate sliding window in the form of a bitmap. The sliding window contains the number of detected loss of beacons in previous time slots.
+- operations of loss rate sliding window
+- calculate the average loss rate of the current window
+
+--------- New directories ---------
+
+haggkelkernel/networkcoding/*
+- Network Coding module
+
+hagglekernel/fragmentation/*
+- Fragmentation module
+
+
+android/script
+- added Je-Min's scripts
+- created runInstall.sh script
+- added scripts to install, execute, and collect data for OTA android tests
+
+testsuite/test_nc
+- Network coding haggle tests
+
+testsuite/test_fragment
+- Fragmentation haggle tests
+
+
+

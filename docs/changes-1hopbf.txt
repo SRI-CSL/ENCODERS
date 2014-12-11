@@ -1,0 +1,51 @@
+Oct 3, 2013:
+--------- Haggle limitations/bugs/fixes ---------
+
+None (with respect to 1-hop Bloom filters).
+
+--------- Significant Haggle modifications ---------
+
+ * Added a new manager, the InterestManager, which is responsible for creating
+interest data objects which are subsequently disseminated. 
+
+ * Added a NodeManager Node option: "send_app_node_descriptions" which can 
+change the default setting for disseminating application node descriptions.
+When using the 1-hop Bloom filter feature, this option should be set to false.
+
+ * Added an ApplicationManager option: "delete_state_on_deregister" which can 
+change the default setting for when an application deregisters. If set to `true`
+then state associated with the deregistered node will be removed. 
+
+ * Modified forwarding manager to route towards application node descriptions that
+are missing their device node descriptions.
+
+ * Added 2 new event types:
+1) EVENT_TYPE_APP_NODE_CHANGED - raised by the ApplicationManager to indicate
+when a node has registered / deleted an interest, or deleted an application. 
+
+2) EVENT_TYPE_ROUTE_TO_APP - raised by the ForwardingManager to indicate that
+a data object is to be forwarded towards a target via a particular delegate:
+the interest manager listens to this event to consume interests that are 
+satisfied by the forwarding. 
+
+ * Added a new option to the forwarding manager to disable mutli-hop Bloom filter
+forwarding:
+
+enable_multihop_bloomfilters="false" 
+
+ * Updated ForwardingClassifierNodeDescription to enable forwarding of just
+device or application node descriptions (this feature is not currently used).
+
+ * NodeManager fix for "delete_state_on_deregister" option, generally this
+parameter should be true when used with 1-hop Bloom filters.  Node.cpp, 
+NodeStore.cpp were also modified to support this fix.
+
+ * Added more metrics to Protocol.cpp for application node descriptions (i.e., 
+bytes sent/received)
+
+--------- New files ---------
+
+hagglekernel/InterestManager.{cpp,h}: 
+
+A new manager to intercept data object reception events to decode interest 
+data objects and generate new interest data objects which are published.

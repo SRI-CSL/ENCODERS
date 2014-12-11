@@ -1,0 +1,22 @@
+<html>
+<head>
+<script src="reload.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<center>
+	<img width=350 src="HaggleLogoBlue400.png" /><br/><br/>
+	<form method=POST>
+		<input id=sf name=q value="" size=50 />
+		<br/><input type="submit" value="Haggle search"/><br/>
+		<input id=all type=radio name=meta value="Picture" checked><label for=all> camera picture </label>
+		<input id=lgr type=radio name=meta value="kMDItemKeywords"><label for=lgr> metadata keyword </label>
+		<input id=lgr type=radio name=meta value="advanced"><label for=lgr> advanced </label>
+	</form>
+</center>
+	<br/><span id="loading"></span>
+	<br/><div widht=100% style="border:1px solid blue;background-color:lightblue; padding:2px">Neighbors: <span id="neighbor"></span></div>
+	<br/><br/><span id="result"></span>
+	<script type="text/javascript">setTimeout("getResult()", 2000);</script>
+</body>
+</html>

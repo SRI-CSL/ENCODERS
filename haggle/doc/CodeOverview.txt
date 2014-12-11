@@ -1,0 +1,186 @@
+This file gives a brief overview of the structure of Haggle and the code.
+
+Basic goals and principles
+==========================
+
+Haggle is a layerless networking architecture that incorporates
+pub/sub semantics, an event-driven core and asynchronous
+operation. The basic structure of Haggle is a kernel that implements
+an event queue and keeps shared data structures, and a variable number
+of managers that implement the functional logic. The managers are
+agnostic of each other and interact over the event queue using
+pre-defined public events. Managers can hence easily be plugged in and
+out of Haggle. The logic implemented by a manager is defined by a
+domain of responsibility according to tasks to solve. This makes
+Haggle modular.
+
+Haggle's overall objective is to deliver application data between
+different applications that may run on the local device or another
+device accessible over a network. Haggle defines a unified metadata
+format for applications which is expressed in XML. The metadata is
+used not only for local searching, but as a generic header for
+forwarding the data also between devices. As such, Haggle does not use
+"traditional packet headers" that define addressing schemes and
+multiplexing/demultiplexing. Instead, the metadata itself defines the
+"address" and searching and filtering on metadata are operations that
+determines how data is forwarded.
+
+A piece of application data along with its metadata is in Haggle
+simply called a data object. A data object can also have zero bytes
+data, i.e., it is only metadata. This makes it possible to use
+data objects also for signaling and control messages. Haggle is hence
+data centric with the data object as the basic communication element
+that is always handled in the same way using the interfaces provided
+by the Haggle architecture.
+
+Persistent storage of data objects is supported through a data
+store. The backend of the data store is SQL-based, but we anticipate
+supporting other backends as well -- if and when the need arises. The
+data store can be searched and filtered.
+
+Structure of the code
+=====================
+
+extlibs/:
+
+* External library dependencies that are included for
+  convenience. These are only compiled on platforms that do not
+  natively provide these libraries. Currently the libraries include
+  libxml2 and sqlite.
+
+
+src/utils/:
+
+* libraries and convenience functions used by Haggle. These are
+  implemented in C.
+
+src/hagglekernel/:
+
+* Macros and definitions for portability: { Platform.h }
+
+* Code that implements the "Haggle core", which includes the kernel
+  and the managers that operate in this domain.
+
+* Support classes: {Thread.cpp, Heap.cpp, Event.cpp, Exception.h,
+  Filter.cpp }. The thread class provides a C++ based wrapper class
+  that hides platform specific thread implementations. Heap.cpp
+  implements a heap data structure used to store events, which are
+  defined by Event.cpp.
+
+* Data store: { DataStore.cpp, SQLDataStore.cpp, XMLDataStore.cpp
+  }. DataStore.{h,cpp} is an abstract class that defines the data
+  store interface. SQLDataStore.cpp implements the SQL data store
+  backend. XMLDataStore.cpp is currently not used but is a starting
+  point for a data store backend based on XML only.
+
+* Basic Haggle data types: { Attribute.cpp, DataObject.cpp,
+  Metadata.h/XMLMetadata.cpp, Node.cpp. Interface.cpp }
+
+* Kernel: { HaggleKernel.cpp, EventQueue.h }. HaggleKernel inherits
+  EventQueue.h defines a generic event queue interface.
+
+* Managers: { Manager.h, ApplicationManager.cpp, ConnectivityManager*.cpp,
+  DataManager.cpp, DebugManager.cpp, ForwardingManager.cpp,
+  NodeManager.cpp, ManagerModule.h }.
+
+  Manager.h is the abstract class that defines a manager. All other
+  managers inherit this class. Managers consume and generate events
+  through interaction with the kernel's event queue. See below for a
+  short description of the tasks of each manager.
+
+src/libhaggle/:
+
+* A C-library implementing an application programming interface (API)
+  for Haggle applications.
+
+src/clients, src/experimental/, src/haggleDrop/, src/mailProxy/:
+
+* These directories contain client code, such as applications
+  interacting with Haggle core, or proxies providing legacy support
+  for traditional applications. These in general uses libhaggle.
+
+winmobile/:
+
+* Visual studio project files for compiling Haggle for Windows
+  Mobile. Also contains code for Windows mobile specific applications,
+  including a C# wrapper library for libhaggle.
+
+Thread structure
+================
+
+There are two main threads in Haggle. The kernel domain runs one
+thread and the data store runs the other. Logically the data store is
+in the kernel domain as well, but since the data store involves disk
+I/O it is implemented in its own thread so that it does not block the
+kernel's event queue.
+
+Managers thus run in the same thread as the kernel, but they may start
+their own worker threads by implementing Manager modules (the abstract
+class is ManagerModule.h). They typically do processing that may take
+some time and needs to run in a separate thread in order to not block
+the kernel event queue. A manager module thread usually does a specific
+task, such as transmitting data objects, and then terminates. Some of
+these thread may, however, run indefinitely if necessary.
+
+
+Managers
+========
+
+At this point there are six separate managers in Haggle. 
+    
+* The data manager, responsible for inserting data objects into the
+  data store.
+
+* The protocol manger, responsible for sending and receiving data
+  objects. It maintains a number of protocol modules that send and
+  receive data objects, e.g., over TCP, Bluetooth, or other standard
+  protocols.
+    
+* A connectivity manager that discovers neighbour network interfaces.
+
+* A node manager, responsible for exchanging and maintaining
+  information with neighbour nodes (including, e.g., their interests).
+ 
+* A forwarding manager that finds suitable next hop nodes when a
+  candidate destination is found for a data object.
+
+* An application manager that takes care of the interaction with
+  Haggle applications running in separate processes.
+
+In addition to these managers, there is an optional debug manager that
+prints useful debugging information.
+
+The number of managers, their exact roles and responsibilities, might
+change during the further development of Haggle. The core system has
+been designed to be flexible enough to accommodate continuous changes
+and improvements.
+
+Notes on portability issues
+===========================
+
+Haggle aims to be as portable as possible. Here we give an overview of
+which parts of the code depend on platform specific code.
+
+Thread.{h,cpp} is a thread class wrapping any platform specific thread
+APIs. When porting to a new platform, thread support need to be
+integrated here.
+
+The ConnectivityManager discovers local and remote network interfaces
+and hence is highly dependent on platform specific APIs for this
+purpose. Most of the portability issues are located in this part of
+the code.
+
+The connectivity manager needs to:
+
+* Use the OS's event system for discovering and listening to changes
+  in network interface configuration.
+
+* Use OS APIs to discover remote interfaces (e.g., Bluetooth
+  scanning). For other interfaces, such as WiFi and Ethernet it may
+  involve probing the network for neighbor interfaces using, e.g.,
+  beaconing.
+
+The ProtocolManager also has some degree of platform dependent code as
+it deals with transmitting data objects over standard transport
+protocols. E.g., for Bluetooth it means implementing RFCOMM
+communication.

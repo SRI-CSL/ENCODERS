@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Haggle persistent="no">
+	<Attr name="ManagerConfiguration">*</Attr>
+	<SecurityManager security_level="LOW"></SecurityManager>
+        <ApplicationManager reset_bloomfilter_at_registration="false">
+        </ApplicationManager>
+	<DebugManager>
+		<DebugTrace enable="true" type="STAT"></DebugTrace>
+	</DebugManager>
+	<NodeManager>
+		<Node matching_threshold="0" max_dataobjects_in_match="10" node_description_attribute="none" node_description_attribute_weight="0" send_neighborhood="true"></Node>
+		<NodeDescriptionRetry retries="0" retry_wait="10.0"></NodeDescriptionRetry>
+		<NodeDescriptionRefresh refresh_period_ms="30000" refresh_jitter_ms="1000"></NodeDescriptionRefresh>
+		<NodeDescriptionPurge purge_max_age_ms="90000" purge_poll_period_ms="30000"></NodeDescriptionPurge>
+	</NodeManager>
+	<ProtocolManager>
+	<ProtocolClassifier name="ProtocolClassifierPriority">
+		<ProtocolClassifierPriority>
+			<ProtocolClassifier name="ProtocolClassifierNodeDescription" priority="3">
+				<ProtocolClassifierNodeDescription outputTag="hw"></ProtocolClassifierNodeDescription>	
+			</ProtocolClassifier>
+			<ProtocolClassifier name="ProtocolClassifierSizeRange" priority="2">
+				<ProtocolClassifierSizeRange minBytes="0" maxBytes="40000" outputTag="hw"></ProtocolClassifierSizeRange>
+			</ProtocolClassifier>
+			<ProtocolClassifier name="ProtocolClassifierAllMatch" priority="1">
+				<ProtocolClassifierAllMatch outputTag="hw"></ProtocolClassifierAllMatch>	
+			</ProtocolClassifier>
+		</ProtocolClassifierPriority>
+	</ProtocolClassifier>
+	<Protocol name="ProtocolUDPBroadcast" inputTag="lw">
+		<ProtocolUDPBroadcast waitTimeBeforeDoneMillis="60000" use_arp_manual_insertion="true" use_control_protocol="false"></ProtocolUDPBroadcast>
+	</Protocol>
+	<Protocol name="ProtocolTCP" inputTag="hw">
+		<ProtocolTCP backlog="30"></ProtocolTCP>
+	</Protocol>
+	</ProtocolManager>
+	<DataManager set_createtime_on_bloomfilter_update="true" periodic_bloomfilter_update_interval="60">
+		<Aging period="3600" max_age="86400"></Aging>
+		<Bloomfilter default_error_rate="0.01" default_capacity="8000"></Bloomfilter>
+		<DataStore>
+                        <SQLDataStore use_in_memory_database="true" journal_mode="off" in_memory_node_descriptions="true"></SQLDataStore>
+		</DataStore>
+	</DataManager>
+	<ForwardingManager max_nodes_to_find_for_new_dataobjects="30" query_on_new_dataobject="true" periodic_dataobject_query_interval="0" enable_target_generation="false" push_node_descriptions_on_contact="true">
+	  <ForwardingClassifier name="ForwardingClassifierNodeDescription">
+	    <ForwardingClassifierNodeDescription class_name="lw"></ForwardingClassifierNodeDescription>
+	  </ForwardingClassifier>
+	  <Forwarder protocol="Flood" contentTag="lw"></Forwarder>
+	  <Forwarder protocol="AlphaDirect"></Forwarder>
+	</ForwardingManager>
+        <NetworkCodingManager enable_network_coding="true" max_age_block="300" resend_delay="0.1" resend_reconstructed_delay="10.0" delay_delete_networkcodedblocks="300.0" delay_delete_reconstructed_networkcodedblocks="10.0" min_network_coding_file_size="32769" block_size="32768" number_blocks_per_dataobject="1">
+        </NetworkCodingManager>
+	<ConnectivityManager use_arp_manual_insertion="true" arp_manual_insertion_path="/etc/arphelper"></ConnectivityManager>
+</Haggle>

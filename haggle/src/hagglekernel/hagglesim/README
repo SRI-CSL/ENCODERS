@@ -1,0 +1,29 @@
+Building Haggle agains OMNeT++ simulation environment
+
+This is work in progress.
+
+1. Compile and install OMNeT++ somewhere on your machine.
+
+2. You need to set the PATH and other OMNeT++ environment variables as
+instructed by the OMNeT++ build system.
+
+3. You need to run ./configure in the top level Haggle source
+directory with the option --enable-omnetpp, e.g.:
+
+> ./configure --enable-omnetpp
+
+4. Now build haggle. A libhaggleopp.a library will be built that the
+OMNeT++ simulation environment can link against.
+
+5. Enter the hagglesim directory and run the following command (this
+should probably be integrated into the Haggle build system at a later
+time:
+
+> opp_makemake -x -I../ -I../../utils/ -I/usr/include/libxml2/ ../libhaggleopp.a ../../utils/libhaggleutils.a -f
+
+6. Now build the simulator by running make in the same directory:
+
+> make
+
+7. You should now have a hagglesim executable that you can run.
+

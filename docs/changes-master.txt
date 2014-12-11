@@ -1,0 +1,468 @@
+--------- Haggle limitations/bugs/fixes ---------
+
+Major bug fixes:
+
+hagglekernel/ApplicationManager.cpp
+hagglekernel/SQLDataStore.cpp
+- Multi-application remove interest bug (fixed)
+- Unsubscribe followed by subscribe only returns local matches, 
+  but not new incoming data (but unsub + sub + sub worked). 
+  The problem was in SQLDataStore.cpp (fixed)
+
+hagglekernel/SecurityManager.cpp
+- Cannot deal with large number of attributes, e.g. >8
+  Temporary solution: turn off by security_level = LOW in config.xml, do not ellimiate from config file !
+  Latest tests indicate that this problem may have disappered due to the fixes below.
+
+hagglekernel/Attribute.h, hagglekernel/Attribute.cpp, libhaggle/ipc.c, libcpphaggle/Map.h
+- A set of attributes is now represented as a basic map instead of a hash map to make sure that 
+  a canonical ordering is used to compute the data object id (SHA1 is order-sensitive).
+- A coressponding change in ipc.c makes sure that the same canonical ordering 
+  is used at the application level to compute the data object id.
+- Related to this, a bug in Map.h has been fixed, and a function insert_sorted has
+  been added, because node descriptions can have multiple entries per key to represent interest,
+  and a canonical ordering on values must be used to ensure consistent computation of data 
+  objects ids for node descriptions.
+
+hagglekernel/DataObject.cpp
+- Fixed rare multi-threading problem that could lead to 
+  file path conflict for data object storage
+
+hagglekernel/ForwardingManager.cpp
+- Fixed occasional kernel thread deadlock due to inconsistent order
+  of locking in shouldForward (was observed under higher load).
+
+Minor bug fixes:
+
+hagglekernel/Address.cpp
+- Fixed protocol initialization bug.
+
+hagglekernel/Trace.cpp
+- Fixed race condition when disabling debug.
+
+hagglekernel/ConnectivityLocalLinux.cpp
+- Fixed uninitialized memory access when initializing netlink message length
+
+hagglekernel/jni.cpp, hagglekernel/Utility.cpp
+- Fixed memory leak when specifying data store path 
+
+hagglekernel/ProtocolManager.cpp
+- Fixed memory leak (unregister event types) during deconstruction
+
+hagglekernel/XMLMetadata.cpp, hagglekernel/main.cpp
+- Fixed memory leak of XML parser during deconstruction of haggle
+
+hagglekernel/SecurityManager.cpp, hagglekernel/main.cpp
+- Fixed memory leak of crypto libraries during deconstruction of haggle
+
+hagglekernel/ForwardingManager.cpp, ProtocolUDP.cpp, ApplicationManager.cpp,
+DebugManager.cpp
+- Decreased logging verbosity for some messages that were not error conditions.
+
+hagglekernel/ResourceManager.cpp
+hagglekernel/main.cpp
+- resource manager has been disabled due to high cpu
+  load on Android (will be eventually replaced)
+
+hagglekernel/main.cpp
+hagglekernel/HaggleKernel.cpp
+- avoid logging in signal handler (can lead to rare deadlocks)
+- use prepare shutdown flag instead of event for same reason
+
+hagglekernel/ForwardingMetadata.cpp
+- added locking for forwarding metadata
+
+hagglekernel/Protocol.cpp
+hagglekernel/ProtocolTCP.cpp
+- make sure not to assign/use an invalid peer node
+
+various minor memory and file descriptor leaks fixed
+
+libcpphaggle/include/libcpphaggle/GenericQueue.h 
+- removed unnecessary mutex unlock()
+- modified retrieve to be more robust
+
+libhaggle/metadata_xml.c
+- metadata_xml_new_from_xml should only
+set the content for TEXT nodes; the libxml call to get content for other nodes
+will aggregate content from all child nodes which results in invalid XML being
+generated later on when the metadata is serialized to XML again.
+
+--------- Changes to built files ---------
+
+In all our built scripts DEBUG is enabled by default in all cases.
+Also the android build scripts consistently define OS_ANDROID.
+Note that EXTRA_DEFINES will overwrite the defaults.
+
+build_android.sh
+- consistently use ANDROID_NDK environment variable
+- remove bin, obj, lib folders in clean_android.sh
+
+--------- Significant Haggle modifications ---------
+
+hagglekernel/NodeStore.cpp
+- Originally caches neighbors only (confirmed and unconfirmed).
+- Now tentatively extended to all nodes (see Sam's modification).
+- Also we had to get rid of remove (onInterfaceDown).
+
+hagglekernel/ForwardingManager.cpp
+- If periodic data object queries are used (periodic_dataobject_query_interval != 0)
+  they were not correctly activated if neighbors appear simultaneously (fixed).
+
+hagglekernel/SQLDataStore.h
+- The sqlite database in-memory model offers significant performance
+  advantages (giving up persistence). A config option has been added
+  to activate this mode.
+
+libhaggle/include/ipc.h, libhaggle/ipc.c
+- New API functions added to expose Haggle subscription parameters:
+   haggle_ipc_set_max_data_objects_in_match, haggle_ipc_set_matching_threshold
+   (this is in particular useful together with first-class applications)
+
+hagglekernel/ApplicationManager.cpp
+- Support for above-mentioned API functions.
+- Each node can have default interest as specified in config file
+  (this is useful to allow sharing of rich meta data).
+
+libhaggle/include/dataobject.h, libhaggle/dataobject.c
+- Added haggle_dataobject_get_createtime to haggle API.
+
+libhaggle/ipc.c
+- Data objects will always be timestamped before publication 
+  (if not already done by the applications) to ensure a unique id.
+
+hagglekernel/ForwarderProphet.cpp
+- Extended Haggle Prophet with some features from Internet draft version (e.g. delta).
+- Also using different metric computation suggested by Internet draft.
+- Added feature to sample status of current neighbors (sampling) instead of only
+  reacting to neighbor changes. This should allow Prophet to better deal 
+  with static networks.
+- We refer to this version of Prophet as Prophet-S to make clear it is 
+  still quite different from Prophet as in the Internet draft
+
+hagglekernel/ForwardingManager.cpp
+- Added feature for periodic dissemination of routing updates (can be used with prophet-s).
+
+hagglekernel/Utility.cpp
+- Simplified logic in "fill_in_default_path" to first try "getenv" to get user,
+  then fail back on getpwuid and getlogin
+
+hagglekernel/SQLDataStore.cpp
+- Removing hardwired limitation on filter matches.
+- Some fixes to avoid multi-threading problems.
+
+hagglekernel/HaggleKernel.cpp, hagglekernel/Trace.cpp
+- Disabled trace file (trace.log) for better performance.
+  Define symbol LOGTRACE to enable it explicitly.
+
+hagglekernel/DataManager.cpp
+- Added configuration settings passed to DataStore, from config.xml
+
+hagglekernel/HaggleKernel.cpp, hagglekernel/main.cpp
+- Added ability to specify config.xml path to haggle daemon ("-g" parameter)
+
+hagglekernel/SQLDataStore.cpp
+- Added ability to disable journaling via config.xml.
+
+hagglekernel/Trace.h
+- Debug tracing for Android uses haggle.log for convenience.
+  Define USE_LOGCAT to write debug trace to logcat.
+
+hagglekernel/Trace.cpp
+- Added ERROR tag to all error messages to make them stick out.
+  Added flushing to avoid truncated output.
+
+hagglekernel/DebugManager.cpp
+- Turn off any remaining stdout tracing after a keystroke (for the debug console).
+
+hagglekernel/NodeManager.cpp
+- Allow retransmission of node descriptions to unnamed neighbors.
+
+hagglekernel/Protocol.h
+- increased PROT_WAIT_TIME_BEFORE_DONE from 10s to 60s to keep protocol alive for a while
+  (otherwise it will be discarded too soon and has to go through the setup phase again)
+
+hagglekernel/NodeManager.cpp
+- Removed code for merging Bloom filters in case of undefined neighbors,
+  because it was never activated (salt mismatch) and is not needed.
+
+hagglekernel/ForwarderAsynchronous.cpp
+- Do not sent routing updates to unnamed neighbors.
+
+hagglekernel/ForwardingManager.h
+- MAX_NODES_TO_FIND_FOR_NEW_DATAOBJECTS was defined as 10 (now 30) which may be too
+  small. Note that this should be at least as large as the maximum number
+  of target nodes (not only delegates) for a data object. The right setting 
+  is especially important if no routing is used (e.g. with noForward).
+  Note that each requesting application counts as target node if first-class
+  applications are used. In the latest version the constant is replaced by a
+  configuration parameter max_nodes_to_find_for_new_dataobject (with 30 as default).
+
+hagglekernel/ApplicationManager.cpp
+- Fixed event memory leak at deregistration.
+- Multiple attributes with weights and values can be specified as default
+  interest of a node. Default interests can trigger transfers between peers,
+  but the data objects are not automatically sent to applications if not
+  subscribed to. This is useful to proactively disseminate e.g. rich metadata.
+- Application Bloom filters are deleted upon registration in Vanilla Haggle.
+  There is now a configuration option reset_bloomfilter_at_registration
+  that is true by default to change this behaviour.
+
+various files
+- Use auxiliary function DataObject::idString instead in debug messages
+  to avoid deadlocks due to reference proxies.
+
+hagglekernel/Interface.cpp
+- Fixed string allocation bug.
+
+hagglekernel/Node.cpp
+- Fixed initialization bug in node constructors.
+- Gerneralized NodeDescription=<nodeid> attribute synthesis to 
+  make it optional (to save overhead) or allow abstraction from
+  its value (to make attributes of different nodes overlapping
+  and hence their propagation between peers). The weight can
+  be set to zero (default is 1) to avoid interference with
+  the application semantics. Corresponding configuration 
+  parameters are node_description_attribute and
+  node_description_attribute_weight.
+
+hagglekernel/Protocol.cpp
+- Added Bloom filter check before send to reduce unnecessary send tasks.
+
+hagglekernel/ProtocolUDP.cpp
+- Added Bloom filter check and optimistic addition before send 
+  to reduce unnecessary send tasks.
+- Set peer node correctly for accurate logging similar to peer interface.
+- Do not ignore object from application based on Bloom filter
+  to avoid loss of control messages.
+
+hagglekernel/SQLDataStore.cpp
+- Order results based on create timestamp rather than receive timestamp.
+- Added count_node_descriptions parameter (default is true) to 
+  disable counting of node descriptions when bounding the number of
+  results, because node descriptions are not relevant to applications.
+
+libhaggle/ipc.h, libhaggle/ipc.c 
+- Added separate API function type CTRL_TYPE_SET_PARAM to set parameters
+  for matching threshold and number of matches per application.
+- Increased application registration timeout from 10sec to 30sec.
+
+utils/utils.c
+- Fixed return value of get_peer_mac_address.
+
+hagglekernel/HaggleKernel.cpp
+- Remove uneccessary error message when enableFileTrace fails.
+
+hagglekernel/Protocol.cpp
+- Removed interface from debug message which already has peerDescription
+  as an argument. Having both in the argument list can violate the
+  locking order between nodes and interfaces due to compiler optimizations
+  exploiting that the evaluation order is undefined.
+
+hagglekernel/Debug.cpp
+- added config parameter enable_stdout to enable debug logging to stdout
+
+hagglekernel/ForwardingManager.cpp
+- converted some non-critical error message into debug messages
+- enable_forwarding_metadata is now a config parameter (instead of a constant ENABLE_FORWARDING_METADATA) 
+- the corresponding code has been refactored and missing hop problem has been fixed
+- constant ENABLE_RECURSIVE_ROUTING_UPDATES not needed (is already a config parameter)
+
+hagglekernel/DebugManager.cpp
+hagglekernel/Trace.h, hagglekernel/Trace.cpp
+- Added trace type TRACE_TYPE_DEBUG2 for verbose logging
+- Added function to set trace type
+- Addition configuration parameter "type" which can be
+  set to ERROR, DEBUG (default), DEBUG1, or DEBUG2.
+
+hagglekernel/ApplicationManaer.cpp
+- Avoid redundant printing of incoming data object to log file.
+
+hagglekernel/ProtocolManager.cpp
+- Print data objects to be sent to peers with DEBUG1 (but not with DEBUG) 
+  to reduce logging (received data objects are always logged).
+
+hagglekernel/DataManager.cpp
+- Added configuration parameter discard_obsolete_node_descriptions (default is true).
+  If enabled, incoming node descriptions will be first inserted into node store
+  and they will only be forwarded after insertion if they are not obsolete.
+  Note the change w.r.t. the original Haggle event flow.
+
+hagglekernel/DataObject.h, hagglekernel/DataObject.cpp
+hagglekernel/Protocol.cpp, hagglekernel/NodeStore.cpp
+- Data object can be marked as obsolete.
+- Queued data objects that become obsolete are not sent over the link.
+- Node descriptions that have been replaced are marked as obsolete.
+- Added configuration parameter preempt_obsolete_node_descriptions 
+  (default is true) that controls this optimization.
+
+hagglekernel/ForwardingManager.h, hagglekernel/ForwardingManager.cpp
+- Added config paramter dataobject_retries (default is 1 to mimic behaviour of original Haggle)
+  This applies to data objects that are sent or forwarded to peers (not to applications)
+  Note that these retries are in addition to the retries of the protocol (if any)
+  Also note that the initial transmission (but not the forwarding) of a
+  node description has its only retry count (as part of the node manager).
+- Added config parameter node_description_retries similar to the previous
+  one but for node descriptions (after the first hop).
+
+hagglekernel/ForwardingManager.h, hagglekernel/ForwardingManager.cpp
+- Deleted data objects are removed from forwarded objects list
+  (this is important in connection with cache replacement/purging strategies)
+
+hagglekernel/ConnectivityManager.{h.cpp}
+- Beaconing parameters are now configurable through the configuration file.
+
+hagglekernel/DebugManager.cpp
+- Added flush configuration parameters to flush haggle log
+  file after each message (generally not recommended).
+- Flushing is always turned on during shutdown.
+- Added STAT log level to include internal 
+  statistics in haggle log file.
+
+hagglekernel/Trace.cpp
+- Added system-level thread id to log messages for better diagnosis.
+- Added STAT debug level logging.
+- LOG messages will be logged too
+- Haggle log file will always be opened in append mode
+  (look for STARTUP/SHUTDOWN to identify multiple runs).
+
+hagglekernel/Manager.cpp
+- unregisterWithKernel - We better stay in SHUTDOWN
+  state at the end of shutdown to avoid triggering anything else.
+
+hagglekernel/main.cpp
+- Exit code will signal fatal error.
+
+hagglekernel/HaggleKernel.cpp
+- Added better better startup and shutdown logging using
+  logging level LOG.
+- Added fatal error status flag and emergency shutdown
+  mechanism.
+- Some messages are elevated to LOG status.
+- Added LOG messages to better track startup and shutdown behaviour:
+    *** HAGGLE STARTUP ***
+    *** PREPARE SHUTDOWN EVENT ***
+    *** SHUTDOWN EVENT ***
+    *** SHUTDOWN COMPLETED ***
+    FATAL ERROR - EMERGENCY SHUTDOWN INITIATED
+- Added event execution time logging if
+  EXEC_STAT is defined
+
+hagglekernel/HaggleKernel.cpp
+- Missing config file will lead to error message
+  "Could not read configuration" and EMERGENCY SHUTDOWN
+  to catch this frequent problem.
+
+hagglekernel/SQLDataStore.cpp
+- Added various statistics about data objects inserted/deleted.
+
+hagglekernel/DataStore.cpp
+- Added execution statistics and better logging on exit
+
+hagglekernel/InterfaceStore.cpp
+- Added aging for snooped interfaces.
+
+hagglekernel/DataObject.cpp
+- Removed original Haggle code for file path conflict checks.
+  Not needed anymore with unique filenames.
+- Added fatal error status for data objects 
+  (e.g. too many open files).
+
+hagglekernel/SQLDataStore.cpp
+- Using floats instead of integers for threshold computations. This
+  should give better precision and avoid unintuitive
+  behaviour/limitations with a large number (>100) of interest
+  attributes. Nevertheless it is generally not advisable to use a
+  large number of attributes due to increased matching complexity and
+  node description size.
+
+hagglekernel/Event.cpp, hagglekernel/EventQueue.h
+libcpphaggle/Heap.cpp, libcpphaggle/include/libcpphaggle/Heap.h
+- Add support for cancelling events from the Event Queue
+  This is useful for performance improvements, when
+  events that are no longer needed can be removed
+  from the queue.
+
+hagglekernel/Metadata.{h,cpp}
+- Add setParameter functions for int, long unsigned, long, long long,
+  and double.
+
+hagglekernel/ApplicationManager.{h,cpp}
+hagglekernel/Debug.h
+- Implement real time observation mechanism. 
+  The ApplicationManager will periodically gather various metrics,
+  such as the bandwidth and cpu usage, and create a data object
+  which can be subscribed to by local applications.
+
+hagglekernel/CacheStrategy.{h,cpp}
+hagglekernel/CacheStrategyAsynchronous.{h,cpp}
+hagglekernel/CacheStrategyUtility.{h,cpp}
+hagglekernel/DataManager.{h,cpp}
+- Implement observation of caching statistics.
+
+hagglekernel/Forwarder.h
+hagglekernel/ForwarderAggregate.{h,cpp}
+hagglekernel/ForwarderAlphaDirect.{h,cpp}
+hagglekernel/ForwarderAsynchronousInterface.{h,cpp}
+hagglekernel/ForwarderFlood.{h,cpp}
+hagglekernel/ForwarderNone.{h,cpp}
+hagglekernel/ForwarderProphet.{h,cpp}
+hagglekernel/ForwardingManager.{h,cpp}
+- Implement observation of forwarding tables.
+
+hagglekernel/InterfaceStore.{h,cpp}
+- Implement observation of the interface store.
+
+hagglekernel/Node.{h,cpp}
+hagglekernel/NodeStore.{h,cpp}
+- Implement observation of the node store.
+
+hagglekernel/ProtocolManager.{h,cpp}
+- Implement observation of running protocols.
+
+hagglekernel/SecurityManager.{h,cpp}
+- Implement observation of the certificate store.
+
+hagglekernel/SQLDataStore.cpp
+- Implement data store dumping.
+
+hagglekernel/ApplicationManager.{h,cpp}
+- Implement the dynamic configuration mechanism.
+- Implement dynamic configuration for observer
+settings.
+
+hagglekernel/Event.{h,cpp}
+- Add EVENT_TYPE_DYNAMIC_CONFIGURE
+
+hagglekernel/Manager.{h,cpp}
+- Handle EVENT_TYPE_DYNAMIC_CONFIGURE
+and the _onDynamicConfig and onDynamicConfig
+methods.
+
+libhaggle/ipc.c
+- Implement function to send dynamic
+configuration
+
+libhaggle/include/libhaggle/ipc.h
+- Implement function to send dynamic configuration
+
+--------- New files ---------
+
+haggletest/haggletest.c
+- A simple test program to test Haggle functionality
+  (call haggletest for usage info).
+- Many options and logging features added.
+
+haggleobserver/haggleobserver.c
+- A simple test program to subscribe to Observer
+  data objects and log them to a file for real
+  time monitoring.
+
+haggle/resources
+- New sample config files.
+
+--------- New directories ---------
+
+tests
+- Directory for demo and test cases.
+

@@ -1,0 +1,202 @@
+﻿
+Oct 10, 2012:
+--------- Haggle limitations/bugs/fixes ---------
+
+None (with respect to Replacement/Expiration).
+
+--------- Significant Haggle modifications ---------
+None (with respect to Replacement/Expiration)
+
+
+--------- Removed files ----------------
+All Replacement* files have been removed, due to architectural changes.
+
+--------- New files ---------
+
+CacheReplacement: All cache replacement modules in Haggle descend from
+this abstract class. It provides an interface for the replacement
+manager so that it can identify the type of data objects received and
+decide how to process them. Specifically, the replacement manager will
+defer processing decisions to a replacement module whenever an exact
+attribute matching (for the specified module) occurs. The actual
+processing occurs after a data object is identified, via attributes,
+as being a special case, and needing to be handled by the specified
+module. More generally, our design also allows for a set of concrete
+module(s) to act upon the data object.
+
+CachePurger: All cache purger modules in Haggle descended from this
+abstract class.  It provides an interface for purger modules
+(timed-delete modules), so it can identify the type of purger and how
+to best process them.  Actual purging occurs after object
+identification and timer events are setup.
+
+CachePurgerParallel: This module determines which purger module will
+be used upon a data object.  The 'Parallel' means each is checked,
+even if a prior purger module is identified to be responsible for the
+data object.  Unlike the CachePriority modules, which will process
+based upon a configuration order, parallel module all (if relevant)
+setup purging timers.
+
+CacheStrategyAsynchronous: This class runs in its own thread, running
+asynchronous to haggle.  But, it will process data objects in order
+(synchronous for cache strategy modules).
+
+CacheStrategy: All cache strategy modules in Haggle are descended from
+this abstract class.  It provides a common interface for cache
+strategy modules (lexicographical), so it can identify and process
+them best.  Actual replacement occurs within the identified correct
+cache replacement module.  Its tasks to ensure insert/deletes are not
+done in improper order (esp for a later query), ensuring replacements
+are done correctly.
+
+CacheStrategyReplacementPurger: This module is used for cache
+replacement modules.  When a data object is received, it goes down the
+cache replacement priority list.  For purgers, it goes down the entire
+list, regardless of prior data object responsibility.  The heavier
+weight (priority) is checked against the data object.  If it belongs
+to this cache replacement, it is handled by the appropriate cache
+replacement manager.  If the data object has multiple attributes, that
+belong to multiple cache replacement modules, then the lexicographical
+processing, based upon the configurations priority, is used to
+determine which module will ultimately act upon the data object.  It
+checks if a data object is matching exactly, is a cache replacement
+module match, or non match.
+
+CacheReplacementTotalOrder: This concrete replacement module
+identifies specifically marked data objects, and compares this data
+object to the data objects in the data store, based upon the
+originator. The most recently updated data object is preserved, and
+the older data object is discarded. Thus, it is useful when you only
+need the latest information, such as GPS location or status reports.
+
+CacheReplacementPriority: Handles the priority and processing of cache
+replacement modules.  It returns subsumed data object matches in the
+database for processing.
+
+CachePurgerAbsTTL: This concrete replacement module identifies
+specifically marked data objects. The data object will be deleted if
+its AbsTTL timestamp is older than the systems timestamp. It is useful
+to expire information that is no longer necessary, as opposed to
+letting the system guess which data is not necessary.
+
+CacheReplacementRelTTL: This concrete replacement module identifies
+specifically marked data objects. The data object will be deleted
+within RelTTL seconds after it is received. It is useful to give a
+minimum time to live, after receipt of the data object, and help
+control dissemination of the data object. It is also useful for status
+updates, and when you wish to minimize how long the data will be
+cached once it is received.
+
+
+CacheReplacementFactory: This factory class is responsible for
+instantiating and configuring cache replacement objects at
+initialization time.
+
+CacheStrategyFactory: This factory class is responsible for
+instantiating and configuring cache strategy objects according to a
+configuration object.
+
+==================================================================================
+
+
+Previously:
+--------- Haggle limitations/bugs/fixes ---------
+
+None (with respect to Replacement/Expiration).
+
+--------- Significant Haggle modifications ------
+
+hagglekernel/DataManager.cpp
+- Added support of replacement modules which are specified in config.xml
+and intercept data objects shortly after the "DATAOBJECT_VERIFIED" state. 
+These modules are responsible for updating the data store, depending on the
+content.
+
+hagglekernel/DataStore.cpp
+- Added the ReplacementTotalOrder interface (used by the Data Manager) for the 
+DataStore to support total order replacement of data objects.
+
+hagglekernel/SQLDataStore.cpp
+- Added the ReplacementTotalOrder SQL implementation. Specifically, it updates 
+the database to only contain the most recent version of a piece of content, 
+using the configured tag and metric specified by the ReplacementTotalOrder 
+configuration. 
+
+--------- New files ---------
+
+hagglekernel/CacheStrategy.cpp 
+- All cache strategy modules in Haggle are descended from this abstract class. 
+It provides a common interface for cache strategy modules, so it can identify 
+and process them best. Actual cache strategy occurs within the identified 
+correct cache strategy module. 
+
+hagglekernel/CacheStrategyAsynchronous.cpp 
+- This abstract cache strategy module serves as a base class for other cache 
+strategy modules that need asynchronous functionality. This class runs in its 
+own thread, running asynchronous to haggle. But, it will process data objects 
+in order (synchronous for cache strategy modules).
+
+hagglekernel/CacheStrategyReplacementPurger.cpp 
+- This cache strategy contains a single cache purger and a single cache replacement. 
+Note that the cache purger can be composed of multiple cache purgers, through the 
+parallel purger. Similarly, the cache replacement can be composed of multiple cache 
+replacements, through the priority replacement.  
+
+hagglekernel/CacheReplacementPriority.cpp 
+- This module handles the priority of cache replacement modules. When a data object 
+is received, it goes down the cache replacement priority list. The replacement module 
+with higher priority handles the data object. The lexicographical ordering can be 
+specified via the priorities in the configuration.
+
+haggekernel/CacheReplacement.cpp
+- All cache replacement modules in Haggle descend from this abstract class. It provides 
+an interface for the replacement module, so that it can identify the type of data objects 
+received and decide how to process them. Specifically, it will defer processing decisions 
+to a replacement module whenever an exact attribute matching (for the specified module) occurs. 
+The actual processing occurs after a data object is identified, via attributes, 
+as being a special case, and needing to be handled by the specified module. More generally, 
+our design also allows for a set of concrete module(s) to act upon the data object.
+
+hagglekernel/CachePurgerParallel.cpp 
+- This module determines which purger module will be used upon a data object. Unlike the 
+CachePriority modules, which will process based upon a configuration order, parallel module 
+will process all if relevant. 
+
+hagglekernel/CachePurger.cpp
+- All cache purger modules in Haggle descended from this abstract class. It provides 
+an interface for the purger module, so that it can identify the type of data objects received 
+and how to best process them. Specifically, it will defer processing decisions to a purger module 
+whenever an exact attribute matching (for the specified module) occurs. The actual processing occurs 
+after a data object is identified, via attributes, as being a special case, and needing to be handled 
+by the specified module. More generally, our design also allows for a set of concrete module(s) 
+to act upon the data object.
+
+hagglekernel/CacheReplacementTotalOrder.cpp 
+- This concrete replacement module identifies specifically marked data objects, 
+and compares this data object to the data objects in the data store, based upon 
+the originator. Only the freshest content is preserved, and the staler content 
+is discarded. Thus, it is useful when you only need the latest information, such as 
+GPS location or status reports.
+
+hagglekernel/CachePurgerAbsTTL.cpp 
+- This concrete purger module identifies specifically marked data objects. The data object 
+will be purged based on absolute expiration time. It is useful to expire information 
+that is no longer necessary, as opposed to letting the system guess which data is not necessary.
+
+hagglekernel/CachePurgerRelTTL.cpp 
+- This concrete purger module identifies specifically marked data objects. The data object 
+will be purged based on relative expiration time based upon its reception. It is useful 
+to give a minimum time to live for short-lived content (e.g., status updates), 
+after receipt of the data object, and to control dissemination of the data object. 
+
+hagglekernel/CacheStrategyFactory.cpp 
+- This factory class is responsible for instantiating and configuring cache strategy objects 
+at initialization time. 
+
+hagglekernel/CacheReplacementFactory.cpp 
+- This factory class is responsible for instantiating and configuring cache replacement objects 
+at initialization time.
+
+hagglekernel/CacheStrategyFactory.cpp 
+- This factory class is responsible for instantiating and configuring cache purger objects 
+at initialization time.

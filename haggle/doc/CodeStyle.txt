@@ -1,0 +1,28 @@
+Haggle code style
+=================
+
+The basic code style used in Haggle is a variant of the Linux kernel
+C-style. The Linux style is in turn based on the well known Kernighan
+and Ritchie style (K&R). The Linux kernel documentation has a good
+document on the rationale behind this style and is a good read in
+general. The document is found in 'Documentation/CodingStyle' in the
+Linux source tree, or can be easily Googled.
+
+Although the Linux style is for C, and Haggle is mostly written in
+C++, it is still a good base and guide line.
+
+A good C++ guideline is Google's C++-style guidelines, which use a
+similar coding style as the C-style used in the Linux kernel.
+
+http://code.google.com/p/google-styleguide/
+
+However, one annoyance with the Google style is its 2-char
+indentations, which makes it difficult to get a good overview of the
+code and encourages deeply nested functions. As the Linux style guide
+points out, you should try to avoid more than 3 levels of indentation
+in order to make the code more readable. Haggle therefore uses
+Google's C++ style with 8-char indentations.
+
+In this directory, you will find Google's C/C++ style for Emacs, with
+the only modification that it uses 8-char indentations instead of
+2-char ones.

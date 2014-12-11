@@ -1,0 +1,9 @@
+Basically,
+
+./configure
+make
+make install (optional)
+
+Or otherwise, see
+
+http://code.google.com/p/haggle/

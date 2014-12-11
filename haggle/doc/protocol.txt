@@ -1,0 +1,21 @@
+Haggle data object transfer protocol specification.
+
+This document describes the communications protocol a haggle node uses to transfer a data object to a neighboring haggle node, and ensure that it is transferred correctly. Please note that this protocol is not used for transferring data objects to applications, only between neighboring haggle nodes.
+
+Let A be the sending haggle node, and B the receiving haggle node. The data object is comprised of a header part, H, and a data part, D.
+
+1. A starts by establishing a stream connection to B. This stream connection may be TCP/IP, Bluetooth RFCOMM or some other form of underlying protocol.
+
+2. A then starts by sending all of H. B reads bytes until it has processed the entire header.
+
+3. B interprets H and reads from H how many bytes are in D. 
+
+4. At this point B sends either the single byte "C" (ascii code 67, meaning "continue") if it wishes A to continue sending D, or the single byte "R" (ascii code 82, meaning "rejected") if A should not send D. The reasons for B to reject the data object are its own, but may include things like already having the data object, or not having enough space to store the data object's data part.
+
+5. If B sent a "C", A continues by sending all of D. If B sent an "R", The protocol skips to point 8.
+
+6. B then reads as many bytes as H specifies are in D, and responds with an "A" (ascii code 65, meaning "acknowledged"). 
+
+7. A uses the "A" character to verify that B has received the entire data object.
+
+8. If A has further data objects to send to B, A then returns to point 2. Otherwise A will close the connection. To reduce the number of connection attempts, A may keep the connection open for a short while before disconnecting. B may also close the connection if no data arrives within a short timeout.

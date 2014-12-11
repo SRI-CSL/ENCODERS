@@ -1,0 +1,1336 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		429BD3290E6E8E7600A19552 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429BD3280E6E8E7600A19552 /* CoreGraphics.framework */; };
+		D32C3ED90F163EC100D028F9 /* Condition.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ECA0F163EC100D028F9 /* Condition.h */; };
+		D32C3EDA0F163EC100D028F9 /* Exception.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ECB0F163EC100D028F9 /* Exception.h */; };
+		D32C3EDB0F163EC100D028F9 /* HashMap.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ECC0F163EC100D028F9 /* HashMap.h */; };
+		D32C3EDC0F163EC100D028F9 /* Heap.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ECD0F163EC100D028F9 /* Heap.h */; };
+		D32C3EDD0F163EC100D028F9 /* List.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ECE0F163EC100D028F9 /* List.h */; };
+		D32C3EDE0F163EC100D028F9 /* Mutex.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ECF0F163EC100D028F9 /* Mutex.h */; };
+		D32C3EDF0F163EC100D028F9 /* Pair.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ED00F163EC100D028F9 /* Pair.h */; };
+		D32C3EE00F163EC100D028F9 /* Platform.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ED10F163EC100D028F9 /* Platform.h */; };
+		D32C3EE10F163EC100D028F9 /* PlatformDetect.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ED20F163EC100D028F9 /* PlatformDetect.h */; };
+		D32C3EE20F163EC100D028F9 /* Reference.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ED30F163EC100D028F9 /* Reference.h */; };
+		D32C3EE30F163EC100D028F9 /* Signal.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ED40F163EC100D028F9 /* Signal.h */; };
+		D32C3EE40F163EC100D028F9 /* String.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ED50F163EC100D028F9 /* String.h */; };
+		D32C3EE50F163EC100D028F9 /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ED60F163EC100D028F9 /* Thread.h */; };
+		D32C3EE60F163EC100D028F9 /* Timeval.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ED70F163EC100D028F9 /* Timeval.h */; };
+		D32C3EE70F163EC100D028F9 /* Watch.h in Headers */ = {isa = PBXBuildFile; fileRef = D32C3ED80F163EC100D028F9 /* Watch.h */; };
+		D34E36A50E2050DB00A73FDB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D34E36A40E2050DB00A73FDB /* libxml2.2.dylib */; };
+		D34E36A70E2050F700A73FDB /* libpthread.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D34E36A60E2050F700A73FDB /* libpthread.dylib */; };
+		D34E37E90E205E2700A73FDB /* libhaggleutils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D34E36740E204EF400A73FDB /* libhaggleutils.a */; };
+		D34E37EC0E205E7B00A73FDB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D34E36A40E2050DB00A73FDB /* libxml2.2.dylib */; };
+		D34E37EE0E205E8600A73FDB /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D34E37ED0E205E8600A73FDB /* libsqlite3.dylib */; };
+		D34E37EF0E205E9300A73FDB /* libpthread.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D34E36A60E2050F700A73FDB /* libpthread.dylib */; };
+		D34E38690E20612A00A73FDB /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D34E38680E20612A00A73FDB /* CoreFoundation.framework */; };
+		D3CB19C80FDF1A0100BA3FC2 /* counting_bloomfilter.c in Sources */ = {isa = PBXBuildFile; fileRef = D3CB19C50FDF1A0100BA3FC2 /* counting_bloomfilter.c */; };
+		D3CB19C90FDF1A0100BA3FC2 /* counting_bloomfilter.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CB19C60FDF1A0100BA3FC2 /* counting_bloomfilter.h */; };
+		D3CB19CA0FDF1A0100BA3FC2 /* haggleutils.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CB19C70FDF1A0100BA3FC2 /* haggleutils.h */; };
+		D3CB19CE0FDF1B2D00BA3FC2 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D3CB19CD0FDF1B2D00BA3FC2 /* libcrypto.dylib */; };
+		D3CB19DF0FDF1C3B00BA3FC2 /* Bloomfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CB19D50FDF1C3B00BA3FC2 /* Bloomfilter.cpp */; };
+		D3CB19E00FDF1C3B00BA3FC2 /* Bloomfilter.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CB19D60FDF1C3B00BA3FC2 /* Bloomfilter.h */; };
+		D3CB19E10FDF1C3B00BA3FC2 /* Certificate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CB19D70FDF1C3B00BA3FC2 /* Certificate.cpp */; };
+		D3CB19E20FDF1C3B00BA3FC2 /* Certificate.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CB19D80FDF1C3B00BA3FC2 /* Certificate.h */; };
+		D3CB19E30FDF1C3B00BA3FC2 /* Forwarder.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CB19D90FDF1C3B00BA3FC2 /* Forwarder.h */; };
+		D3CB19E40FDF1C3B00BA3FC2 /* ForwarderAsynchronous.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CB19DA0FDF1C3B00BA3FC2 /* ForwarderAsynchronous.cpp */; };
+		D3CB19E50FDF1C3B00BA3FC2 /* ForwarderAsynchronous.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CB19DB0FDF1C3B00BA3FC2 /* ForwarderAsynchronous.h */; };
+		D3CB19E60FDF1C3B00BA3FC2 /* ForwarderEmpty.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CB19DC0FDF1C3B00BA3FC2 /* ForwarderEmpty.h */; };
+		D3CB19E70FDF1C3B00BA3FC2 /* ForwarderProphet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CB19DD0FDF1C3B00BA3FC2 /* ForwarderProphet.cpp */; };
+		D3CB19E80FDF1C3B00BA3FC2 /* ForwarderProphet.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CB19DE0FDF1C3B00BA3FC2 /* ForwarderProphet.h */; };
+		D3EAD80F0F126DEC008AC81A /* Utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3EAD7EE0F126CF7008AC81A /* Utility.cpp */; };
+		D3EAD8100F126DEC008AC81A /* Trace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3EAD7EC0F126CF7008AC81A /* Trace.cpp */; };
+		D3F450A60E83F5AE005981E6 /* Heap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450980E83F5AE005981E6 /* Heap.cpp */; };
+		D3F450AB0E83F5AE005981E6 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F4509D0E83F5AE005981E6 /* Thread.cpp */; };
+		D3F450AD0E83F5AE005981E6 /* Timeval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F4509F0E83F5AE005981E6 /* Timeval.cpp */; };
+		D3F450B10E83F5AE005981E6 /* Watch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450A30E83F5AE005981E6 /* Watch.cpp */; };
+		D3F450BE0E83F626005981E6 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D3F450B50E83F626005981E6 /* base64.c */; };
+		D3F450BF0E83F626005981E6 /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F450B60E83F626005981E6 /* base64.h */; };
+		D3F450C00E83F626005981E6 /* bloomfilter.c in Sources */ = {isa = PBXBuildFile; fileRef = D3F450B70E83F626005981E6 /* bloomfilter.c */; };
+		D3F450C10E83F626005981E6 /* bloomfilter.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F450B80E83F626005981E6 /* bloomfilter.h */; };
+		D3F450C50E83F626005981E6 /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D3F450BC0E83F626005981E6 /* utils.c */; };
+		D3F450C60E83F626005981E6 /* utils.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F450BD0E83F626005981E6 /* utils.h */; };
+		D3F451080E83F6C0005981E6 /* Address.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450CD0E83F6BF005981E6 /* Address.cpp */; };
+		D3F451090E83F6C0005981E6 /* ApplicationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450CE0E83F6BF005981E6 /* ApplicationManager.cpp */; };
+		D3F4510A0E83F6C0005981E6 /* Attribute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450CF0E83F6BF005981E6 /* Attribute.cpp */; };
+		D3F4510B0E83F6C0005981E6 /* BenchmarkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450D00E83F6BF005981E6 /* BenchmarkManager.cpp */; };
+		D3F4510C0E83F6C0005981E6 /* Connectivity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450D10E83F6BF005981E6 /* Connectivity.cpp */; };
+		D3F4510D0E83F6C0005981E6 /* ConnectivityBluetooth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450D20E83F6BF005981E6 /* ConnectivityBluetooth.cpp */; };
+		D3F4510F0E83F6C0005981E6 /* ConnectivityBluetoothMacOSX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450D40E83F6BF005981E6 /* ConnectivityBluetoothMacOSX.cpp */; };
+		D3F451120E83F6C0005981E6 /* ConnectivityEthernet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450D70E83F6BF005981E6 /* ConnectivityEthernet.cpp */; };
+		D3F451130E83F6C0005981E6 /* ConnectivityInterfacePolicy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450D80E83F6BF005981E6 /* ConnectivityInterfacePolicy.cpp */; };
+		D3F451140E83F6C0005981E6 /* ConnectivityLocal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450D90E83F6BF005981E6 /* ConnectivityLocal.cpp */; };
+		D3F451160E83F6C0005981E6 /* ConnectivityLocalMacOSX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450DB0E83F6BF005981E6 /* ConnectivityLocalMacOSX.cpp */; };
+		D3F4511A0E83F6C0005981E6 /* ConnectivityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450DF0E83F6BF005981E6 /* ConnectivityManager.cpp */; };
+		D3F4511B0E83F6C0005981E6 /* ConnectivityMediaMacOSX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450E00E83F6BF005981E6 /* ConnectivityMediaMacOSX.cpp */; };
+		D3F4511C0E83F6C0005981E6 /* DataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450E10E83F6BF005981E6 /* DataManager.cpp */; };
+		D3F4511D0E83F6C0005981E6 /* DataObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450E20E83F6BF005981E6 /* DataObject.cpp */; };
+		D3F4511E0E83F6C0005981E6 /* DataStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450E30E83F6BF005981E6 /* DataStore.cpp */; };
+		D3F4511F0E83F6C0005981E6 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450E40E83F6C0005981E6 /* Debug.cpp */; };
+		D3F451200E83F6C0005981E6 /* DebugManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450E50E83F6C0005981E6 /* DebugManager.cpp */; };
+		D3F451210E83F6C0005981E6 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450E60E83F6C0005981E6 /* Event.cpp */; };
+		D3F451220E83F6C0005981E6 /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450E80E83F6C0005981E6 /* Filter.cpp */; };
+		D3F451230E83F6C0005981E6 /* ForwardingManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450E90E83F6C0005981E6 /* ForwardingManager.cpp */; };
+		D3F451240E83F6C0005981E6 /* HaggleKernel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450EA0E83F6C0005981E6 /* HaggleKernel.cpp */; };
+		D3F451250E83F6C0005981E6 /* Interface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450EB0E83F6C0005981E6 /* Interface.cpp */; };
+		D3F451260E83F6C0005981E6 /* InterfaceStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450EC0E83F6C0005981E6 /* InterfaceStore.cpp */; };
+		D3F451270E83F6C0005981E6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450ED0E83F6C0005981E6 /* main.cpp */; };
+		D3F451280E83F6C0005981E6 /* Manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450EE0E83F6C0005981E6 /* Manager.cpp */; };
+		D3F451290E83F6C0005981E6 /* ManagerModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450EF0E83F6C0005981E6 /* ManagerModule.cpp */; };
+		D3F4512A0E83F6C0005981E6 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450F00E83F6C0005981E6 /* Node.cpp */; };
+		D3F4512B0E83F6C0005981E6 /* NodeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450F10E83F6C0005981E6 /* NodeManager.cpp */; };
+		D3F4512C0E83F6C0005981E6 /* NodeStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450F20E83F6C0005981E6 /* NodeStore.cpp */; };
+		D3F4512D0E83F6C0005981E6 /* Policy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450F30E83F6C0005981E6 /* Policy.cpp */; };
+		D3F4512E0E83F6C0005981E6 /* Protocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450F40E83F6C0005981E6 /* Protocol.cpp */; };
+		D3F4512F0E83F6C0005981E6 /* ProtocolLOCAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450F60E83F6C0005981E6 /* ProtocolLOCAL.cpp */; };
+		D3F451300E83F6C0005981E6 /* ProtocolManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450F70E83F6C0005981E6 /* ProtocolManager.cpp */; };
+		D3F451310E83F6C0005981E6 /* ProtocolMedia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450F80E83F6C0005981E6 /* ProtocolMedia.cpp */; };
+		D3F451320E83F6C0005981E6 /* ProtocolRFCOMM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450F90E83F6C0005981E6 /* ProtocolRFCOMM.cpp */; };
+		D3F451330E83F6C0005981E6 /* ProtocolSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450FA0E83F6C0005981E6 /* ProtocolSocket.cpp */; };
+		D3F451340E83F6C0005981E6 /* ProtocolTCP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450FB0E83F6C0005981E6 /* ProtocolTCP.cpp */; };
+		D3F451350E83F6C0005981E6 /* ProtocolUDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450FC0E83F6C0005981E6 /* ProtocolUDP.cpp */; };
+		D3F451360E83F6C0005981E6 /* Queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450FD0E83F6C0005981E6 /* Queue.cpp */; };
+		D3F451370E83F6C0005981E6 /* RepositoryEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450FE0E83F6C0005981E6 /* RepositoryEntry.cpp */; };
+		D3F451380E83F6C0005981E6 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F450FF0E83F6C0005981E6 /* ResourceManager.cpp */; };
+		D3F4513A0E83F6C0005981E6 /* ResourceMonitorMacOSX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F451010E83F6C0005981E6 /* ResourceMonitorMacOSX.cpp */; };
+		D3F4513D0E83F6C0005981E6 /* SecurityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F451040E83F6C0005981E6 /* SecurityManager.cpp */; };
+		D3F4513E0E83F6C0005981E6 /* SQLDataStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F451050E83F6C0005981E6 /* SQLDataStore.cpp */; };
+		D3F451400E83F6C0005981E6 /* XMLMetadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F451070E83F6C0005981E6 /* XMLMetadata.cpp */; };
+		D3F451730E83F756005981E6 /* ProtocolRFCOMMMacOSX.mm in Sources */ = {isa = PBXBuildFile; fileRef = D3F451660E83F756005981E6 /* ProtocolRFCOMMMacOSX.mm */; };
+		D3F451750E83F7CF005981E6 /* liblibcpphaggle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3F450930E83F513005981E6 /* liblibcpphaggle.a */; };
+		D3F675D60F10665D00907159 /* Condition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F675CB0F10665D00907159 /* Condition.cpp */; };
+		D3F675DA0F10665D00907159 /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F675CF0F10665D00907159 /* Mutex.cpp */; };
+		D3F675DD0F10665D00907159 /* Signal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F675D20F10665D00907159 /* Signal.cpp */; };
+		D3F675DF0F10665D00907159 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F675D40F10665D00907159 /* String.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D34E36930E204F4400A73FDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D34E36730E204EF400A73FDB;
+			remoteInfo = haggleutils;
+		};
+		D3F450CB0E83F654005981E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3F450920E83F513005981E6;
+			remoteInfo = libcpphaggle;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1D6058910D05DD3D006BFB54 /* Haggle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Haggle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		32CA4F630368D1EE00C91783 /* iphone_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iphone_Prefix.pch; sourceTree = "<group>"; };
+		429BD3280E6E8E7600A19552 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		42C2FDFF0E89270B00172811 /* liblibhaggle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibhaggle.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D32C3ECA0F163EC100D028F9 /* Condition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Condition.h; path = ../../src/libcpphaggle/include/libcpphaggle/Condition.h; sourceTree = SOURCE_ROOT; };
+		D32C3ECB0F163EC100D028F9 /* Exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Exception.h; path = ../../src/libcpphaggle/include/libcpphaggle/Exception.h; sourceTree = SOURCE_ROOT; };
+		D32C3ECC0F163EC100D028F9 /* HashMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HashMap.h; path = ../../src/libcpphaggle/include/libcpphaggle/HashMap.h; sourceTree = SOURCE_ROOT; };
+		D32C3ECD0F163EC100D028F9 /* Heap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Heap.h; path = ../../src/libcpphaggle/include/libcpphaggle/Heap.h; sourceTree = SOURCE_ROOT; };
+		D32C3ECE0F163EC100D028F9 /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = List.h; path = ../../src/libcpphaggle/include/libcpphaggle/List.h; sourceTree = SOURCE_ROOT; };
+		D32C3ECF0F163EC100D028F9 /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mutex.h; path = ../../src/libcpphaggle/include/libcpphaggle/Mutex.h; sourceTree = SOURCE_ROOT; };
+		D32C3ED00F163EC100D028F9 /* Pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pair.h; path = ../../src/libcpphaggle/include/libcpphaggle/Pair.h; sourceTree = SOURCE_ROOT; };
+		D32C3ED10F163EC100D028F9 /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Platform.h; path = ../../src/libcpphaggle/include/libcpphaggle/Platform.h; sourceTree = SOURCE_ROOT; };
+		D32C3ED20F163EC100D028F9 /* PlatformDetect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlatformDetect.h; path = ../../src/libcpphaggle/include/libcpphaggle/PlatformDetect.h; sourceTree = SOURCE_ROOT; };
+		D32C3ED30F163EC100D028F9 /* Reference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reference.h; path = ../../src/libcpphaggle/include/libcpphaggle/Reference.h; sourceTree = SOURCE_ROOT; };
+		D32C3ED40F163EC100D028F9 /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Signal.h; path = ../../src/libcpphaggle/include/libcpphaggle/Signal.h; sourceTree = SOURCE_ROOT; };
+		D32C3ED50F163EC100D028F9 /* String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = String.h; path = ../../src/libcpphaggle/include/libcpphaggle/String.h; sourceTree = SOURCE_ROOT; };
+		D32C3ED60F163EC100D028F9 /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../src/libcpphaggle/include/libcpphaggle/Thread.h; sourceTree = SOURCE_ROOT; };
+		D32C3ED70F163EC100D028F9 /* Timeval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timeval.h; path = ../../src/libcpphaggle/include/libcpphaggle/Timeval.h; sourceTree = SOURCE_ROOT; };
+		D32C3ED80F163EC100D028F9 /* Watch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Watch.h; path = ../../src/libcpphaggle/include/libcpphaggle/Watch.h; sourceTree = SOURCE_ROOT; };
+		D34E36740E204EF400A73FDB /* libhaggleutils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhaggleutils.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D34E36A40E2050DB00A73FDB /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
+		D34E36A60E2050F700A73FDB /* libpthread.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpthread.dylib; path = usr/lib/libpthread.dylib; sourceTree = SDKROOT; };
+		D34E37ED0E205E8600A73FDB /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		D34E38680E20612A00A73FDB /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
+		D36461A00F114DFC008653A8 /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Address.h; path = ../../src/hagglekernel/Address.h; sourceTree = SOURCE_ROOT; };
+		D3CB19C50FDF1A0100BA3FC2 /* counting_bloomfilter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = counting_bloomfilter.c; path = ../../src/utils/counting_bloomfilter.c; sourceTree = SOURCE_ROOT; };
+		D3CB19C60FDF1A0100BA3FC2 /* counting_bloomfilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = counting_bloomfilter.h; path = ../../src/utils/counting_bloomfilter.h; sourceTree = SOURCE_ROOT; };
+		D3CB19C70FDF1A0100BA3FC2 /* haggleutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = haggleutils.h; path = ../../src/utils/haggleutils.h; sourceTree = SOURCE_ROOT; };
+		D3CB19CD0FDF1B2D00BA3FC2 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = "../../extlibs/openssl-0.9.8j/libcrypto.dylib"; sourceTree = SOURCE_ROOT; };
+		D3CB19D50FDF1C3B00BA3FC2 /* Bloomfilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Bloomfilter.cpp; path = ../../src/hagglekernel/Bloomfilter.cpp; sourceTree = SOURCE_ROOT; };
+		D3CB19D60FDF1C3B00BA3FC2 /* Bloomfilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bloomfilter.h; path = ../../src/hagglekernel/Bloomfilter.h; sourceTree = SOURCE_ROOT; };
+		D3CB19D70FDF1C3B00BA3FC2 /* Certificate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Certificate.cpp; path = ../../src/hagglekernel/Certificate.cpp; sourceTree = SOURCE_ROOT; };
+		D3CB19D80FDF1C3B00BA3FC2 /* Certificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Certificate.h; path = ../../src/hagglekernel/Certificate.h; sourceTree = SOURCE_ROOT; };
+		D3CB19D90FDF1C3B00BA3FC2 /* Forwarder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Forwarder.h; path = ../../src/hagglekernel/Forwarder.h; sourceTree = SOURCE_ROOT; };
+		D3CB19DA0FDF1C3B00BA3FC2 /* ForwarderAsynchronous.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ForwarderAsynchronous.cpp; path = ../../src/hagglekernel/ForwarderAsynchronous.cpp; sourceTree = SOURCE_ROOT; };
+		D3CB19DB0FDF1C3B00BA3FC2 /* ForwarderAsynchronous.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ForwarderAsynchronous.h; path = ../../src/hagglekernel/ForwarderAsynchronous.h; sourceTree = SOURCE_ROOT; };
+		D3CB19DC0FDF1C3B00BA3FC2 /* ForwarderEmpty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ForwarderEmpty.h; path = ../../src/hagglekernel/ForwarderEmpty.h; sourceTree = SOURCE_ROOT; };
+		D3CB19DD0FDF1C3B00BA3FC2 /* ForwarderProphet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ForwarderProphet.cpp; path = ../../src/hagglekernel/ForwarderProphet.cpp; sourceTree = SOURCE_ROOT; };
+		D3CB19DE0FDF1C3B00BA3FC2 /* ForwarderProphet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ForwarderProphet.h; path = ../../src/hagglekernel/ForwarderProphet.h; sourceTree = SOURCE_ROOT; };
+		D3EAD7EC0F126CF7008AC81A /* Trace.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Trace.cpp; path = ../../src/hagglekernel/Trace.cpp; sourceTree = SOURCE_ROOT; };
+		D3EAD7ED0F126CF7008AC81A /* Trace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Trace.h; path = ../../src/hagglekernel/Trace.h; sourceTree = SOURCE_ROOT; };
+		D3EAD7EE0F126CF7008AC81A /* Utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Utility.cpp; path = ../../src/hagglekernel/Utility.cpp; sourceTree = SOURCE_ROOT; };
+		D3EAD7EF0F126CF7008AC81A /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = ../../src/hagglekernel/Utility.h; sourceTree = SOURCE_ROOT; };
+		D3F44B7B0E83D724005981E6 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		D3F450930E83F513005981E6 /* liblibcpphaggle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibcpphaggle.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3F450980E83F5AE005981E6 /* Heap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Heap.cpp; path = ../../src/libcpphaggle/Heap.cpp; sourceTree = SOURCE_ROOT; };
+		D3F4509D0E83F5AE005981E6 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cpp; path = ../../src/libcpphaggle/Thread.cpp; sourceTree = SOURCE_ROOT; };
+		D3F4509F0E83F5AE005981E6 /* Timeval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Timeval.cpp; path = ../../src/libcpphaggle/Timeval.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450A30E83F5AE005981E6 /* Watch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Watch.cpp; path = ../../src/libcpphaggle/Watch.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450B50E83F626005981E6 /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = base64.c; path = ../../src/utils/base64.c; sourceTree = SOURCE_ROOT; };
+		D3F450B60E83F626005981E6 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base64.h; path = ../../src/utils/base64.h; sourceTree = SOURCE_ROOT; };
+		D3F450B70E83F626005981E6 /* bloomfilter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bloomfilter.c; path = ../../src/utils/bloomfilter.c; sourceTree = SOURCE_ROOT; };
+		D3F450B80E83F626005981E6 /* bloomfilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bloomfilter.h; path = ../../src/utils/bloomfilter.h; sourceTree = SOURCE_ROOT; };
+		D3F450BC0E83F626005981E6 /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = utils.c; path = ../../src/utils/utils.c; sourceTree = SOURCE_ROOT; };
+		D3F450BD0E83F626005981E6 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../../src/utils/utils.h; sourceTree = SOURCE_ROOT; };
+		D3F450CD0E83F6BF005981E6 /* Address.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Address.cpp; path = ../../src/hagglekernel/Address.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450CE0E83F6BF005981E6 /* ApplicationManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ApplicationManager.cpp; path = ../../src/hagglekernel/ApplicationManager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450CF0E83F6BF005981E6 /* Attribute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Attribute.cpp; path = ../../src/hagglekernel/Attribute.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450D00E83F6BF005981E6 /* BenchmarkManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BenchmarkManager.cpp; path = ../../src/hagglekernel/BenchmarkManager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450D10E83F6BF005981E6 /* Connectivity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Connectivity.cpp; path = ../../src/hagglekernel/Connectivity.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450D20E83F6BF005981E6 /* ConnectivityBluetooth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectivityBluetooth.cpp; path = ../../src/hagglekernel/ConnectivityBluetooth.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450D40E83F6BF005981E6 /* ConnectivityBluetoothMacOSX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectivityBluetoothMacOSX.cpp; path = ../../src/hagglekernel/ConnectivityBluetoothMacOSX.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450D70E83F6BF005981E6 /* ConnectivityEthernet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectivityEthernet.cpp; path = ../../src/hagglekernel/ConnectivityEthernet.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450D80E83F6BF005981E6 /* ConnectivityInterfacePolicy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectivityInterfacePolicy.cpp; path = ../../src/hagglekernel/ConnectivityInterfacePolicy.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450D90E83F6BF005981E6 /* ConnectivityLocal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectivityLocal.cpp; path = ../../src/hagglekernel/ConnectivityLocal.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450DB0E83F6BF005981E6 /* ConnectivityLocalMacOSX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectivityLocalMacOSX.cpp; path = ../../src/hagglekernel/ConnectivityLocalMacOSX.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450DF0E83F6BF005981E6 /* ConnectivityManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectivityManager.cpp; path = ../../src/hagglekernel/ConnectivityManager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450E00E83F6BF005981E6 /* ConnectivityMediaMacOSX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectivityMediaMacOSX.cpp; path = ../../src/hagglekernel/ConnectivityMediaMacOSX.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450E10E83F6BF005981E6 /* DataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DataManager.cpp; path = ../../src/hagglekernel/DataManager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450E20E83F6BF005981E6 /* DataObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DataObject.cpp; path = ../../src/hagglekernel/DataObject.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450E30E83F6BF005981E6 /* DataStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DataStore.cpp; path = ../../src/hagglekernel/DataStore.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450E40E83F6C0005981E6 /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debug.cpp; path = ../../src/hagglekernel/Debug.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450E50E83F6C0005981E6 /* DebugManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DebugManager.cpp; path = ../../src/hagglekernel/DebugManager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450E60E83F6C0005981E6 /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Event.cpp; path = ../../src/hagglekernel/Event.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450E70E83F6C0005981E6 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = ../../src/hagglekernel/Event.h; sourceTree = SOURCE_ROOT; };
+		D3F450E80E83F6C0005981E6 /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Filter.cpp; path = ../../src/hagglekernel/Filter.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450E90E83F6C0005981E6 /* ForwardingManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ForwardingManager.cpp; path = ../../src/hagglekernel/ForwardingManager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450EA0E83F6C0005981E6 /* HaggleKernel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HaggleKernel.cpp; path = ../../src/hagglekernel/HaggleKernel.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450EB0E83F6C0005981E6 /* Interface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Interface.cpp; path = ../../src/hagglekernel/Interface.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450EC0E83F6C0005981E6 /* InterfaceStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InterfaceStore.cpp; path = ../../src/hagglekernel/InterfaceStore.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450ED0E83F6C0005981E6 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/hagglekernel/main.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450EE0E83F6C0005981E6 /* Manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Manager.cpp; path = ../../src/hagglekernel/Manager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450EF0E83F6C0005981E6 /* ManagerModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ManagerModule.cpp; path = ../../src/hagglekernel/ManagerModule.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450F00E83F6C0005981E6 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Node.cpp; path = ../../src/hagglekernel/Node.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450F10E83F6C0005981E6 /* NodeManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NodeManager.cpp; path = ../../src/hagglekernel/NodeManager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450F20E83F6C0005981E6 /* NodeStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NodeStore.cpp; path = ../../src/hagglekernel/NodeStore.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450F30E83F6C0005981E6 /* Policy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Policy.cpp; path = ../../src/hagglekernel/Policy.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450F40E83F6C0005981E6 /* Protocol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Protocol.cpp; path = ../../src/hagglekernel/Protocol.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450F50E83F6C0005981E6 /* Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Protocol.h; path = ../../src/hagglekernel/Protocol.h; sourceTree = SOURCE_ROOT; };
+		D3F450F60E83F6C0005981E6 /* ProtocolLOCAL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtocolLOCAL.cpp; path = ../../src/hagglekernel/ProtocolLOCAL.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450F70E83F6C0005981E6 /* ProtocolManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtocolManager.cpp; path = ../../src/hagglekernel/ProtocolManager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450F80E83F6C0005981E6 /* ProtocolMedia.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtocolMedia.cpp; path = ../../src/hagglekernel/ProtocolMedia.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450F90E83F6C0005981E6 /* ProtocolRFCOMM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtocolRFCOMM.cpp; path = ../../src/hagglekernel/ProtocolRFCOMM.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450FA0E83F6C0005981E6 /* ProtocolSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtocolSocket.cpp; path = ../../src/hagglekernel/ProtocolSocket.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450FB0E83F6C0005981E6 /* ProtocolTCP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtocolTCP.cpp; path = ../../src/hagglekernel/ProtocolTCP.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450FC0E83F6C0005981E6 /* ProtocolUDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtocolUDP.cpp; path = ../../src/hagglekernel/ProtocolUDP.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450FD0E83F6C0005981E6 /* Queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Queue.cpp; path = ../../src/hagglekernel/Queue.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450FE0E83F6C0005981E6 /* RepositoryEntry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RepositoryEntry.cpp; path = ../../src/hagglekernel/RepositoryEntry.cpp; sourceTree = SOURCE_ROOT; };
+		D3F450FF0E83F6C0005981E6 /* ResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ResourceManager.cpp; path = ../../src/hagglekernel/ResourceManager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F451010E83F6C0005981E6 /* ResourceMonitorMacOSX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ResourceMonitorMacOSX.cpp; path = ../../src/hagglekernel/ResourceMonitorMacOSX.cpp; sourceTree = SOURCE_ROOT; };
+		D3F451040E83F6C0005981E6 /* SecurityManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SecurityManager.cpp; path = ../../src/hagglekernel/SecurityManager.cpp; sourceTree = SOURCE_ROOT; };
+		D3F451050E83F6C0005981E6 /* SQLDataStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SQLDataStore.cpp; path = ../../src/hagglekernel/SQLDataStore.cpp; sourceTree = SOURCE_ROOT; };
+		D3F451070E83F6C0005981E6 /* XMLMetadata.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XMLMetadata.cpp; path = ../../src/hagglekernel/XMLMetadata.cpp; sourceTree = SOURCE_ROOT; };
+		D3F451410E83F755005981E6 /* ApplicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ApplicationManager.h; path = ../../src/hagglekernel/ApplicationManager.h; sourceTree = SOURCE_ROOT; };
+		D3F451420E83F755005981E6 /* Attribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Attribute.h; path = ../../src/hagglekernel/Attribute.h; sourceTree = SOURCE_ROOT; };
+		D3F451430E83F755005981E6 /* BenchmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BenchmarkManager.h; path = ../../src/hagglekernel/BenchmarkManager.h; sourceTree = SOURCE_ROOT; };
+		D3F451440E83F755005981E6 /* Connectivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Connectivity.h; path = ../../src/hagglekernel/Connectivity.h; sourceTree = SOURCE_ROOT; };
+		D3F451450E83F755005981E6 /* ConnectivityBluetooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectivityBluetooth.h; path = ../../src/hagglekernel/ConnectivityBluetooth.h; sourceTree = SOURCE_ROOT; };
+		D3F451460E83F755005981E6 /* ConnectivityBluetoothLinux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectivityBluetoothLinux.h; path = ../../src/hagglekernel/ConnectivityBluetoothLinux.h; sourceTree = SOURCE_ROOT; };
+		D3F451470E83F755005981E6 /* ConnectivityBluetoothMacOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectivityBluetoothMacOSX.h; path = ../../src/hagglekernel/ConnectivityBluetoothMacOSX.h; sourceTree = SOURCE_ROOT; };
+		D3F451480E83F755005981E6 /* ConnectivityEthernet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectivityEthernet.h; path = ../../src/hagglekernel/ConnectivityEthernet.h; sourceTree = SOURCE_ROOT; };
+		D3F451490E83F755005981E6 /* ConnectivityInterfacePolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectivityInterfacePolicy.h; path = ../../src/hagglekernel/ConnectivityInterfacePolicy.h; sourceTree = SOURCE_ROOT; };
+		D3F4514A0E83F755005981E6 /* ConnectivityLocal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectivityLocal.h; path = ../../src/hagglekernel/ConnectivityLocal.h; sourceTree = SOURCE_ROOT; };
+		D3F4514B0E83F755005981E6 /* ConnectivityLocalMacOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectivityLocalMacOSX.h; path = ../../src/hagglekernel/ConnectivityLocalMacOSX.h; sourceTree = SOURCE_ROOT; };
+		D3F4514C0E83F755005981E6 /* ConnectivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectivityManager.h; path = ../../src/hagglekernel/ConnectivityManager.h; sourceTree = SOURCE_ROOT; };
+		D3F4514D0E83F755005981E6 /* ConnectivityMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectivityMedia.h; path = ../../src/hagglekernel/ConnectivityMedia.h; sourceTree = SOURCE_ROOT; };
+		D3F4514E0E83F755005981E6 /* ConnectivityMediaMacOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectivityMediaMacOSX.h; path = ../../src/hagglekernel/ConnectivityMediaMacOSX.h; sourceTree = SOURCE_ROOT; };
+		D3F4514F0E83F755005981E6 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataManager.h; path = ../../src/hagglekernel/DataManager.h; sourceTree = SOURCE_ROOT; };
+		D3F451500E83F755005981E6 /* DataObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataObject.h; path = ../../src/hagglekernel/DataObject.h; sourceTree = SOURCE_ROOT; };
+		D3F451510E83F755005981E6 /* DataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataStore.h; path = ../../src/hagglekernel/DataStore.h; sourceTree = SOURCE_ROOT; };
+		D3F451520E83F755005981E6 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = ../../src/hagglekernel/Debug.h; sourceTree = SOURCE_ROOT; };
+		D3F451530E83F755005981E6 /* DebugManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DebugManager.h; path = ../../src/hagglekernel/DebugManager.h; sourceTree = SOURCE_ROOT; };
+		D3F451540E83F755005981E6 /* EventQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventQueue.h; path = ../../src/hagglekernel/EventQueue.h; sourceTree = SOURCE_ROOT; };
+		D3F451550E83F755005981E6 /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Filter.h; path = ../../src/hagglekernel/Filter.h; sourceTree = SOURCE_ROOT; };
+		D3F451560E83F755005981E6 /* ForwardingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ForwardingManager.h; path = ../../src/hagglekernel/ForwardingManager.h; sourceTree = SOURCE_ROOT; };
+		D3F451570E83F756005981E6 /* HaggleKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HaggleKernel.h; path = ../../src/hagglekernel/HaggleKernel.h; sourceTree = SOURCE_ROOT; };
+		D3F451580E83F756005981E6 /* Interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Interface.h; path = ../../src/hagglekernel/Interface.h; sourceTree = SOURCE_ROOT; };
+		D3F451590E83F756005981E6 /* InterfaceStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterfaceStore.h; path = ../../src/hagglekernel/InterfaceStore.h; sourceTree = SOURCE_ROOT; };
+		D3F4515A0E83F756005981E6 /* Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Manager.h; path = ../../src/hagglekernel/Manager.h; sourceTree = SOURCE_ROOT; };
+		D3F4515B0E83F756005981E6 /* ManagerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ManagerModule.h; path = ../../src/hagglekernel/ManagerModule.h; sourceTree = SOURCE_ROOT; };
+		D3F4515C0E83F756005981E6 /* Metadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Metadata.h; path = ../../src/hagglekernel/Metadata.h; sourceTree = SOURCE_ROOT; };
+		D3F4515D0E83F756005981E6 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = ../../src/hagglekernel/Node.h; sourceTree = SOURCE_ROOT; };
+		D3F4515E0E83F756005981E6 /* NodeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodeManager.h; path = ../../src/hagglekernel/NodeManager.h; sourceTree = SOURCE_ROOT; };
+		D3F4515F0E83F756005981E6 /* NodeStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodeStore.h; path = ../../src/hagglekernel/NodeStore.h; sourceTree = SOURCE_ROOT; };
+		D3F451600E83F756005981E6 /* Policy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Policy.h; path = ../../src/hagglekernel/Policy.h; sourceTree = SOURCE_ROOT; };
+		D3F451610E83F756005981E6 /* ProtocolLOCAL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtocolLOCAL.h; path = ../../src/hagglekernel/ProtocolLOCAL.h; sourceTree = SOURCE_ROOT; };
+		D3F451620E83F756005981E6 /* ProtocolManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtocolManager.h; path = ../../src/hagglekernel/ProtocolManager.h; sourceTree = SOURCE_ROOT; };
+		D3F451630E83F756005981E6 /* ProtocolMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtocolMedia.h; path = ../../src/hagglekernel/ProtocolMedia.h; sourceTree = SOURCE_ROOT; };
+		D3F451640E83F756005981E6 /* ProtocolRFCOMM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtocolRFCOMM.h; path = ../../src/hagglekernel/ProtocolRFCOMM.h; sourceTree = SOURCE_ROOT; };
+		D3F451650E83F756005981E6 /* ProtocolRFCOMMMacOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtocolRFCOMMMacOSX.h; path = ../../src/hagglekernel/ProtocolRFCOMMMacOSX.h; sourceTree = SOURCE_ROOT; };
+		D3F451660E83F756005981E6 /* ProtocolRFCOMMMacOSX.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ProtocolRFCOMMMacOSX.mm; path = ../../src/hagglekernel/ProtocolRFCOMMMacOSX.mm; sourceTree = SOURCE_ROOT; };
+		D3F451670E83F756005981E6 /* ProtocolSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtocolSocket.h; path = ../../src/hagglekernel/ProtocolSocket.h; sourceTree = SOURCE_ROOT; };
+		D3F451680E83F756005981E6 /* ProtocolTCP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtocolTCP.h; path = ../../src/hagglekernel/ProtocolTCP.h; sourceTree = SOURCE_ROOT; };
+		D3F451690E83F756005981E6 /* ProtocolUDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtocolUDP.h; path = ../../src/hagglekernel/ProtocolUDP.h; sourceTree = SOURCE_ROOT; };
+		D3F4516A0E83F756005981E6 /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = ../../src/hagglekernel/Queue.h; sourceTree = SOURCE_ROOT; };
+		D3F4516B0E83F756005981E6 /* RepositoryEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepositoryEntry.h; path = ../../src/hagglekernel/RepositoryEntry.h; sourceTree = SOURCE_ROOT; };
+		D3F4516C0E83F756005981E6 /* ResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResourceManager.h; path = ../../src/hagglekernel/ResourceManager.h; sourceTree = SOURCE_ROOT; };
+		D3F4516D0E83F756005981E6 /* ResourceMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResourceMonitor.h; path = ../../src/hagglekernel/ResourceMonitor.h; sourceTree = SOURCE_ROOT; };
+		D3F4516E0E83F756005981E6 /* ResourceMonitorMacOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResourceMonitorMacOSX.h; path = ../../src/hagglekernel/ResourceMonitorMacOSX.h; sourceTree = SOURCE_ROOT; };
+		D3F4516F0E83F756005981E6 /* SecurityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SecurityManager.h; path = ../../src/hagglekernel/SecurityManager.h; sourceTree = SOURCE_ROOT; };
+		D3F451700E83F756005981E6 /* SQLDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SQLDataStore.h; path = ../../src/hagglekernel/SQLDataStore.h; sourceTree = SOURCE_ROOT; };
+		D3F451720E83F756005981E6 /* XMLMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLMetadata.h; path = ../../src/hagglekernel/XMLMetadata.h; sourceTree = SOURCE_ROOT; };
+		D3F675CB0F10665D00907159 /* Condition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Condition.cpp; path = ../../src/libcpphaggle/Condition.cpp; sourceTree = SOURCE_ROOT; };
+		D3F675CF0F10665D00907159 /* Mutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Mutex.cpp; path = ../../src/libcpphaggle/Mutex.cpp; sourceTree = SOURCE_ROOT; };
+		D3F675D20F10665D00907159 /* Signal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Signal.cpp; path = ../../src/libcpphaggle/Signal.cpp; sourceTree = SOURCE_ROOT; };
+		D3F675D40F10665D00907159 /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = String.cpp; path = ../../src/libcpphaggle/String.cpp; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				D34E37E90E205E2700A73FDB /* libhaggleutils.a in Frameworks */,
+				D34E37EC0E205E7B00A73FDB /* libxml2.2.dylib in Frameworks */,
+				D34E37EE0E205E8600A73FDB /* libsqlite3.dylib in Frameworks */,
+				D34E37EF0E205E9300A73FDB /* libpthread.dylib in Frameworks */,
+				D34E38690E20612A00A73FDB /* CoreFoundation.framework in Frameworks */,
+				429BD3290E6E8E7600A19552 /* CoreGraphics.framework in Frameworks */,
+				D3F451750E83F7CF005981E6 /* liblibcpphaggle.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D34E362F0E204D4000A73FDB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D34E36A50E2050DB00A73FDB /* libxml2.2.dylib in Frameworks */,
+				D34E36A70E2050F700A73FDB /* libpthread.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D34E36720E204EF400A73FDB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3CB19CE0FDF1B2D00BA3FC2 /* libcrypto.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3F450910E83F513005981E6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D6058910D05DD3D006BFB54 /* Haggle.app */,
+				D34E36740E204EF400A73FDB /* libhaggleutils.a */,
+				D3F450930E83F513005981E6 /* liblibcpphaggle.a */,
+				42C2FDFF0E89270B00172811 /* liblibhaggle.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				D35A41580E26DBBF00F2AA89 /* Sources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				D34E36A40E2050DB00A73FDB /* libxml2.2.dylib */,
+				D3CB19CD0FDF1B2D00BA3FC2 /* libcrypto.dylib */,
+				D34E36A60E2050F700A73FDB /* libpthread.dylib */,
+				D34E37ED0E205E8600A73FDB /* libsqlite3.dylib */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Haggle */ = {
+			isa = PBXGroup;
+			children = (
+				D3F44B390E83BB52005981E6 /* Sources */,
+				D3F44B380E83BB35005981E6 /* Headers */,
+			);
+			name = Haggle;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D3F44B7B0E83D724005981E6 /* IOKit.framework */,
+				429BD3280E6E8E7600A19552 /* CoreGraphics.framework */,
+				D34E38680E20612A00A73FDB /* CoreFoundation.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D35A41580E26DBBF00F2AA89 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D3F450B30E83F5B1005981E6 /* libcpphaggle */,
+				29B97315FDCFA39411CA2CEA /* Haggle */,
+				D38F40310E204951001EAD31 /* haggleutils */,
+				D38F40320E20497C001EAD31 /* libhaggle */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		D38F40310E204951001EAD31 /* haggleutils */ = {
+			isa = PBXGroup;
+			children = (
+				D3CB19C50FDF1A0100BA3FC2 /* counting_bloomfilter.c */,
+				D3CB19C60FDF1A0100BA3FC2 /* counting_bloomfilter.h */,
+				D3CB19C70FDF1A0100BA3FC2 /* haggleutils.h */,
+				D3F450B50E83F626005981E6 /* base64.c */,
+				D3F450B60E83F626005981E6 /* base64.h */,
+				D3F450B70E83F626005981E6 /* bloomfilter.c */,
+				D3F450B80E83F626005981E6 /* bloomfilter.h */,
+				D3F450BC0E83F626005981E6 /* utils.c */,
+				D3F450BD0E83F626005981E6 /* utils.h */,
+			);
+			name = haggleutils;
+			sourceTree = "<group>";
+		};
+		D38F40320E20497C001EAD31 /* libhaggle */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = libhaggle;
+			sourceTree = "<group>";
+		};
+		D3F44B380E83BB35005981E6 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				D3CB19D60FDF1C3B00BA3FC2 /* Bloomfilter.h */,
+				D3CB19D80FDF1C3B00BA3FC2 /* Certificate.h */,
+				D3CB19D90FDF1C3B00BA3FC2 /* Forwarder.h */,
+				D3CB19DB0FDF1C3B00BA3FC2 /* ForwarderAsynchronous.h */,
+				D3CB19DC0FDF1C3B00BA3FC2 /* ForwarderEmpty.h */,
+				D3CB19DE0FDF1C3B00BA3FC2 /* ForwarderProphet.h */,
+				D3EAD7ED0F126CF7008AC81A /* Trace.h */,
+				D3EAD7EF0F126CF7008AC81A /* Utility.h */,
+				D36461A00F114DFC008653A8 /* Address.h */,
+				D3F450F50E83F6C0005981E6 /* Protocol.h */,
+				D3F450E70E83F6C0005981E6 /* Event.h */,
+				32CA4F630368D1EE00C91783 /* iphone_Prefix.pch */,
+				D3F451410E83F755005981E6 /* ApplicationManager.h */,
+				D3F451420E83F755005981E6 /* Attribute.h */,
+				D3F451430E83F755005981E6 /* BenchmarkManager.h */,
+				D3F451440E83F755005981E6 /* Connectivity.h */,
+				D3F451450E83F755005981E6 /* ConnectivityBluetooth.h */,
+				D3F451460E83F755005981E6 /* ConnectivityBluetoothLinux.h */,
+				D3F451470E83F755005981E6 /* ConnectivityBluetoothMacOSX.h */,
+				D3F451480E83F755005981E6 /* ConnectivityEthernet.h */,
+				D3F451490E83F755005981E6 /* ConnectivityInterfacePolicy.h */,
+				D3F4514A0E83F755005981E6 /* ConnectivityLocal.h */,
+				D3F4514B0E83F755005981E6 /* ConnectivityLocalMacOSX.h */,
+				D3F4514C0E83F755005981E6 /* ConnectivityManager.h */,
+				D3F4514D0E83F755005981E6 /* ConnectivityMedia.h */,
+				D3F4514E0E83F755005981E6 /* ConnectivityMediaMacOSX.h */,
+				D3F4514F0E83F755005981E6 /* DataManager.h */,
+				D3F451500E83F755005981E6 /* DataObject.h */,
+				D3F451510E83F755005981E6 /* DataStore.h */,
+				D3F451520E83F755005981E6 /* Debug.h */,
+				D3F451530E83F755005981E6 /* DebugManager.h */,
+				D3F451540E83F755005981E6 /* EventQueue.h */,
+				D3F451550E83F755005981E6 /* Filter.h */,
+				D3F451560E83F755005981E6 /* ForwardingManager.h */,
+				D3F451570E83F756005981E6 /* HaggleKernel.h */,
+				D3F451580E83F756005981E6 /* Interface.h */,
+				D3F451590E83F756005981E6 /* InterfaceStore.h */,
+				D3F4515A0E83F756005981E6 /* Manager.h */,
+				D3F4515B0E83F756005981E6 /* ManagerModule.h */,
+				D3F4515C0E83F756005981E6 /* Metadata.h */,
+				D3F4515D0E83F756005981E6 /* Node.h */,
+				D3F4515E0E83F756005981E6 /* NodeManager.h */,
+				D3F4515F0E83F756005981E6 /* NodeStore.h */,
+				D3F451600E83F756005981E6 /* Policy.h */,
+				D3F451610E83F756005981E6 /* ProtocolLOCAL.h */,
+				D3F451620E83F756005981E6 /* ProtocolManager.h */,
+				D3F451630E83F756005981E6 /* ProtocolMedia.h */,
+				D3F451640E83F756005981E6 /* ProtocolRFCOMM.h */,
+				D3F451650E83F756005981E6 /* ProtocolRFCOMMMacOSX.h */,
+				D3F451670E83F756005981E6 /* ProtocolSocket.h */,
+				D3F451680E83F756005981E6 /* ProtocolTCP.h */,
+				D3F451690E83F756005981E6 /* ProtocolUDP.h */,
+				D3F4516A0E83F756005981E6 /* Queue.h */,
+				D3F4516B0E83F756005981E6 /* RepositoryEntry.h */,
+				D3F4516C0E83F756005981E6 /* ResourceManager.h */,
+				D3F4516D0E83F756005981E6 /* ResourceMonitor.h */,
+				D3F4516E0E83F756005981E6 /* ResourceMonitorMacOSX.h */,
+				D3F4516F0E83F756005981E6 /* SecurityManager.h */,
+				D3F451700E83F756005981E6 /* SQLDataStore.h */,
+				D3F451720E83F756005981E6 /* XMLMetadata.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		D3F44B390E83BB52005981E6 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D3CB19D50FDF1C3B00BA3FC2 /* Bloomfilter.cpp */,
+				D3CB19D70FDF1C3B00BA3FC2 /* Certificate.cpp */,
+				D3CB19DA0FDF1C3B00BA3FC2 /* ForwarderAsynchronous.cpp */,
+				D3CB19DD0FDF1C3B00BA3FC2 /* ForwarderProphet.cpp */,
+				D3EAD7EE0F126CF7008AC81A /* Utility.cpp */,
+				D3EAD7EC0F126CF7008AC81A /* Trace.cpp */,
+				D3F450CD0E83F6BF005981E6 /* Address.cpp */,
+				D3F450CE0E83F6BF005981E6 /* ApplicationManager.cpp */,
+				D3F450CF0E83F6BF005981E6 /* Attribute.cpp */,
+				D3F450D00E83F6BF005981E6 /* BenchmarkManager.cpp */,
+				D3F450D10E83F6BF005981E6 /* Connectivity.cpp */,
+				D3F450D20E83F6BF005981E6 /* ConnectivityBluetooth.cpp */,
+				D3F450D40E83F6BF005981E6 /* ConnectivityBluetoothMacOSX.cpp */,
+				D3F450D70E83F6BF005981E6 /* ConnectivityEthernet.cpp */,
+				D3F450D80E83F6BF005981E6 /* ConnectivityInterfacePolicy.cpp */,
+				D3F450D90E83F6BF005981E6 /* ConnectivityLocal.cpp */,
+				D3F450DB0E83F6BF005981E6 /* ConnectivityLocalMacOSX.cpp */,
+				D3F450DF0E83F6BF005981E6 /* ConnectivityManager.cpp */,
+				D3F450E00E83F6BF005981E6 /* ConnectivityMediaMacOSX.cpp */,
+				D3F450E10E83F6BF005981E6 /* DataManager.cpp */,
+				D3F450E20E83F6BF005981E6 /* DataObject.cpp */,
+				D3F450E30E83F6BF005981E6 /* DataStore.cpp */,
+				D3F450E40E83F6C0005981E6 /* Debug.cpp */,
+				D3F450E50E83F6C0005981E6 /* DebugManager.cpp */,
+				D3F450E60E83F6C0005981E6 /* Event.cpp */,
+				D3F450E80E83F6C0005981E6 /* Filter.cpp */,
+				D3F450E90E83F6C0005981E6 /* ForwardingManager.cpp */,
+				D3F450EA0E83F6C0005981E6 /* HaggleKernel.cpp */,
+				D3F450EB0E83F6C0005981E6 /* Interface.cpp */,
+				D3F450EC0E83F6C0005981E6 /* InterfaceStore.cpp */,
+				D3F450ED0E83F6C0005981E6 /* main.cpp */,
+				D3F450EE0E83F6C0005981E6 /* Manager.cpp */,
+				D3F450EF0E83F6C0005981E6 /* ManagerModule.cpp */,
+				D3F450F00E83F6C0005981E6 /* Node.cpp */,
+				D3F450F10E83F6C0005981E6 /* NodeManager.cpp */,
+				D3F450F20E83F6C0005981E6 /* NodeStore.cpp */,
+				D3F450F30E83F6C0005981E6 /* Policy.cpp */,
+				D3F450F40E83F6C0005981E6 /* Protocol.cpp */,
+				D3F450F60E83F6C0005981E6 /* ProtocolLOCAL.cpp */,
+				D3F450F70E83F6C0005981E6 /* ProtocolManager.cpp */,
+				D3F450F80E83F6C0005981E6 /* ProtocolMedia.cpp */,
+				D3F450F90E83F6C0005981E6 /* ProtocolRFCOMM.cpp */,
+				D3F450FA0E83F6C0005981E6 /* ProtocolSocket.cpp */,
+				D3F450FB0E83F6C0005981E6 /* ProtocolTCP.cpp */,
+				D3F450FC0E83F6C0005981E6 /* ProtocolUDP.cpp */,
+				D3F450FD0E83F6C0005981E6 /* Queue.cpp */,
+				D3F450FE0E83F6C0005981E6 /* RepositoryEntry.cpp */,
+				D3F450FF0E83F6C0005981E6 /* ResourceManager.cpp */,
+				D3F451660E83F756005981E6 /* ProtocolRFCOMMMacOSX.mm */,
+				D3F451010E83F6C0005981E6 /* ResourceMonitorMacOSX.cpp */,
+				D3F451040E83F6C0005981E6 /* SecurityManager.cpp */,
+				D3F451050E83F6C0005981E6 /* SQLDataStore.cpp */,
+				D3F451070E83F6C0005981E6 /* XMLMetadata.cpp */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		D3F450B30E83F5B1005981E6 /* libcpphaggle */ = {
+			isa = PBXGroup;
+			children = (
+				D32C3ECA0F163EC100D028F9 /* Condition.h */,
+				D32C3ECB0F163EC100D028F9 /* Exception.h */,
+				D32C3ECC0F163EC100D028F9 /* HashMap.h */,
+				D32C3ECD0F163EC100D028F9 /* Heap.h */,
+				D32C3ECE0F163EC100D028F9 /* List.h */,
+				D32C3ECF0F163EC100D028F9 /* Mutex.h */,
+				D32C3ED00F163EC100D028F9 /* Pair.h */,
+				D32C3ED10F163EC100D028F9 /* Platform.h */,
+				D32C3ED20F163EC100D028F9 /* PlatformDetect.h */,
+				D32C3ED30F163EC100D028F9 /* Reference.h */,
+				D32C3ED40F163EC100D028F9 /* Signal.h */,
+				D32C3ED50F163EC100D028F9 /* String.h */,
+				D32C3ED60F163EC100D028F9 /* Thread.h */,
+				D32C3ED70F163EC100D028F9 /* Timeval.h */,
+				D32C3ED80F163EC100D028F9 /* Watch.h */,
+				D3F675CB0F10665D00907159 /* Condition.cpp */,
+				D3F675CF0F10665D00907159 /* Mutex.cpp */,
+				D3F675D20F10665D00907159 /* Signal.cpp */,
+				D3F675D40F10665D00907159 /* String.cpp */,
+				D3F450980E83F5AE005981E6 /* Heap.cpp */,
+				D3F4509D0E83F5AE005981E6 /* Thread.cpp */,
+				D3F4509F0E83F5AE005981E6 /* Timeval.cpp */,
+				D3F450A30E83F5AE005981E6 /* Watch.cpp */,
+			);
+			name = libcpphaggle;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D34E362D0E204D4000A73FDB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D34E36700E204EF400A73FDB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3F450BF0E83F626005981E6 /* base64.h in Headers */,
+				D3F450C10E83F626005981E6 /* bloomfilter.h in Headers */,
+				D3F450C60E83F626005981E6 /* utils.h in Headers */,
+				D3CB19C90FDF1A0100BA3FC2 /* counting_bloomfilter.h in Headers */,
+				D3CB19CA0FDF1A0100BA3FC2 /* haggleutils.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3EAD8130F126E24008AC81A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3CB19E00FDF1C3B00BA3FC2 /* Bloomfilter.h in Headers */,
+				D3CB19E20FDF1C3B00BA3FC2 /* Certificate.h in Headers */,
+				D3CB19E30FDF1C3B00BA3FC2 /* Forwarder.h in Headers */,
+				D3CB19E50FDF1C3B00BA3FC2 /* ForwarderAsynchronous.h in Headers */,
+				D3CB19E60FDF1C3B00BA3FC2 /* ForwarderEmpty.h in Headers */,
+				D3CB19E80FDF1C3B00BA3FC2 /* ForwarderProphet.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3F4508F0E83F513005981E6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32C3ED90F163EC100D028F9 /* Condition.h in Headers */,
+				D32C3EDA0F163EC100D028F9 /* Exception.h in Headers */,
+				D32C3EDB0F163EC100D028F9 /* HashMap.h in Headers */,
+				D32C3EDC0F163EC100D028F9 /* Heap.h in Headers */,
+				D32C3EDD0F163EC100D028F9 /* List.h in Headers */,
+				D32C3EDE0F163EC100D028F9 /* Mutex.h in Headers */,
+				D32C3EDF0F163EC100D028F9 /* Pair.h in Headers */,
+				D32C3EE00F163EC100D028F9 /* Platform.h in Headers */,
+				D32C3EE10F163EC100D028F9 /* PlatformDetect.h in Headers */,
+				D32C3EE20F163EC100D028F9 /* Reference.h in Headers */,
+				D32C3EE30F163EC100D028F9 /* Signal.h in Headers */,
+				D32C3EE40F163EC100D028F9 /* String.h in Headers */,
+				D32C3EE50F163EC100D028F9 /* Thread.h in Headers */,
+				D32C3EE60F163EC100D028F9 /* Timeval.h in Headers */,
+				D32C3EE70F163EC100D028F9 /* Watch.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1D6058900D05DD3D006BFB54 /* Haggle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Haggle" */;
+			buildPhases = (
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				1D60588E0D05DD3D006BFB54 /* Sources */,
+				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+				D3EAD8130F126E24008AC81A /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3F450CC0E83F654005981E6 /* PBXTargetDependency */,
+				D34E36940E204F4400A73FDB /* PBXTargetDependency */,
+			);
+			name = Haggle;
+			productName = iphone;
+			productReference = 1D6058910D05DD3D006BFB54 /* Haggle.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D34E36300E204D4000A73FDB /* libhaggle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D34E36340E204D6D00A73FDB /* Build configuration list for PBXNativeTarget "libhaggle" */;
+			buildPhases = (
+				D34E362D0E204D4000A73FDB /* Headers */,
+				D34E362E0E204D4000A73FDB /* Sources */,
+				D34E362F0E204D4000A73FDB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libhaggle;
+			productName = libhaggle;
+			productReference = 42C2FDFF0E89270B00172811 /* liblibhaggle.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D34E36730E204EF400A73FDB /* haggleutils */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D34E36920E204F0800A73FDB /* Build configuration list for PBXNativeTarget "haggleutils" */;
+			buildPhases = (
+				D34E36700E204EF400A73FDB /* Headers */,
+				D34E36710E204EF400A73FDB /* Sources */,
+				D34E36720E204EF400A73FDB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = haggleutils;
+			productName = haggleutils;
+			productReference = D34E36740E204EF400A73FDB /* libhaggleutils.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D3F450920E83F513005981E6 /* libcpphaggle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3F450960E83F545005981E6 /* Build configuration list for PBXNativeTarget "libcpphaggle" */;
+			buildPhases = (
+				D3F4508F0E83F513005981E6 /* Headers */,
+				D3F450900E83F513005981E6 /* Sources */,
+				D3F450910E83F513005981E6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libcpphaggle;
+			productName = libcpphaggle;
+			productReference = D3F450930E83F513005981E6 /* liblibcpphaggle.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Haggle" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				en,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D6058900D05DD3D006BFB54 /* Haggle */,
+				D34E36300E204D4000A73FDB /* libhaggle */,
+				D34E36730E204EF400A73FDB /* haggleutils */,
+				D3F450920E83F513005981E6 /* libcpphaggle */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D60588D0D05DD3D006BFB54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D60588E0D05DD3D006BFB54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3F451080E83F6C0005981E6 /* Address.cpp in Sources */,
+				D3F451090E83F6C0005981E6 /* ApplicationManager.cpp in Sources */,
+				D3F4510A0E83F6C0005981E6 /* Attribute.cpp in Sources */,
+				D3F4510B0E83F6C0005981E6 /* BenchmarkManager.cpp in Sources */,
+				D3F4510C0E83F6C0005981E6 /* Connectivity.cpp in Sources */,
+				D3F4510D0E83F6C0005981E6 /* ConnectivityBluetooth.cpp in Sources */,
+				D3F4510F0E83F6C0005981E6 /* ConnectivityBluetoothMacOSX.cpp in Sources */,
+				D3F451120E83F6C0005981E6 /* ConnectivityEthernet.cpp in Sources */,
+				D3F451130E83F6C0005981E6 /* ConnectivityInterfacePolicy.cpp in Sources */,
+				D3F451140E83F6C0005981E6 /* ConnectivityLocal.cpp in Sources */,
+				D3F451160E83F6C0005981E6 /* ConnectivityLocalMacOSX.cpp in Sources */,
+				D3F4511A0E83F6C0005981E6 /* ConnectivityManager.cpp in Sources */,
+				D3F4511B0E83F6C0005981E6 /* ConnectivityMediaMacOSX.cpp in Sources */,
+				D3F4511C0E83F6C0005981E6 /* DataManager.cpp in Sources */,
+				D3F4511D0E83F6C0005981E6 /* DataObject.cpp in Sources */,
+				D3F4511E0E83F6C0005981E6 /* DataStore.cpp in Sources */,
+				D3F4511F0E83F6C0005981E6 /* Debug.cpp in Sources */,
+				D3F451200E83F6C0005981E6 /* DebugManager.cpp in Sources */,
+				D3F451210E83F6C0005981E6 /* Event.cpp in Sources */,
+				D3F451220E83F6C0005981E6 /* Filter.cpp in Sources */,
+				D3F451230E83F6C0005981E6 /* ForwardingManager.cpp in Sources */,
+				D3F451240E83F6C0005981E6 /* HaggleKernel.cpp in Sources */,
+				D3F451250E83F6C0005981E6 /* Interface.cpp in Sources */,
+				D3F451260E83F6C0005981E6 /* InterfaceStore.cpp in Sources */,
+				D3F451270E83F6C0005981E6 /* main.cpp in Sources */,
+				D3F451280E83F6C0005981E6 /* Manager.cpp in Sources */,
+				D3F451290E83F6C0005981E6 /* ManagerModule.cpp in Sources */,
+				D3F4512A0E83F6C0005981E6 /* Node.cpp in Sources */,
+				D3F4512B0E83F6C0005981E6 /* NodeManager.cpp in Sources */,
+				D3F4512C0E83F6C0005981E6 /* NodeStore.cpp in Sources */,
+				D3F4512D0E83F6C0005981E6 /* Policy.cpp in Sources */,
+				D3F4512E0E83F6C0005981E6 /* Protocol.cpp in Sources */,
+				D3F4512F0E83F6C0005981E6 /* ProtocolLOCAL.cpp in Sources */,
+				D3F451300E83F6C0005981E6 /* ProtocolManager.cpp in Sources */,
+				D3F451310E83F6C0005981E6 /* ProtocolMedia.cpp in Sources */,
+				D3F451320E83F6C0005981E6 /* ProtocolRFCOMM.cpp in Sources */,
+				D3F451330E83F6C0005981E6 /* ProtocolSocket.cpp in Sources */,
+				D3F451340E83F6C0005981E6 /* ProtocolTCP.cpp in Sources */,
+				D3F451350E83F6C0005981E6 /* ProtocolUDP.cpp in Sources */,
+				D3F451360E83F6C0005981E6 /* Queue.cpp in Sources */,
+				D3F451370E83F6C0005981E6 /* RepositoryEntry.cpp in Sources */,
+				D3F451380E83F6C0005981E6 /* ResourceManager.cpp in Sources */,
+				D3F4513A0E83F6C0005981E6 /* ResourceMonitorMacOSX.cpp in Sources */,
+				D3F4513D0E83F6C0005981E6 /* SecurityManager.cpp in Sources */,
+				D3F4513E0E83F6C0005981E6 /* SQLDataStore.cpp in Sources */,
+				D3F451400E83F6C0005981E6 /* XMLMetadata.cpp in Sources */,
+				D3F451730E83F756005981E6 /* ProtocolRFCOMMMacOSX.mm in Sources */,
+				D3EAD80F0F126DEC008AC81A /* Utility.cpp in Sources */,
+				D3EAD8100F126DEC008AC81A /* Trace.cpp in Sources */,
+				D3CB19DF0FDF1C3B00BA3FC2 /* Bloomfilter.cpp in Sources */,
+				D3CB19E10FDF1C3B00BA3FC2 /* Certificate.cpp in Sources */,
+				D3CB19E40FDF1C3B00BA3FC2 /* ForwarderAsynchronous.cpp in Sources */,
+				D3CB19E70FDF1C3B00BA3FC2 /* ForwarderProphet.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D34E362E0E204D4000A73FDB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D34E36710E204EF400A73FDB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3F450BE0E83F626005981E6 /* base64.c in Sources */,
+				D3F450C00E83F626005981E6 /* bloomfilter.c in Sources */,
+				D3F450C50E83F626005981E6 /* utils.c in Sources */,
+				D3CB19C80FDF1A0100BA3FC2 /* counting_bloomfilter.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3F450900E83F513005981E6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3F450A60E83F5AE005981E6 /* Heap.cpp in Sources */,
+				D3F450AB0E83F5AE005981E6 /* Thread.cpp in Sources */,
+				D3F450AD0E83F5AE005981E6 /* Timeval.cpp in Sources */,
+				D3F450B10E83F5AE005981E6 /* Watch.cpp in Sources */,
+				D3F675D60F10665D00907159 /* Condition.cpp in Sources */,
+				D3F675DA0F10665D00907159 /* Mutex.cpp in Sources */,
+				D3F675DD0F10665D00907159 /* Signal.cpp in Sources */,
+				D3F675DF0F10665D00907159 /* String.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D34E36940E204F4400A73FDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D34E36730E204EF400A73FDB /* haggleutils */;
+			targetProxy = D34E36930E204F4400A73FDB /* PBXContainerItemProxy */;
+		};
+		D3F450CC0E83F654005981E6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3F450920E83F513005981E6 /* libcpphaggle */;
+			targetProxy = D3F450CB0E83F654005981E6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1D6058940D05DD3E006BFB54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Erik Nordström";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = iphone_Prefix.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_ROOT)/usr/include/libxml2",
+					"$(PROJECT_DIR)/../../src/hagglekernel",
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libcpphaggle/include",
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+				);
+				INFOPLIST_FILE = Info.plist;
+				OTHER_CFLAGS = (
+					"-DOS_MACOSX",
+					"-DOS_MACOSX_IPHONE",
+					"-DENABLE_ETHERNET",
+					"-DDEBUG",
+					"-g",
+				);
+				PRODUCT_NAME = Haggle;
+				SDKROOT = iphoneos2.2;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		1D6058950D05DD3E006BFB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Erik Nordström";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = iphone_Prefix.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_ROOT)/usr/include/libxml2",
+					"$(PROJECT_DIR)/../../src/hagglekernel",
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libcpphaggle/include",
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+				);
+				INFOPLIST_FILE = Info.plist;
+				OTHER_CFLAGS = (
+					"-DOS_MACOSX",
+					"-DOS_MACOSX_IPHONE",
+					"-DENABLE_ETHERNET",
+				);
+				PRODUCT_NAME = Haggle;
+				SDKROOT = iphoneos2.2;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		42C7B4F50EBD38C80041215F /* Benchmark */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_ROOT)/usr/include/libxml2",
+					"../../extlibs/openssl-0.9.8j/include",
+					"$(PROJECT_DIR)/../../src/libcpphaggle",
+					"$(PROJECT_DIR)/../../src/hagglekernel",
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+				);
+				INFOPLIST_PREPROCESS = YES;
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../../extlibs/openssl-0.9.8j";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-DOS_MACOSX",
+					"-DOS_MACOSX_IPHONE",
+					"-DENABLE_ETHERNET",
+					"-DDEBUG",
+					"-DDEBUG_LEAKS",
+					"-g",
+				);
+				OTHER_LDFLAGS = "-lcrypto";
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
+				SDKROOT = iphoneos2.2;
+			};
+			name = Benchmark;
+		};
+		42C7B4F60EBD38C80041215F /* Benchmark */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Erik Nordström";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = iphone_Prefix.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_ROOT)/usr/include/libxml2",
+					"$(PROJECT_DIR)/../../src/hagglekernel",
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libcpphaggle/include",
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+				);
+				INFOPLIST_FILE = Info.plist;
+				OTHER_CFLAGS = (
+					"-DOS_MACOSX",
+					"-DOS_MACOSX_IPHONE",
+					"-DENABLE_ETHERNET",
+					"-DBENCHMARK",
+				);
+				PRODUCT_NAME = Haggle;
+				SDKROOT = iphoneos2.2;
+				USE_HEADERMAP = NO;
+			};
+			name = Benchmark;
+		};
+		42C7B4F70EBD38C80041215F /* Benchmark */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_ROOT)/usr/include/libxml2",
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 2.2;
+				PREBINDING = NO;
+				PRODUCT_NAME = libhaggle;
+				SDKROOT = iphoneos2.2;
+				ZERO_LINK = NO;
+			};
+			name = Benchmark;
+		};
+		42C7B4F80EBD38C80041215F /* Benchmark */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../src/utils";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../extlibs/openssl-0.9.8j\"",
+				);
+				OTHER_CFLAGS = (
+					"-DOS_MACOSX",
+					"-DOS_MACOSX_IPHONE",
+					"-DENABLE_ETHERNET",
+					"-DDEBUG",
+					"-g",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = haggleutils;
+				SDKROOT = iphoneos2.2;
+				ZERO_LINK = NO;
+			};
+			name = Benchmark;
+		};
+		42C7B4F90EBD38C80041215F /* Benchmark */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_PFE_FILE_C_DIALECTS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libcpphaggle/include",
+				);
+				INSTALL_PATH = /usr/local/lib;
+				IPHONEOS_DEPLOYMENT_TARGET = 2.2;
+				OTHER_CFLAGS = (
+					"-DDEBUG",
+					"-g",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = libcpphaggle;
+				USE_HEADERMAP = NO;
+				ZERO_LINK = NO;
+			};
+			name = Benchmark;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				CODE_SIGN_RESOURCE_RULES_PATH = "";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_VERSION = 4.0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_ROOT)/usr/include/libxml2",
+					"../../extlibs/openssl-0.9.8j/include",
+					"$(PROJECT_DIR)/../../src/libcpphaggle",
+					"$(PROJECT_DIR)/../../src/hagglekernel",
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+				);
+				INFOPLIST_PREPROCESS = YES;
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../../extlibs/openssl-0.9.8j";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-DOS_MACOSX",
+					"-DOS_MACOSX_IPHONE",
+					"-DENABLE_ETHERNET",
+					"-DDEBUG",
+					"-DDEBUG_LEAKS",
+					"-g",
+				);
+				OTHER_LDFLAGS = "-lcrypto";
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
+				SDKROOT = iphoneos2.2;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_ROOT)/usr/include/libxml2",
+					"../../extlibs/openssl-0.9.8j/include",
+					"$(PROJECT_DIR)/../../src/libcpphaggle",
+					"$(PROJECT_DIR)/../../src/hagglekernel",
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+				);
+				INFOPLIST_PREPROCESS = YES;
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../../extlibs/openssl-0.9.8j";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-DOS_MACOSX",
+					"-DOS_MACOSX_IPHONE",
+					"-DENABLE_ETHERNET",
+					"-DDEBUG",
+					"-DDEBUG_LEAKS",
+					"-g",
+				);
+				OTHER_LDFLAGS = "-lcrypto";
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
+				SDKROOT = iphoneos2.2;
+			};
+			name = Release;
+		};
+		D34E36320E204D4100A73FDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_ROOT)/usr/include/libxml2",
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 2.2;
+				OTHER_LDFLAGS = (
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreServices,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = libhaggle;
+				SDKROOT = iphoneos2.2;
+			};
+			name = Debug;
+		};
+		D34E36330E204D4100A73FDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_ROOT)/usr/include/libxml2",
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 2.2;
+				PREBINDING = NO;
+				PRODUCT_NAME = libhaggle;
+				SDKROOT = iphoneos2.2;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		D34E36750E204EF400A73FDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../src/utils";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../extlibs/openssl-0.9.8j\"",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreServices,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = haggleutils;
+				SDKROOT = iphoneos2.2;
+			};
+			name = Debug;
+		};
+		D34E36760E204EF400A73FDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../src/utils";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../extlibs/openssl-0.9.8j\"",
+				);
+				OTHER_CFLAGS = (
+					"-DOS_MACOSX",
+					"-DOS_MACOSX_IPHONE",
+					"-DENABLE_ETHERNET",
+					"-DDEBUG",
+					"-g",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = haggleutils;
+				SDKROOT = iphoneos2.2;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		D3F450940E83F514005981E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PFE_FILE_C_DIALECTS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libcpphaggle/include",
+				);
+				INSTALL_PATH = /usr/local/lib;
+				IPHONEOS_DEPLOYMENT_TARGET = 2.2;
+				OTHER_CFLAGS = (
+					"-DDEBUG",
+					"-g",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = libcpphaggle;
+				SDKROOT = iphoneos2.1;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		D3F450950E83F514005981E6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_PFE_FILE_C_DIALECTS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../src/utils",
+					"$(PROJECT_DIR)/../../src/libcpphaggle/include",
+				);
+				INSTALL_PATH = /usr/local/lib;
+				IPHONEOS_DEPLOYMENT_TARGET = 2.2;
+				OTHER_CFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = libcpphaggle;
+				USE_HEADERMAP = NO;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Haggle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D6058940D05DD3E006BFB54 /* Debug */,
+				1D6058950D05DD3E006BFB54 /* Release */,
+				42C7B4F60EBD38C80041215F /* Benchmark */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Haggle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+				42C7B4F50EBD38C80041215F /* Benchmark */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D34E36340E204D6D00A73FDB /* Build configuration list for PBXNativeTarget "libhaggle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D34E36320E204D4100A73FDB /* Debug */,
+				D34E36330E204D4100A73FDB /* Release */,
+				42C7B4F70EBD38C80041215F /* Benchmark */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D34E36920E204F0800A73FDB /* Build configuration list for PBXNativeTarget "haggleutils" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D34E36750E204EF400A73FDB /* Debug */,
+				D34E36760E204EF400A73FDB /* Release */,
+				42C7B4F80EBD38C80041215F /* Benchmark */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3F450960E83F545005981E6 /* Build configuration list for PBXNativeTarget "libcpphaggle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3F450940E83F514005981E6 /* Debug */,
+				D3F450950E83F514005981E6 /* Release */,
+				42C7B4F90EBD38C80041215F /* Benchmark */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

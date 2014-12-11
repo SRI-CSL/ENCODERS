@@ -1,0 +1,26 @@
+Addendum for instructions in the README:
+
+install flex/bison
+
+if you get an error downloading pip (ssl certificate host mismatch)
+change bootstrap.sh, build.sh, package.sh to run with bash
+add —no-check-certificate to functions.sh in downloader wget line
+
+edit python-lib/py4a/__init__.py, replace python2.6 with python 2.7
+
+copy over the pyconfig.h from build/*/include to prebuilt/*/include or there will be complaints about LONG_BIT as the prebuilt file is included and it contains settings for 64 bit systems
+
+use pbc 0.5.14 and gmp 6.0.0a. earlier versions of pbc cause crashes. gmp 6.0.0a is fastest in testing; 5.0.2 is 6% slower (was tested/compiled with --disable-assembly as per upstream); 5.1.3 is 14x slower.
+replace the config.sub and config.guess files in pbc and gmp folders with the ones from this folder.
+
+manually relink gmp, editing soname to libgmp.so (copy the link command from when it was built, edit, and rerun)
+manually relink pbc, editing soname to libpbc.so (copy the link command from when it was built, edit, and rerun)
+
+for include folder:
+cd $BD/out/python
+cp -r ../../obj/include .
+cd include
+cp -r ../../../android-python27/python-build/Python/Include .
+cp -r ../../../android-python27/python-build/Python/pyconfig.h .
+
+pyparsing was omitted, have to manually copy the pyparsing.py file into the resulting .zip file inside the site-packages folder

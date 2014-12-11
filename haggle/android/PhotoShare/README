@@ -1,0 +1,19 @@
+PhotoShare
+
+Compilation
+===========
+
+If the Android SDK is found in the path during configure, PhotoShare will
+automatically be compiled.
+
+Manually (make or ant):
+
+> ant debug -lib ../../lib/org.haggle.jar
+
+
+Eclipse:
+For compilation with Eclipse, you need the Android SDK installed.  You also
+need to setup the path to the libhaggle java bindings. First build libhaggle
+with the Java bindings, then point Eclipse to the haggle.jar file that is
+built. This is done under 'Project->Properties->Java Build Path' in Eclipse.
+

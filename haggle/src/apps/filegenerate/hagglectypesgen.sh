@@ -1,0 +1,1 @@
+python ctypesgen.py -L/usr/local/lib -lhaggle /usr/local/include/libhaggle/*.h -o haggle.py

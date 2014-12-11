@@ -1,0 +1,31 @@
+<Haggle persistent="no">
+	<Attr name="ManagerConfiguration">*</Attr>
+	<SecurityManager security_level="LOW"/>
+        <ApplicationManager reset_bloomfilter_at_registration="false"
+			    first_class_applications="true">
+        </ApplicationManager>
+	<DebugManager>
+		<DebugTrace enable="true"/>
+	</DebugManager>
+	<NodeManager>
+		<Node matching_threshold="0" max_dataobjects_in_match="10" node_description_attribute="empty"/>
+		<NodeDescriptionRetry retries="3" retry_wait="10.0"/>
+	</NodeManager>
+	<ProtocolManager>
+		<TCPServer port="9697" backlog="30"/>
+	</ProtocolManager>
+	<DataManager set_createtime_on_bloomfilter_update="true">
+		<Aging period="3600" max_age="86400"/>
+		<Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+                <DataStore>
+                        <SQLDataStore use_in_memory_database="true" journal_mode="off" count_node_descriptions="false"/>
+		</DataStore>
+ 	</DataManager>
+	<ForwardingManager query_on_new_dataobject="true" periodic_dataobject_query_interval="0" 
+			   recursive_routing_updates="false" periodic_routing_update_interval="10">
+	  <Forwarder max_generated_delegates="1" max_generated_targets="1" protocol="Prophet">
+	    <Prophet strategy="GRTR" P_encounter="0.75" alpha="0.5" beta="0.25" gamma="0.999" delta="0.01" aging_time_unit="1" sampling="true" />
+	  </Forwarder>
+	</ForwardingManager>
+</Haggle>
+

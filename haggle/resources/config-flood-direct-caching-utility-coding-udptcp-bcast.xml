@@ -1,0 +1,143 @@
+<Haggle persistent="no">
+	<Attr name="ManagerConfiguration">*</Attr>
+	<SecurityManager security_level="LOW"/>
+        <ApplicationManager reset_bloomfilter_at_registration="false">
+        </ApplicationManager>
+	<DebugManager>
+		<DebugTrace enable="true" type="STAT"/>
+	</DebugManager>
+	<NodeManager>
+		<Node matching_threshold="0" max_dataobjects_in_match="10" 
+                      node_description_attribute="none" node_description_attribute_weight="0"/>
+		<NodeDescriptionRetry retries="0" retry_wait="10.0"/>
+		<NodeDescriptionRefresh refresh_period_ms="30000" refresh_jitter_ms="1000" />
+		<NodeDescriptionPurge purge_max_age_ms="90000" purge_poll_period_ms="30000" />
+	</NodeManager>
+	<ConnectivityManager use_arp_manual_insertion="true" />
+	<ProtocolManager>
+	<ProtocolClassifier name="ProtocolClassifierPriority">
+		<ProtocolClassifierPriority>
+			<ProtocolClassifier name="ProtocolClassifierNodeDescription" priority="3">
+				<ProtocolClassifierNodeDescription outputTag="bcast" />	
+			</ProtocolClassifier>
+			<ProtocolClassifier name="ProtocolClassifierSizeRange" priority="2">
+ 				<ProtocolClassifierSizeRange minBytes="0" maxBytes="35328" outputTag="bcast2" />
+ 			</ProtocolClassifier>
+
+			<ProtocolClassifier name="ProtocolClassifierAllMatch" priority="1">
+				<ProtocolClassifierAllMatch outputTag="tcp" />	
+			</ProtocolClassifier>
+		</ProtocolClassifierPriority>
+	</ProtocolClassifier>
+	<Protocol name="ProtocolUDPBroadcast" inputTag="bcast">
+	<ProtocolUDPBroadcast waitTimeBeforeDoneMillis="60000" use_arp_manual_insertion="true"
+ 			      load_reduction_min_queue_size="100" load_reduction_max_queue_size="200" />
+ 	</Protocol>
+        <Protocol name="ProtocolUDPBroadcast" inputTag="bcast2">
+                 <ProtocolUDPBroadcast waitTimeBeforeDoneMillis="60000" use_arp_manual_insertion="true"
+ 			      load_reduction_min_queue_size="100" load_reduction_max_queue_size="200"
+                              control_port_a="8794" control_port_b="8795" no_control_port="8796" />
+ 	</Protocol>
+ 	<Protocol name="ProtocolUDPUnicast" inputTag="ucast">
+ 		<ProtocolUDPUnicast waitTimeBeforeDoneMillis="60000"
+ 			      load_reduction_min_queue_size="100" load_reduction_max_queue_size="200" />
+ 	</Protocol>
+ 	<Protocol name="ProtocolUDPUnicast" inputTag="ucast2">
+ 		<ProtocolUDPUnicast waitTimeBeforeDoneMillis="60000"
+ 			      load_reduction_min_queue_size="100" load_reduction_max_queue_size="200"
+                              control_port_a="8797" control_port_b="8798" no_control_port="8799"
+                              connectionWaitMillis="1000" maxSendTimeouts="3"
+                              use_control_protocol="true" />
+	</Protocol>
+	<Protocol name="ProtocolTCP" inputTag="tcp">
+		<ProtocolTCP waitTimeBeforeDoneMillis="60000" connectionWaitMillis="60000" backlog="30"
+			      load_reduction_min_queue_size="100" load_reduction_max_queue_size="200" />
+	</Protocol>
+	</ProtocolManager>
+	<DataManager set_createtime_on_bloomfilter_update="true" periodic_bloomfilter_update_interval="60">
+		<Aging period="3600" max_age="86400"/>
+		<Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+		<DataStore>
+                        <SQLDataStore use_in_memory_database="true" journal_mode="off" in_memory_node_descriptions="true" />
+		</DataStore>
+	  <CacheStrategy name="CacheStrategyUtility">
+            <CacheStrategyUtility knapsack_optimizer="CacheKnapsackOptimizerGreedy" global_optimizer="CacheGlobalOptimizerFixedWeights" utility_function="CacheUtilityAggregateMin" max_capacity_kb="1048576" watermark_capacity_kb="786432" compute_period_ms="600" purge_poll_period_ms="500" purge_on_insert="false" publish_stats_dataobject="false" keep_in_bloomfilter="false" bloomfilter_remove_delay_ms="30000" handle_zero_size="true" manage_only_remote_files="true"> 
+                <CacheKnapsackOptimizerGreedy />
+                <CacheGlobalOptimizerFixedWeights min_utility_threshold="0.1">
+                    <Factor name="min1" weight="1" />
+                    <Factor name="CacheUtilityAggregateMax" weight="1" />
+                    <Factor name="CacheUtilityNewTimeImmunity" weight="1" />
+                    <Factor name="CacheUtilityAggregateSum" weight="1" />
+                    <Factor name="CacheUtilityNeighborhood" weight="0.3" />
+                    <Factor name="CacheUtilityPopularity" weight="0.7" />
+                    <Factor name="min2" weight="1" />
+                    <Factor name="CacheUtilityPurgerRelTTL" weight="1" />
+                    <Factor name="CacheUtilityPurgerAbsTTL" weight="1" />
+                    <Factor name="CacheUtilityReplacementPriority" weight="1" />
+                </CacheGlobalOptimizerFixedWeights>
+                <CacheUtilityAggregateMin name="min1">
+                    <Factor name="CacheUtilityAggregateMax">
+                        <CacheUtilityAggregateMax>
+                            <Factor name="CacheUtilityNewTimeImmunity">
+                                <CacheUtilityNewTimeImmunity TimeWindowInMS="1000" />
+                            </Factor>
+                            <Factor name="CacheUtilityAggregateSum">
+                                <CacheUtilityAggregateSum>
+                                    <Factor name="CacheUtilityNeighborhood">
+                                        <CacheUtilityNeighborhood discrete_probablistic="true" neighbor_fudge="2" />
+                                    </Factor>
+                                    <Factor name="CacheUtilityPopularity">
+                                        <CacheUtilityPopularity>
+                                            <EvictStrategyManager default="LRFU">
+                                                <EvictStrategy name="LRFU" className="LRFU" countType="VIRTUAL" pValue="2.0" lambda=".01" />
+                                            </EvictStrategyManager>
+                                        </CacheUtilityPopularity>
+                                    </Factor>
+                                </CacheUtilityAggregateSum>
+                            </Factor>
+                        </CacheUtilityAggregateMax>
+                    </Factor>
+                    <Factor name="CacheUtilityAggregateMin">
+                        <CacheUtilityAggregateMin name="min2">
+                            <Factor name="CacheUtilityPurgerRelTTL">
+                                <CacheUtilityPurgerRelTTL purge_type="purge_after_seconds" tag_field="ContentType" tag_field_value="DelByRelTTL" min_db_time_seconds="1" />
+                            </Factor>
+                            <Factor name="CacheUtilityPurgerAbsTTL">
+                                <CacheUtilityPurgerAbsTTL purge_type="purge_by_timestamp" tag_field="ContentType" tag_field_value="DelByAbsTTL" min_db_time_seconds="1" />
+                            </Factor>
+                            <Factor name="CacheUtilityReplacementPriority">
+                                <CacheUtilityReplacementPriority>
+                                    <CacheUtilityReplacement name="CacheUtilityReplacementTotalOrder" priority="2">
+                                        <CacheUtilityReplacementTotalOrder metric_field="MissionTimestamp" id_field="ContentOrigin" tag_field="ContentType" tag_field_value="TotalOrder" />
+                                    </CacheUtilityReplacement>
+                                    <CacheUtilityReplacement name="CacheUtilityReplacementTotalOrder" priority="1">
+                                        <CacheUtilityReplacementTotalOrder metric_field="ContentCreateTime" id_field="ContentOrigin" tag_field="ContentType" tag_field_value="TotalOrder" />
+                                    </CacheUtilityReplacement>
+                                </CacheUtilityReplacementPriority>
+                            </Factor>
+                        </CacheUtilityAggregateMin>
+                    </Factor>
+                </CacheUtilityAggregateMin>
+            </CacheStrategyUtility>
+	  </CacheStrategy>
+	</DataManager>
+	<ForwardingManager max_nodes_to_find_for_new_dataobjects="30" max_forwarding_delay="2000"
+			   node_description_retries="0" dataobject_retries="1" dataobject_retries_shortcircuit="2" 
+			   query_on_new_dataobject="true" periodic_dataobject_query_interval="0" 
+			   enable_target_generation="false" push_node_descriptions_on_contact="true"
+			   load_reduction_min_queue_size="500" load_reduction_max_queue_size="1000">
+	  <ForwardingClassifier name="ForwardingClassifierNodeDescription">
+	    <ForwardingClassifierNodeDescription class_name="flood" />
+	  </ForwardingClassifier>
+	  <Forwarder protocol="Flood" contentTag="flood" />
+	  <Forwarder protocol="AlphaDirect" />
+	</ForwardingManager>
+        <NetworkCodingManager enable_network_coding="true"
+              enable_forwarding="true" node_desc_update_on_reconstruction="true"
+              max_age_decoder="300" max_age_block="300"
+              resend_delay="0.04" resend_reconstructed_delay="1.0"
+              delay_delete_networkcodedblocks="300.0" delay_delete_reconstructed_networkcodedblocks="10.0"
+              min_network_coding_file_size="32769" block_size="32768"
+              number_blocks_per_dataobject="1">
+        </NetworkCodingManager>
+</Haggle>

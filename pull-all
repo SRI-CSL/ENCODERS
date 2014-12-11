@@ -1,0 +1,1 @@
+for i in `git branch | sed 's/^.//'`; do echo updating $i "..." ; (git checkout $i || exit 1) ; (git pull || exit 1) ; echo ; done

@@ -1,0 +1,673 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		396424210EF8F746000D6650 /* HagglePrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 396424200EF8F746000D6650 /* HagglePrint.m */; };
+		396424CE0EF90119000D6650 /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424B80EF900EB000D6650 /* utils.c */; };
+		396424D00EF90119000D6650 /* bloomfilter.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424BD0EF900EB000D6650 /* bloomfilter.c */; };
+		396424D10EF90119000D6650 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424BF0EF900EB000D6650 /* base64.c */; };
+		396424FF0EF9017E000D6650 /* ipc.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424DF0EF9016E000D6650 /* ipc.c */; };
+		396425000EF9017E000D6650 /* dataobject.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424E00EF9016E000D6650 /* dataobject.c */; };
+		396425010EF9017E000D6650 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424E30EF9016E000D6650 /* sha1.c */; };
+		396425020EF9017E000D6650 /* platform.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424E40EF9016E000D6650 /* platform.c */; };
+		396425030EF9017E000D6650 /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424E50EF9016E000D6650 /* node.c */; };
+		396425040EF9017E000D6650 /* interface.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424E60EF9016E000D6650 /* interface.c */; };
+		396425050EF9017E000D6650 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424E80EF9016E000D6650 /* debug.c */; };
+		396425060EF9017E000D6650 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424EA0EF9016E000D6650 /* base64.c */; };
+		396425070EF9017E000D6650 /* attribute.c in Sources */ = {isa = PBXBuildFile; fileRef = 396424EB0EF9016E000D6650 /* attribute.c */; };
+		3964250B0EF90191000D6650 /* libhaggle.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 396424D60EF9012E000D6650 /* libhaggle.dylib */; };
+		396425110EF901B9000D6650 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3964250F0EF901B2000D6650 /* libxml2.dylib */; };
+		396425280EF90249000D6650 /* attribute.h in Headers */ = {isa = PBXBuildFile; fileRef = 3964251F0EF90249000D6650 /* attribute.h */; };
+		396425290EF90249000D6650 /* dataobject.h in Headers */ = {isa = PBXBuildFile; fileRef = 396425200EF90249000D6650 /* dataobject.h */; };
+		3964252A0EF90249000D6650 /* exports.h in Headers */ = {isa = PBXBuildFile; fileRef = 396425210EF90249000D6650 /* exports.h */; };
+		3964252B0EF90249000D6650 /* haggle.h in Headers */ = {isa = PBXBuildFile; fileRef = 396425220EF90249000D6650 /* haggle.h */; };
+		3964252C0EF90249000D6650 /* interface.h in Headers */ = {isa = PBXBuildFile; fileRef = 396425230EF90249000D6650 /* interface.h */; };
+		3964252D0EF90249000D6650 /* ipc.h in Headers */ = {isa = PBXBuildFile; fileRef = 396425240EF90249000D6650 /* ipc.h */; };
+		3964252E0EF90249000D6650 /* list.h in Headers */ = {isa = PBXBuildFile; fileRef = 396425250EF90249000D6650 /* list.h */; };
+		3964252F0EF90249000D6650 /* node.h in Headers */ = {isa = PBXBuildFile; fileRef = 396425260EF90249000D6650 /* node.h */; };
+		396425300EF90249000D6650 /* platform.h in Headers */ = {isa = PBXBuildFile; fileRef = 396425270EF90249000D6650 /* platform.h */; };
+		396425F50EF90D20000D6650 /* libutils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 396424B00EF900BC000D6650 /* libutils.a */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		D32B22271019BEBF00132931 /* metadata.c in Sources */ = {isa = PBXBuildFile; fileRef = D32B221E1019BE8F00132931 /* metadata.c */; };
+		D32B22281019BEBF00132931 /* metadata_xml.c in Sources */ = {isa = PBXBuildFile; fileRef = D32B22201019BE8F00132931 /* metadata_xml.c */; };
+		D32B22291019BED500132931 /* counting_bloomfilter.c in Sources */ = {isa = PBXBuildFile; fileRef = D32B22181019BE4F00132931 /* counting_bloomfilter.c */; };
+		D32B22661019C2A900132931 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3964250F0EF901B2000D6650 /* libxml2.dylib */; };
+		D32B226B1019C30A00132931 /* libutils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 396424B00EF900BC000D6650 /* libutils.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		396425090EF9018C000D6650 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 396424D50EF9012E000D6650;
+			remoteInfo = haggle;
+		};
+		396425F30EF90D19000D6650 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 396424AF0EF900BC000D6650;
+			remoteInfo = utils;
+		};
+		D32B22931019C36E00132931 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 396424AF0EF900BC000D6650 /* utils */;
+			remoteInfo = utils;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* HagglePrint_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HagglePrint_Prefix.pch; sourceTree = "<group>"; };
+		3964241F0EF8F746000D6650 /* HagglePrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HagglePrint.h; sourceTree = "<group>"; };
+		396424200EF8F746000D6650 /* HagglePrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HagglePrint.m; sourceTree = "<group>"; };
+		396424B00EF900BC000D6650 /* libutils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libutils.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		396424B70EF900EB000D6650 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../../src/utils/utils.h; sourceTree = SOURCE_ROOT; };
+		396424B80EF900EB000D6650 /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = utils.c; path = ../../src/utils/utils.c; sourceTree = SOURCE_ROOT; };
+		396424BC0EF900EB000D6650 /* bloomfilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bloomfilter.h; path = ../../src/utils/bloomfilter.h; sourceTree = SOURCE_ROOT; };
+		396424BD0EF900EB000D6650 /* bloomfilter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bloomfilter.c; path = ../../src/utils/bloomfilter.c; sourceTree = SOURCE_ROOT; };
+		396424BE0EF900EB000D6650 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base64.h; path = ../../src/utils/base64.h; sourceTree = SOURCE_ROOT; };
+		396424BF0EF900EB000D6650 /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = base64.c; path = ../../src/utils/base64.c; sourceTree = SOURCE_ROOT; };
+		396424D60EF9012E000D6650 /* libhaggle.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libhaggle.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		396424DF0EF9016E000D6650 /* ipc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ipc.c; path = ../../src/libhaggle/ipc.c; sourceTree = SOURCE_ROOT; };
+		396424E00EF9016E000D6650 /* dataobject.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dataobject.c; path = ../../src/libhaggle/dataobject.c; sourceTree = SOURCE_ROOT; };
+		396424E10EF9016E000D6650 /* sha1_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sha1_private.h; path = ../../src/libhaggle/sha1_private.h; sourceTree = SOURCE_ROOT; };
+		396424E20EF9016E000D6650 /* sha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sha1.h; path = ../../src/libhaggle/sha1.h; sourceTree = SOURCE_ROOT; };
+		396424E30EF9016E000D6650 /* sha1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sha1.c; path = ../../src/libhaggle/sha1.c; sourceTree = SOURCE_ROOT; };
+		396424E40EF9016E000D6650 /* platform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = platform.c; path = ../../src/libhaggle/platform.c; sourceTree = SOURCE_ROOT; };
+		396424E50EF9016E000D6650 /* node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = node.c; path = ../../src/libhaggle/node.c; sourceTree = SOURCE_ROOT; };
+		396424E60EF9016E000D6650 /* interface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = interface.c; path = ../../src/libhaggle/interface.c; sourceTree = SOURCE_ROOT; };
+		396424E70EF9016E000D6650 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = debug.h; path = ../../src/libhaggle/debug.h; sourceTree = SOURCE_ROOT; };
+		396424E80EF9016E000D6650 /* debug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = debug.c; path = ../../src/libhaggle/debug.c; sourceTree = SOURCE_ROOT; };
+		396424E90EF9016E000D6650 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base64.h; path = ../../src/libhaggle/base64.h; sourceTree = SOURCE_ROOT; };
+		396424EA0EF9016E000D6650 /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = base64.c; path = ../../src/libhaggle/base64.c; sourceTree = SOURCE_ROOT; };
+		396424EB0EF9016E000D6650 /* attribute.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = attribute.c; path = ../../src/libhaggle/attribute.c; sourceTree = SOURCE_ROOT; };
+		3964250F0EF901B2000D6650 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		3964251F0EF90249000D6650 /* attribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = attribute.h; sourceTree = "<group>"; };
+		396425200EF90249000D6650 /* dataobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dataobject.h; sourceTree = "<group>"; };
+		396425210EF90249000D6650 /* exports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exports.h; sourceTree = "<group>"; };
+		396425220EF90249000D6650 /* haggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = haggle.h; sourceTree = "<group>"; };
+		396425230EF90249000D6650 /* interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interface.h; sourceTree = "<group>"; };
+		396425240EF90249000D6650 /* ipc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ipc.h; sourceTree = "<group>"; };
+		396425250EF90249000D6650 /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
+		396425260EF90249000D6650 /* node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = node.h; sourceTree = "<group>"; };
+		396425270EF90249000D6650 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* HagglePrint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HagglePrint.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D32B22181019BE4F00132931 /* counting_bloomfilter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = counting_bloomfilter.c; path = ../../src/utils/counting_bloomfilter.c; sourceTree = SOURCE_ROOT; };
+		D32B22191019BE4F00132931 /* counting_bloomfilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = counting_bloomfilter.h; path = ../../src/utils/counting_bloomfilter.h; sourceTree = SOURCE_ROOT; };
+		D32B221A1019BE4F00132931 /* haggleutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = haggleutils.h; path = ../../src/utils/haggleutils.h; sourceTree = SOURCE_ROOT; };
+		D32B221E1019BE8F00132931 /* metadata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = metadata.c; path = ../../src/libhaggle/metadata.c; sourceTree = SOURCE_ROOT; };
+		D32B221F1019BE8F00132931 /* metadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = metadata.h; path = ../../src/libhaggle/metadata.h; sourceTree = SOURCE_ROOT; };
+		D32B22201019BE8F00132931 /* metadata_xml.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = metadata_xml.c; path = ../../src/libhaggle/metadata_xml.c; sourceTree = SOURCE_ROOT; };
+		D32B22211019BE8F00132931 /* metadata_xml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = metadata_xml.h; path = ../../src/libhaggle/metadata_xml.h; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		396424AE0EF900BC000D6650 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		396424D40EF9012E000D6650 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				396425110EF901B9000D6650 /* libxml2.dylib in Frameworks */,
+				396425F50EF90D20000D6650 /* libutils.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B226B1019C30A00132931 /* libutils.a in Frameworks */,
+				3964250B0EF90191000D6650 /* libhaggle.dylib in Frameworks */,
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				D32B22661019C2A900132931 /* libxml2.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				3964241F0EF8F746000D6650 /* HagglePrint.h */,
+				396424200EF8F746000D6650 /* HagglePrint.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* HagglePrint.app */,
+				396424B00EF900BC000D6650 /* libutils.a */,
+				396424D60EF9012E000D6650 /* libhaggle.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* HagglePrint */ = {
+			isa = PBXGroup;
+			children = (
+				396424DC0EF90152000D6650 /* libhaggle */,
+				396424B40EF900E0000D6650 /* utils */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = HagglePrint;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* HagglePrint_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3964250F0EF901B2000D6650 /* libxml2.dylib */,
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		396424B40EF900E0000D6650 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				D32B22181019BE4F00132931 /* counting_bloomfilter.c */,
+				D32B22191019BE4F00132931 /* counting_bloomfilter.h */,
+				D32B221A1019BE4F00132931 /* haggleutils.h */,
+				396424B70EF900EB000D6650 /* utils.h */,
+				396424B80EF900EB000D6650 /* utils.c */,
+				396424BC0EF900EB000D6650 /* bloomfilter.h */,
+				396424BD0EF900EB000D6650 /* bloomfilter.c */,
+				396424BE0EF900EB000D6650 /* base64.h */,
+				396424BF0EF900EB000D6650 /* base64.c */,
+			);
+			name = utils;
+			sourceTree = "<group>";
+		};
+		396424DC0EF90152000D6650 /* libhaggle */ = {
+			isa = PBXGroup;
+			children = (
+				3964251E0EF90249000D6650 /* libhaggle */,
+				D32B221E1019BE8F00132931 /* metadata.c */,
+				D32B221F1019BE8F00132931 /* metadata.h */,
+				D32B22201019BE8F00132931 /* metadata_xml.c */,
+				D32B22211019BE8F00132931 /* metadata_xml.h */,
+				396424DF0EF9016E000D6650 /* ipc.c */,
+				396424E10EF9016E000D6650 /* sha1_private.h */,
+				396424E00EF9016E000D6650 /* dataobject.c */,
+				396424E20EF9016E000D6650 /* sha1.h */,
+				396424E30EF9016E000D6650 /* sha1.c */,
+				396424E40EF9016E000D6650 /* platform.c */,
+				396424E50EF9016E000D6650 /* node.c */,
+				396424E60EF9016E000D6650 /* interface.c */,
+				396424E70EF9016E000D6650 /* debug.h */,
+				396424E80EF9016E000D6650 /* debug.c */,
+				396424E90EF9016E000D6650 /* base64.h */,
+				396424EA0EF9016E000D6650 /* base64.c */,
+				396424EB0EF9016E000D6650 /* attribute.c */,
+			);
+			name = libhaggle;
+			sourceTree = "<group>";
+		};
+		3964251E0EF90249000D6650 /* libhaggle */ = {
+			isa = PBXGroup;
+			children = (
+				3964251F0EF90249000D6650 /* attribute.h */,
+				396425200EF90249000D6650 /* dataobject.h */,
+				396425210EF90249000D6650 /* exports.h */,
+				396425220EF90249000D6650 /* haggle.h */,
+				396425230EF90249000D6650 /* interface.h */,
+				396425240EF90249000D6650 /* ipc.h */,
+				396425250EF90249000D6650 /* list.h */,
+				396425260EF90249000D6650 /* node.h */,
+				396425270EF90249000D6650 /* platform.h */,
+			);
+			name = libhaggle;
+			path = ../../src/libhaggle/include/libhaggle;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		396424AC0EF900BC000D6650 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		396424D20EF9012E000D6650 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				396425280EF90249000D6650 /* attribute.h in Headers */,
+				396425290EF90249000D6650 /* dataobject.h in Headers */,
+				3964252A0EF90249000D6650 /* exports.h in Headers */,
+				3964252B0EF90249000D6650 /* haggle.h in Headers */,
+				3964252C0EF90249000D6650 /* interface.h in Headers */,
+				3964252D0EF90249000D6650 /* ipc.h in Headers */,
+				3964252E0EF90249000D6650 /* list.h in Headers */,
+				3964252F0EF90249000D6650 /* node.h in Headers */,
+				396425300EF90249000D6650 /* platform.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		396424AF0EF900BC000D6650 /* utils */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 396424B30EF900DB000D6650 /* Build configuration list for PBXNativeTarget "utils" */;
+			buildPhases = (
+				396424AC0EF900BC000D6650 /* Headers */,
+				396424AD0EF900BC000D6650 /* Sources */,
+				396424AE0EF900BC000D6650 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = utils;
+			productName = utils;
+			productReference = 396424B00EF900BC000D6650 /* libutils.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		396424D50EF9012E000D6650 /* haggle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 396424DB0EF90132000D6650 /* Build configuration list for PBXNativeTarget "haggle" */;
+			buildPhases = (
+				396424D20EF9012E000D6650 /* Headers */,
+				396424D30EF9012E000D6650 /* Sources */,
+				396424D40EF9012E000D6650 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				396425F40EF90D19000D6650 /* PBXTargetDependency */,
+			);
+			name = haggle;
+			productName = haggle;
+			productReference = 396424D60EF9012E000D6650 /* libhaggle.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		8D1107260486CEB800E47090 /* HagglePrint */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "HagglePrint" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D32B22941019C36E00132931 /* PBXTargetDependency */,
+				3964250A0EF9018C000D6650 /* PBXTargetDependency */,
+			);
+			name = HagglePrint;
+			productInstallPath = "$(HOME)/Applications";
+			productName = HagglePrint;
+			productReference = 8D1107320486CEB800E47090 /* HagglePrint.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "HagglePrint" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* HagglePrint */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* HagglePrint */,
+				396424AF0EF900BC000D6650 /* utils */,
+				396424D50EF9012E000D6650 /* haggle */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		396424AD0EF900BC000D6650 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B22291019BED500132931 /* counting_bloomfilter.c in Sources */,
+				396424CE0EF90119000D6650 /* utils.c in Sources */,
+				396424D00EF90119000D6650 /* bloomfilter.c in Sources */,
+				396424D10EF90119000D6650 /* base64.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		396424D30EF9012E000D6650 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B22271019BEBF00132931 /* metadata.c in Sources */,
+				D32B22281019BEBF00132931 /* metadata_xml.c in Sources */,
+				396424FF0EF9017E000D6650 /* ipc.c in Sources */,
+				396425000EF9017E000D6650 /* dataobject.c in Sources */,
+				396425010EF9017E000D6650 /* sha1.c in Sources */,
+				396425020EF9017E000D6650 /* platform.c in Sources */,
+				396425030EF9017E000D6650 /* node.c in Sources */,
+				396425040EF9017E000D6650 /* interface.c in Sources */,
+				396425050EF9017E000D6650 /* debug.c in Sources */,
+				396425060EF9017E000D6650 /* base64.c in Sources */,
+				396425070EF9017E000D6650 /* attribute.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				396424210EF8F746000D6650 /* HagglePrint.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3964250A0EF9018C000D6650 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 396424D50EF9012E000D6650 /* haggle */;
+			targetProxy = 396425090EF9018C000D6650 /* PBXContainerItemProxy */;
+		};
+		396425F40EF90D19000D6650 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 396424AF0EF900BC000D6650 /* utils */;
+			targetProxy = 396425F30EF90D19000D6650 /* PBXContainerItemProxy */;
+		};
+		D32B22941019C36E00132931 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 396424AF0EF900BC000D6650 /* utils */;
+			targetProxy = D32B22931019C36E00132931 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DDD58150DA1D0A300B32029 /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		396424B10EF900BD000D6650 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = OS_MACOSX;
+				INSTALL_PATH = /usr/local/lib;
+				PREBINDING = NO;
+				PRODUCT_NAME = utils;
+			};
+			name = Debug;
+		};
+		396424B20EF900BD000D6650 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PREBINDING = NO;
+				PRODUCT_NAME = utils;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		396424D70EF9012E000D6650 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = OS_MACOSX;
+				HEADER_SEARCH_PATHS = (
+					/usr/include/libxml2,
+					../../src/libhaggle/include,
+				);
+				INSTALL_PATH = /usr/local/lib;
+				PREBINDING = NO;
+				PRODUCT_NAME = haggle;
+			};
+			name = Debug;
+		};
+		396424D80EF9012E000D6650 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PREBINDING = NO;
+				PRODUCT_NAME = haggle;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HagglePrint_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/build/Debug\"",
+				);
+				PRODUCT_NAME = HagglePrint;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HagglePrint_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/build/Debug\"",
+				);
+				PRODUCT_NAME = HagglePrint;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = 4.0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+					/usr/include/libxml2,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DOS_MACOSX";
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = 4.0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../src/libhaggle/include",
+					/usr/include/libxml2,
+				);
+				OTHER_CFLAGS = "-DOS_MACOSX";
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		396424B30EF900DB000D6650 /* Build configuration list for PBXNativeTarget "utils" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				396424B10EF900BD000D6650 /* Debug */,
+				396424B20EF900BD000D6650 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		396424DB0EF90132000D6650 /* Build configuration list for PBXNativeTarget "haggle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				396424D70EF9012E000D6650 /* Debug */,
+				396424D80EF9012E000D6650 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "HagglePrint" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "HagglePrint" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

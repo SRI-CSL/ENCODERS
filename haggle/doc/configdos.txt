@@ -1,0 +1,52 @@
+Configuration data objects in haggle.
+
+Haggle managers may be written to be able to have parameters that are set at runtime. This document describes the preferred way to set those parameters. These parameters may include things such as which kind of forwarding module to run, how aggressively data objects are aged etc. This document will provide an example data object, with more and more content to show what each part of the data object is.
+
+Any haggle manager interested in having settable parameters should register a filter in the data store. The filter should be <manager name>=<something>. (Example: Forwarding=dd9e37802204fcae10bd540e297d289beafa879f here, the forwarding manager uses the local node's node id to avoid seeing data objects meant for other nodes).
+
+Example data object:
+
+<Haggle>
+	<Attr name="Forward">dd9e37802204fcae10bd540e297d289beafa879f</Attr>
+</Haggle>
+
+When the filter is triggered, the manager should check that the data object is ok, by using the function isValidConfigDataObject. This function will determine if the data object can be trusted.
+
+The parameters are manager-specific and should be located in the section of the data object's header named after the manager. The parameters can be whatever the manager wishes, but shouldn't be required to be present.
+
+Example data object:
+
+<Haggle>
+	<Attr name="Forward">dd9e37802204fcae10bd540e297d289beafa879f</Attr>
+	<Forward>
+		<Module>PRoPHET</Module>
+	</Forward>
+</Haggle>
+
+To prevent configuration data objects from being distributed by haggle to other nodes, and potentially changing other users' settings, all configuration data objects should be non-persistant. isValidConfigDataObject will fail if a data object is not persistent.
+
+Example data object:
+
+<Haggle persistent="no">
+	<Attr name="Forward">dd9e37802204fcae10bd540e297d289beafa879f</Attr>
+	<Forward>
+		<Module>PRoPHET</Module>
+	</Forward>
+</Haggle>
+
+It is certainly possible to create a configuration data object that contains settings for more than one module.
+
+Example data object:
+
+<Haggle persistent="no">
+	<Attr name="Forward">dd9e37802204fcae10bd540e297d289beafa879f</Attr>
+	<Attr name="Connectivity">dd9e37802204fcae10bd540e297d289beafa879f</Attr>
+	<Forward>
+		<Module>PRoPHET</Module>
+	</Forward>
+	<Connectivity>
+		<Blacklist type="bluetooth">00:00:00:00:00:00</Module>
+	</Connectivity>
+</Haggle>
+
+As an additional security feature, configuration data objects should be signed by the node it appears on. isValidConfigDataObject does not yet (as of 2009-06-22) check for this, because the security manager does not verify any signature present in the data object. The plan is for isValidConfigDataObject to make this check as well.

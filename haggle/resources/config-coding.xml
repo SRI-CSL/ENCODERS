@@ -1,0 +1,31 @@
+<Haggle persistent="no">
+        <Attr name="ManagerConfiguration">*</Attr>
+        <SecurityManager security_level="LOW"/>
+        <DebugManager>
+                <DebugTrace enable="true" type="STAT" />
+        </DebugManager>
+        <NodeManager>
+                <Node matching_threshold="0" max_dataobjects_in_match="10"/>
+                <NodeDescriptionRetry retries="3" retry_wait="10.0"/>
+        </NodeManager>
+        <ProtocolManager>
+                <TCPServer port="9697" backlog="30"/>
+        </ProtocolManager>
+        <DataManager set_createtime_on_bloomfilter_update="true">
+                <Aging period="3600" max_age="86400"/>
+                <Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+        </DataManager>
+        <ForwardingManager query_on_new_dataobject="true" periodic_dataobject_query_interval="0">
+          <Forwarder protocol="noForward">
+          </Forwarder>
+        </ForwardingManager>
+        <NetworkCodingManager enable_network_coding="true" 
+	    source_encoding_whitelist="*" target_encoding_whitelist="*"
+            enable_forwarding="true" node_desc_update_on_reconstruction="true"
+            max_age_decoder="300" max_age_block="300"
+	    resend_delay="0" resend_reconstructed_delay="10.0"
+	    delay_delete_networkcodedblocks="300.0" delay_delete_reconstructed_networkcodedblocks="10.0" 
+	    min_network_coding_file_size="32769" block_size="32768"
+	    number_blocks_per_dataobject="1">
+        </NetworkCodingManager>
+</Haggle>

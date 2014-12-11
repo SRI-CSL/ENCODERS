@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:orientation="vertical"
+                android:gravity="center"
+    			android:layout_width="fill_parent"
+    			android:layout_height="wrap_content">
+	<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/taken_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2px"
+	/>
+	<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dip">
+
+    <TextView
+        android:id="@+id/interest_label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:text="@string/new_picture_attributes_text"/>
+
+    <!--
+        Put the EditText field under the TextView
+        Also give it a standard background (the "android:"
+        part in @android:drawable/editbox_background
+        means it is system resource rather than
+        an application resource.
+    -->
+    <EditText
+        android:id="@+id/entry"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:layout_below="@id/interest_label" android:minHeight="25sp" android:textSize="20sp"/>
+    <RadioButton
+    	android:id="@+id/radio_button"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/entry"/>
+	</RelativeLayout>
+   	<TextView  
+     xmlns:android="http://schemas.android.com/apk/res/android"  
+     android:id="@+id/list_header"  
+     android:layout_width="fill_parent"  
+     android:layout_height="wrap_content"  
+     android:paddingTop="2dip"  
+     android:paddingBottom="2dip"  
+     android:paddingLeft="5dip"
+     style="?android:attr/listSeparatorTextViewStyle" android:text="@string/picture_attributes_text"/>  
+    <ListView android:id="@+id/attribute_list"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:divider="#eeeeee"
+    	android:dividerHeight="1px"
+    	android:choiceMode="singleChoice"/>
+</LinearLayout>
