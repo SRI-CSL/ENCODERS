@@ -1,0 +1,329 @@
+Haggle (Security) Test Framework
+---------------------------------
+
+This is a test framework for scripting small security test cases that run on both Android
+and CORE without requiring any changes to the test case code itself. This document
+describes the usage of the test framework as well as configuration and scripting
+of tests.
+
+
+Usage
+-----
+
+The framework can be invoked in the following ways:
+
+$ python haggle_test_framework.py -s 3 -e android -d tests
+
+This will run all the tests in the tests directory on the attached android phones, skipping the first 3 tests
+
+$ python haggle_test_framework.py -e android -d tests declarative_authorization
+
+This will run the declarative_authorization test in the test_declarative_authorization.py file in the tests directory on the attached android phones
+
+$ sudo python haggle_test_framework.py -e core --categories "all - authorization" -c '{"coreLinearTopology": true}'
+
+This will and run all the tests that are not in the 'authorization' category in the tests directory on CORE, with the config option coreLinearTopology set to true
+
+$ sudo python haggle_test_framework.py -c config.json -d tests --categories signing declarative_authorization
+
+This will load configuration from config.json, and run the all the tests in the 'signing' category plus the declarative_authorization test in the tests directory on CORE
+
+
+Notes:
+    
+    1. The core tests must always be run as root. The framework will refuse to run as a normal user.
+    2. The android tests should not be run as root. The framework will refuse to run as root.
+    3. The -c (or --config) parameter is optional. Configuration parameters are described in a later section
+    4. 'tests' should be replaced by the name of the directory that contains the tests you wish to run
+    5. The --categories parameter is optional. All tests are put into sets according to each of their categories, and then the provided expression is evaluated to see which tests are to be run. The expression can only contain category names, brackets, and the following set operators: '|' (union), '&' (intersection), '-' (difference), and '^' (exclusive difference). Any additional tests specified in the command line will also be run.
+    6. The -s (or --skip) parameter is optional. It skips the given number of tests, which is useful when resuming from a failed test run.
+    7. The --rerun option reruns only the tests that were run in the previous run.
+    8. The --rerunfailed option reruns only the tests that failed in the previous run.
+    9. IMPORTANT: For android tests, the lockscreen must be disabled. 
+        Go to Settings -> CyanogenMod Settings -> Tablet Tweaks and ensure the "Disable lockscreen" option is selected.
+        The tests will likely fail without this.
+
+The framework will display log messages in the console and use a progress bar to indicate progress. It may
+be terminated at any time using ctrl-c, upon which it will clean up and exit cleanly. If at any time it does not
+exit cleanly, please file a bug report.
+
+Configuration
+-------------
+
+The framework is designed to run in a zeroconfig manner, it should run with sensible defaults even if no
+configuration is provided. 
+
+It will automatically discover needed parameters such as the username, the location of the CBMEN folder (needed for config files) 
+and the location of the haggle APK. The auto discovered values will be output to the console before tests are run, so they can be
+verified.
+
+The default configuration parameters are specified in the __init__ method of the TestFrameworkConfig class. Parameters can be changed
+by using a configuration file, or specifying them on the command line directly.
+
+A configuration file is a text file that contains one global dictionary at the top level, with entries for each parameter that needs to be
+modified. An example is as below:
+
+{
+    "whoami": "lakhani"
+}
+
+If the above is written to a file and loaded using the -c command line option, or directly passed in using the -c option; 
+the "whoami" parameter will be set to "lakhani".  Note that any other parameters that depend on the "whoami" parameter 
+will not be automatically updated, and will also have to be set in the config file.
+
+Note that any parameters defined in the config file that are not defined in the __init__ method of
+TestFrameworkConfig will be ignored and not affect the resulting configuration. A warning will be printed to the console.
+
+Before each test case is run, a new TestFrameworkConfig object is created, and populated with the default configuration. 
+This is then updated with parameters from the configuration file, if one has been specified.
+This object is then used as the configuration object for the test case.
+
+Scripting
+---------
+
+The Haggle Test Framework is designed to auto-discover and run test cases that are defined as python code files, with one test per file.
+It will open the specified directory, and look for filenames that match the test_*.py expression.
+For each of these files, it will try to load them as Python code files and look for a valid test case definition, 
+as described in the next section.
+
+Writing Test Cases
+------------------
+
+Test cases are simple python files that must have a function with the following signature:
+
+def runTest(env, nodes, results, Console):
+
+The function signature must match exactly, or the framework will refuse to run the test function. 
+The arguments are objects that provide functionality the test case needs. 
+Their usage is described in later sections. 
+
+A test case file can also contain an optional CATEGORIES list that defines the categories of the test.
+The default category list is ['all'].
+
+The test name (used for reporting, as well as specifying tests to run on the command line) is simply
+the filename, without the test_ at the start and the .py at the end. You can specify test names to
+run on the command line with or without the test_ prefix.
+
+It is good practice to have a docstring at the top of the file which describes the test.
+
+For examples, please look at the 'tests' directory.
+
+Logging Output to the Console
+-----------------------------
+
+The Console class allows one to log output to the console. It provides the following static method, each of them
+taking a single string parameter:
+
+    1. Console.success
+    2. Console.log
+    3. Console.info
+    4. Console.warning
+    5. Console.fail
+
+Scripting Node Actions
+----------------------
+
+The env argument is an object of the BaseTestEnvironment class, of which the following methods can be called by the
+test case function:
+
+    env.sleep(message, duration, report=True)
+
+        This will sleep for the given duration, while displaying a progress bar with the given message.
+        If the report parameter is True, the message will be printed as a log message to the console after
+        the given duration.
+
+    env.createNode(name)
+
+        This creates a node with the given name, and returns the node object.
+
+    env.createNodes(*args)
+
+        This creates one node per name specified in the argument list, and returns the node objects.
+
+    env.startNode(name)
+
+        This starts Haggle on the node with the given name.
+
+    env.startAllNodes()
+
+        This starts Haggle on all the nodes.
+
+    env.stopNode(name)
+
+        This stops Haggle on the node with the given name.
+
+    env.stopAllNodes()
+
+        This stops Haggle on all the nodes
+
+    env.calculateHaggleNodeIDs()
+
+        This parses the Haggle log files on all the nodes, and sets the haggleNodeID variable on each node object appropriately.
+
+    env.bootForHaggleNodeIDs()
+
+        This is a convenience method that will start all nodes, sleep for the haggleBootDelay (in the config), 
+        calculate haggle node IDs, and stop all nodes.
+
+    env.calculateHaggleNodeIDsExternally()
+
+        This uses shell commands to calculate the haggle node ID on all the nodes, and sets the haggleNodeID variable on each node object appropriately.
+
+    env.deleteHaggleDBAtNode(name)
+
+        This deletes the haggle.db file on the node identified by name.
+
+    env.publishItem(name, descriptor, policy='', attributes=[])
+
+        This will create a data object with one attribute (identified by descriptor), add the Access policy given by policy if specified,
+        add the extra attributes if specified, and publish it on the node identified by name.
+
+    env.subscribeItem(name, descriptor)
+
+        This subscribes to the attribute identified by descriptor at the node identified by name.
+
+    env.dynamicAddRoleSharedSecretsAtNode(name, *roles)
+
+        Dynamically adds the given role shared secrets at the node identified by name, through the use of a control message. 
+        roles must be a list of tuples of (name, shared_secret) pairs.
+
+    env.dynamicAddNodeSharedSecretsAtNode(name, *nodes)
+
+        Dynamically adds the given node shared secrets at the node identified by name, through the use of a control message. 
+        nodes must be a list of tuples of (id, shared_secret) pairs.
+
+    env.dynamicAddAuthoritiesAtNode(name, *authorities)
+
+        Dynamically adds the given authorities at the node identified by name, through the use of a control message. 
+        authorities must be a list of tuples of (name, id) pairs.
+
+    env.dynamicAuthorizeNodesForCertificationAtNode(name, *ids)
+
+        Dynamically authorizes the given IDs for certification at the node identified by name, through the use of a control message.
+        ids must be a list of haggle node IDs.
+
+    env.dynamicAuthorizeRoleForAttributesAtNode(name, role, encryption, decryption)
+
+        Dynamically authorizes the given role (which should be scoped) for at the node identified by name for the given encryption and decryption attributes.
+        encryption and decryption should be a list of attribute names.
+
+    env.countMatchingLinesInLog(name, pattern)
+
+        Counts the number of lines that match the given pattern in the log file of the node identified by name.
+
+The following methods can be called directly on the node objects:
+
+    node.start()
+
+        This starts Haggle on the node.
+
+    node.stop()
+
+        This stops haggle on the node.
+
+    node.deleteHaggleDB()
+
+        This deletes the haggle.db file on the node.
+
+    node.publishItem(descriptor, policy='', attributes=[])
+
+        This will create a data object with one attribute (identified by descriptor), add the Access policy given by policy if specified,
+        add the extra attributes if specified, and publish it on the node.
+
+    node.subscribeItem(descriptor)
+
+        This subscribes to the attribute identified by descriptor at the node.
+
+    node.dynamicAddRoleSharedSecrets(*roles)
+
+        Dynamically adds the given role shared secrets at the node, through the use of a control message.
+        Each role should be a tuple containing a (name, shared_secret) pair.
+
+    node.dynamicAddNodeSharedSecrets(*nodes)
+
+        Dynamically adds the given node shared secrets at the node, through the use of a control message.
+        Each node should be a tuple containing a (id, shared_secret) pair.
+
+    node.dynamicAddAuthorities(*nodes)
+
+        Dynamically adds the given authorities at the node, through the use of a control message. 
+        Each authority should be a tuple containing a (name, id) pair.
+
+    node.dynamicAuthorizeNodesForCertification(*ids)
+
+        Dynamically authorizes the given IDs for certification at the node, through the use of a control message.
+        ids must be a list of haggle node IDs.
+
+    node.dynamicAuthorizeRoleForAttributes(role, encryption, decryption)
+
+        Dynamically authorizes the given role (which should be scoped) for at the node for the given encryption and decryption attributes.
+        encryption and decryption should be a list of attribute names.
+
+    node.countMatchingLinesInLog(pattern)
+
+        Counts the number of lines that match the given pattern in the log file of the node identified by name.
+
+
+The following methods should NEVER be called by the test case function (the framework will call them automatically):
+
+    setupEnvironment()
+    shutdownEnvironment()
+
+Configuring Haggle on each Node
+--------------------------------
+
+Please look at README-config_generator for instructions on how to configure Haggle on each node during tests.
+
+Declaring Expected Results
+--------------------------
+
+The results object is used to declare expected results of an action. For the moment, this is only used for subscribeItem calls,
+but the test script may use any calls it likes. At the end of a test, the framework will check whether all actual results
+matched the expected ones. If so, the test is considered a success; otherwise it will be marked as a failure.
+
+The following function can be called:
+
+    results.expect(message, expected, actual, critical, warningMessage)
+
+        Declare the test (described by message) to have the given expected and actual results. 
+        'expected' can be a lambda, in which case it will be evaluated with the actual result.
+        The lambda should return True if it was an expected result and False otherwise.
+        If critical is False, an assertion failure will be treated as a warning, not a failure.
+        The warningMessage will be printed in that case.
+
+Logging
+-------
+
+The framework will produce log output on the console, as well to a log file. By default, the console log will be terse, and the file log will be verbose. This can be changed with the --vstd (verbose stdout) and --nvlog (non verbose log) options on the command line.
+
+After each test run, a subdirectory will be created inside the log directory (identified by the tmpLogLocation configuration parameter), named the same as the testName. This directory will contain the config.xml and haggle.log files for each 
+node that was used in the test case.
+
+Error Handling
+--------------
+
+The framework handles most errors and tries to exit gracefully. Below is a list of the errors it *should* handle and terminate gracefully from.
+Please file a bug report if you encounter a case where it does not exit gracefully.
+
+    --- Configuration errors in a test case ---
+
+    1. Trying to define multiple nodes with the same name.
+    2. Trying to use a nonexistent node in the various config functions (addSharedSecret, setAuthority, addAuthorities, authorizeNodesForCertification, authorizeNodeForAttributes, createConfig)
+    3. Trying to createConfig without defining haggleNodeIDs
+
+    --- Errors while scripting nodes in a test case ---
+
+    1. Trying to start/stop/publish/subscribe at nonexistent node.
+    2. Trying to start/stop an already started/stopped node.
+    3. Haggletest failing at some node.
+    4. Enough devices not coming back after initial reboot of android devices (User will be given a prompt to plug them all in and try once again.)
+    5. Having more nodes than phones for an android test.
+
+    --- General test related errors ---
+
+    1. Nonexistent config file.
+    2. Invalid JSON in config file.
+    3. Required parameters not found in auto-discovery and not set in config file or test-specific config. 
+    4. Nonexistent test file.
+    5. Invalid test function in test file.
+    6. Specifying a nonexistent test function on the command line.

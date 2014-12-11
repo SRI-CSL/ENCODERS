@@ -1,0 +1,9 @@
+These scripts will generate the TX/RX/DO graphs for the milcom-dissemination scenario.
+
+1. Rename your TestOutput directory to correspond to the filename you want for the resulting
+   graph (e.g. 140408-1304-phase2-basic-udissemination-milcom).
+
+2. cd into that directory.
+
+3. Run make_graph.sh. It will rename the log directories, generate a graph, and give it the same
+   name as the current working directory, with a .eps extension.

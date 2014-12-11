@@ -1,0 +1,741 @@
+{
+  "parse_haggle_dbs": true,
+  "parse_observer_files": true,
+  "squads": {
+    "s1": ["n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10"],
+    "s2": ["n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20"],
+    "s3": ["n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30"]
+  },
+  "custom_tables": [
+    {
+      "name": "utilityByDoSize",
+      "columns": [
+        {
+          "name": "dataLen",
+          "type": "integer primary key"
+        },
+        {
+          "name": "utility",
+          "type": "real"
+        }
+      ],
+      "indices": [],
+      "unique_indices": ["dataLen"],
+      "values": [
+        [1024, 1],
+        [5120, 2],
+        [10240, 3],
+        [256000, 10],
+        [512000, 20],
+        [1024000, 30],
+        [257024, 40],
+        [513024, 50],
+        [1025024, 60]
+      ]
+    }
+  ],
+  "custom_views": [
+    "CREATE VIEW tempDeliveredSubs AS SELECT p.dataLen, (SELECT COUNT(s.subscriber) FROM subs AS s WHERE s.id = p.id AND s.subscriber = n.id) AS found from observeNodeDescriptionAttributes AS o JOIN nodes AS n ON o.nodeId = n.id JOIN attrs AS a ON o.aId = a.id JOIN doAttrs AS da ON a.id = da.attrId JOIN pubs AS p ON da.doId = p.id WHERE o.entry = 20"
+  ],
+  "reports": [
+    {
+      "skip": false,
+      "type": ["summary", "silent"],
+      "title": "Overall Summary Stats",
+      "format": "csv",
+      "logfile": "overall_summary_stats.csv",
+      "fields": [
+        {
+          "name": "Published",
+          "query": "SELECT COUNT(*) FROM pubs AS p"
+        },
+        {
+          "name": "LocalReceived",
+          "query": "SELECT COUNT(*) FROM subs AS s WHERE s.publisher = s.subscriber"
+        },
+        {
+          "name": "RemoteReceived",
+          "query": "SELECT COUNT(*) FROM subs AS s WHERE s.publisher != s.subscriber"
+        },
+        {
+          "name": "LocalUtility",
+          "query": "SELECT SUM(u.utility) FROM subs AS s JOIN utilityByDoSize AS u ON s.dataLen = u.dataLen WHERE s.publisher = s.subscriber",
+          "format": "%d"
+        },
+        {
+          "name": "RemoteUtility",
+          "query": "SELECT SUM(u.utility) FROM subs AS s JOIN utilityByDoSize AS u ON s.dataLen = u.dataLen WHERE s.publisher != s.subscriber",
+          "format": "%d"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "silent"],
+      "title": "Node Summary Stats",
+      "format": "csv",
+      "logfile": "node_summary_stats.csv",
+      "fields": [
+        {
+          "name": "Node",
+          "query": "SELECT ?",
+          "args": ["name"]
+        },
+        {
+          "name": "Published",
+          "query": "SELECT COUNT(*) FROM pubs AS p WHERE p.publisher = ?",
+          "args": ["id"]
+        },
+        {
+          "name": "Received",
+          "query": "SELECT COUNT(*) FROM subs AS s WHERE s.subscriber = ?",
+          "args": ["id"]
+        },
+        {
+          "name": "Local",
+          "query": "SELECT COUNT(*) FROM subs AS s WHERE s.publisher = ? AND s.subscriber = ?",
+          "args": ["id", "id"]
+        },
+        {
+          "name": "Remote",
+          "query": "SELECT COUNT(*) FROM subs AS s WHERE s.publisher != ? AND s.subscriber = ?",
+          "args": ["id", "id"]
+        },
+        {
+          "name": "LocalUtility",
+          "query": "SELECT SUM(u.utility) FROM subs AS s JOIN utilityByDoSize AS u ON u.dataLen = s.dataLen WHERE s.publisher = ? AND s.subscriber = ?",
+          "args": ["id", "id"],
+          "format": "%d"
+        },
+        {
+          "name": "RemoteUtility",
+          "query": "SELECT SUM(u.utility) FROM subs AS s JOIN utilityByDoSize AS u ON u.dataLen = s.dataLen WHERE s.publisher != ? AND s.subscriber = ?",
+          "args": ["id", "id"],
+          "format": "%d"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "silent"],
+      "title": "Attribute Stats by Node",
+      "repeat": ["sl", "sa"],
+      "format": "csv",
+      "logfile": "attribute_stats_by_node.csv",
+      "fields": [
+        {
+          "name": "Node",
+          "query": "SELECT ?",
+          "args": ["name"]
+        },
+        {
+          "name": "Published",
+          "query": "SELECT COUNT(*) FROM pubs AS p JOIN attributes AS a ON p.id = a.id WHERE p.publisher = ? AND a.name = ?",
+          "args": ["id", "^repeat"]
+        },
+        {
+          "name": "Received",
+          "query": "SELECT COUNT(*) FROM subs AS s JOIN attributes AS a ON s.id = a.id WHERE s.subscriber = ? AND a.name = ?",
+          "args": ["id", "^repeat"]
+        },
+        {
+          "name": "Local",
+          "query": "SELECT COUNT(*) FROM subs AS s JOIN attributes AS a on s.id = a.id WHERE s.publisher = ? AND s.subscriber = ? AND a.name = ?",
+          "args": ["id", "id", "^repeat"]
+        },
+        {
+          "name": "Remote",
+          "query": "SELECT COUNT(*) FROM subs AS s JOIN attributes AS a on s.id = a.id WHERE s.publisher != ? AND s.subscriber = ? AND a.name = ?",
+          "args": ["id", "id", "^repeat"]
+        },
+        {
+          "name": "LocalRequest",
+          "query": "SELECT AVG(s.delayRelToRequest) FROM subs AS s JOIN attributes AS a on s.id = a.id WHERE s.publisher = ? AND s.subscriber = ? AND a.name = ?",
+          "args": ["id", "id", "^repeat"],
+          "format": "%.3f"
+        },
+        {
+          "name": "RemoteRequest",
+          "query": "SELECT AVG(s.delayRelToRequest) FROM subs AS s JOIN attributes AS a on s.id = a.id WHERE s.publisher != ? AND s.subscriber = ? AND a.name = ?",
+          "args": ["id", "id", "^repeat"],
+          "format": "%.3f"
+        },
+        {
+          "name": "LocalCreation",
+          "query": "SELECT AVG(s.delayRelToCreation) FROM subs AS s JOIN attributes AS a on s.id = a.id WHERE s.publisher = ? AND s.subscriber = ? AND a.name = ?",
+          "args": ["id", "id", "^repeat"],
+          "format": "%.3f"
+        },
+        {
+          "name": "RemoteCreation",
+          "query": "SELECT AVG(s.delayRelToCreation) FROM subs AS s JOIN attributes AS a on s.id = a.id WHERE s.publisher != ? AND s.subscriber = ? AND a.name = ?",
+          "args": ["id", "id", "^repeat"],
+          "format": "%.3f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["squads", "silent"],
+      "title": "Attribute Stats by Squad",
+      "repeat": ["sa"],
+      "format": "csv",
+      "logfile": "attribute_stats_by_squad.csv",
+      "fields": [
+        {
+          "name": "Squad",
+          "query": "SELECT ?",
+          "args": ["name"]
+        },
+        {
+          "name": "Published",
+          "query": "SELECT COUNT(*) FROM pubs AS p JOIN attributes AS a ON p.id = a.id JOIN squads as sq ON p.publisher = sq.nodeId WHERE sq.squadName = ? AND a.name = ?",
+          "args": ["name", "^repeat"]
+        },
+        {
+          "name": "Received",
+          "query": "SELECT COUNT(*) FROM subs AS s JOIN attributes AS a ON s.id = a.id JOIN squads as sq ON s.subscriber = sq.nodeId WHERE sq.squadName = ? AND a.name = ?",
+          "args": ["name", "^repeat"]
+        },
+        {
+          "name": "Local",
+          "query": "SELECT COUNT(*) FROM subs AS s JOIN attributes AS a on s.id = a.id JOIN squads AS sq1 ON s.publisher = sq1.nodeId JOIN squads AS sq2 ON s.subscriber = sq2.nodeId WHERE sq1.nodeId = sq2.nodeId AND sq1.squadName = ? AND sq2.squadName = ? AND a.name = ?",
+          "args": ["name", "name", "^repeat"]
+        },
+        {
+          "name": "Intra",
+          "query": "SELECT COUNT(*) FROM subs AS s JOIN attributes AS a on s.id = a.id JOIN squads AS sq1 ON s.publisher = sq1.nodeId JOIN squads AS sq2 ON s.subscriber = sq2.nodeId WHERE sq1.nodeId != sq2.nodeId AND sq1.squadName = ? AND sq2.squadName = ? AND a.name = ?",
+          "args": ["name", "name", "^repeat"]
+        },
+        {
+          "name": "Inter",
+          "query": "SELECT COUNT(*) FROM subs AS s JOIN attributes AS a on s.id = a.id JOIN squads AS sq1 ON s.publisher = sq1.nodeId JOIN squads AS sq2 ON s.subscriber = sq2.nodeId WHERE sq1.squadName != ? AND sq2.squadName = ? AND a.name = ?",
+          "args": ["name", "name", "^repeat"]
+        },
+        {
+          "name": "IntraRequest",
+          "query": "SELECT AVG(s.delayRelToRequest) FROM subs AS s JOIN attributes AS a on s.id = a.id JOIN squads AS sq1 ON s.publisher = sq1.nodeId JOIN squads AS sq2 ON s.subscriber = sq2.nodeId WHERE sq1.nodeId != sq2.nodeId AND sq1.squadName = ? AND sq2.squadName = ? AND a.name = ?",
+          "args": ["name", "name", "^repeat"],
+          "format": "%.3f"
+        },
+        {
+          "name": "InterRequest",
+          "query": "SELECT AVG(s.delayRelToRequest) FROM subs AS s JOIN attributes AS a on s.id = a.id JOIN squads AS sq1 ON s.publisher = sq1.nodeId JOIN squads AS sq2 ON s.subscriber = sq2.nodeId WHERE sq1.squadName != ? AND sq2.squadName = ? AND a.name = ?",
+          "args": ["name", "name", "^repeat"],
+          "format": "%.3f"
+        },
+        {
+          "name": "IntraCreation",
+          "query": "SELECT AVG(s.delayRelToCreation) FROM subs AS s JOIN attributes AS a on s.id = a.id JOIN squads AS sq1 ON s.publisher = sq1.nodeId JOIN squads AS sq2 ON s.subscriber = sq2.nodeId WHERE sq1.nodeId != sq2.nodeId AND sq1.squadName = ? AND sq2.squadName = ? AND a.name = ?",
+          "args": ["name", "name", "^repeat"],
+          "format": "%.3f"
+        },
+        {
+          "name": "InterCreation",
+          "query": "SELECT AVG(s.delayRelToCreation) FROM subs AS s JOIN attributes AS a on s.id = a.id JOIN squads AS sq1 ON s.publisher = sq1.nodeId JOIN squads AS sq2 ON s.subscriber = sq2.nodeId WHERE sq1.squadName != ? AND sq2.squadName = ? AND a.name = ?",
+          "args": ["name", "name", "^repeat"],
+          "format": "%.3f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "silent"],
+      "title": "Node Metrics",
+      "format": "csv",
+      "logfile": "node_metrics.csv",
+      "fields": [
+        {
+          "name": "Node",
+          "query": "SELECT ?",
+          "args": ["name"]
+        },
+        {
+          "name": "CPU Usage",
+          "query": "SELECT MAX(user_cpu_time) FROM observeCPUUsage AS o WHERE o.nodeId = ?",
+          "args": ["id"],
+          "format": "%.3f"
+        },
+        {
+          "name": "Memory Usage",
+          "query": "SELECT MAX(malloc_total)/1048576 FROM observeMemoryUsage AS o WHERE o.nodeId = ?",
+          "args": ["id"],
+          "format": "%d"
+        },
+        {
+          "name": "RX MBytes",
+          "query": "SELECT MAX(rx_bytes)/1048576 FROM observeBandwidthUsage AS o where o.nodeId = ?",
+          "args": ["id"],
+          "format": "%d"
+        },
+        {
+          "name": "TX MBytes",
+          "query": "SELECT MAX(tx_bytes)/1048576 FROM observeBandwidthUsage AS o where o.nodeId = ?",
+          "args": ["id"],
+          "format": "%d"
+        },
+        {
+          "name": "Event Queue Size",
+          "query": "SELECT MAX(event_queue_size) FROM observeKernelUsage AS o where o.nodeId = ?",
+          "args": ["id"],
+          "format": "%d"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["summary", "silent"],
+      "format": "csv",
+      "title": "Dissemination Stats",
+      "logfile": "dissemination_stats.csv",
+      "fields": [
+        {
+          "name": "RX MBytes",
+          "query": "SELECT SUM(rx_bytes)/1048576 FROM bandwidth AS b"
+        },
+        {
+          "name": "TX MBytes",
+          "query": "SELECT SUM(tx_bytes)/1048576 FROM bandwidth AS b"
+        },
+        {
+          "name": "DRX MBytes",
+          "query": "SELECT sum(dataLen)/1048576 FROM subs AS s WHERE s.dataLen > 10240"
+        },
+        {
+          "name": "# A2+A3",
+          "query": " SELECT (SELECT CAST(COUNT(*) AS REAL) FROM tempDeliveredSubs WHERE found = 1 AND dataLen > 10240) / (SELECT CAST(COUNT(*) AS REAL) FROM tempDeliveredSubs WHERE dataLen > 10240)",
+          "format": "%.5f"
+        },
+        {
+          "name": "# A1",
+          "query": " SELECT (SELECT CAST(COUNT(*) AS REAL) FROM tempDeliveredSubs WHERE found = 1 AND dataLen > 0) / (SELECT CAST(COUNT(*) AS REAL) FROM tempDeliveredSubs WHERE dataLen <= 10240)",
+          "format": "%.5f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["summary", "silent"],
+      "title": "Overall Summary Stats",
+      "format": "csv",
+      "logfile": "utility.csv",
+      "fields": [
+        {
+          "name": "Utility",
+          "query": "SELECT SUM(u.utility) FROM subs AS s JOIN utilityByDoSize AS u ON s.dataLen = u.dataLen",
+          "format": "%.5f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["summary", "silent"],
+      "title": "Overall Summary Stats",
+      "format": "csv",
+      "logfile": "availability_responsiveness.csv",
+      "fields": [
+        {
+          "name": "Availability",
+          "query": "SELECT COUNT(DISTINCT(d.doId)) / (SELECT CAST(COUNT(*) AS REAL) FROM pubs AS p2 WHERE p2.dataLen > 10240) FROM dosInHaggleDB AS d JOIN pubs AS p ON d.doId = p.id WHERE p.dataLen > 10240",
+          "format": "%.5f"
+        },
+        {
+          "name": "Responsiveness",
+          "query": "SELECT 1.0 / (COUNT(DISTINCT(d.doId)) / (SELECT CAST(COUNT(*) AS REAL) FROM dosInHaggleDB AS d2 JOIN pubs AS p2 ON d2.doId = p2.id WHERE p2.dataLen > 10240)) FROM dosInHaggleDB AS d JOIN pubs AS p ON d.doId = p.id WHERE p.dataLen > 10240",
+          "format": "%.5f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["summary", "fetchall", "silent"],
+      "title": "Delay Relative to Creation All",
+      "format": "csv",
+      "logfile": "delay_rel_to_creation_all.csv",
+      "fields": [
+        {
+          "name": "delayRelToCreation",
+          "query": "SELECT delayRelToCreation FROM subs AS s ORDER BY delayRelToCreation",
+          "format": "%.5f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["summary", "fetchall", "silent"],
+      "title": "Delay Relative to Creation A1",
+      "format": "csv",
+      "logfile": "delay_rel_to_creation_a1.csv",
+      "fields": [
+        {
+          "name": "delayRelToCreation",
+          "query": "SELECT delayRelToCreation FROM subs AS s WHERE dataLen <= 10240 ORDER BY delayRelToCreation",
+          "format": "%.5f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["summary", "fetchall", "silent"],
+      "title": "Delay Relative to Creation A2+A3",
+      "format": "csv",
+      "logfile": "delay_rel_to_creation_a2a3.csv",
+      "fields": [
+        {
+          "name": "delayRelToCreation",
+          "query": "SELECT delayRelToCreation FROM subs AS s WHERE dataLen > 10240 ORDER BY delayRelToCreation",
+          "format": "%.5f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["summary", "fetchall", "silent"],
+      "title": "Delay Relative to Request All",
+      "format": "csv",
+      "logfile": "delay_rel_to_request_all.csv",
+      "fields": [
+        {
+          "name": "delayRelToRequest",
+          "query": "SELECT delayRelToRequest FROM subs AS s ORDER BY delayRelToRequest",
+          "format": "%.5f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["summary", "fetchall", "silent"],
+      "title": "Delay Relative to Request A1",
+      "format": "csv",
+      "logfile": "delay_rel_to_request_a1.csv",
+      "fields": [
+        {
+          "name": "delayRelToRequest",
+          "query": "SELECT delayRelToRequest FROM subs AS s WHERE dataLen <= 10240 ORDER BY delayRelToRequest",
+          "format": "%.5f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["summary", "fetchall", "silent"],
+      "title": "Delay Relative to Request A2+A3",
+      "format": "csv",
+      "logfile": "delay_rel_to_request_a2a3.csv",
+      "fields": [
+        {
+          "name": "delayRelToRequest",
+          "query": "SELECT delayRelToRequest FROM subs AS s WHERE dataLen > 10240 ORDER BY delayRelToRequest",
+          "format": "%.5f"
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "CPU Usage over Time by Node",
+      "format": "csv",
+      "logfile": "cpu.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "CPU Time"],
+          "query": "SELECT name, 15*entry, user_cpu_time FROM observeCPUUsage AS o JOIN nodes AS n ON o.nodeId = n.id WHERE o.nodeId = ? ORDER BY entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%.3f"],
+          "default": ["", 0, 0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Memory Usage over Time by Node",
+      "format": "csv",
+      "logfile": "memory.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Memory Usage"],
+          "query": "SELECT name, 15*entry, malloc_total/1048576 FROM observeMemoryUsage AS o JOIN nodes AS n ON o.nodeId = n.id WHERE o.nodeId = ? ORDER BY entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Max RSS over Time by Node",
+      "format": "csv",
+      "logfile": "max_rss.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Max RSS"],
+          "query": "SELECT name, 15*entry, max_rss/1024 FROM observeCPUUsage AS o JOIN nodes AS n ON o.nodeId = n.id WHERE o.nodeId = ? ORDER BY entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "RX Bandwidth Usage over Time by Node",
+      "format": "csv",
+      "logfile": "bandwidth_rx.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "RX Bandwidth Usage"],
+          "query": "SELECT name, 15*entry, SUM(rx_bytes)/1048576 FROM observeBandwidthUsage AS o JOIN nodes AS n ON o.nodeId = n.id WHERE o.nodeId = ? GROUP BY entry ORDER BY entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "TX Bandwidth Usage over Time by Node",
+      "format": "csv",
+      "logfile": "bandwidth_tx.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "TX Bandwidth Usage"],
+          "query": "SELECT name, 15*entry, SUM(tx_bytes)/1048576 FROM observeBandwidthUsage AS o JOIN nodes AS n ON o.nodeId = n.id WHERE o.nodeId = ? GROUP BY entry ORDER BY entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "TXRX Bandwidth Usage over Time by Node",
+      "format": "csv",
+      "logfile": "bandwidth_tx_rx.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "TXRX Bandwidth Usage"],
+          "query": "SELECT name, 15*entry, (SUM(rx_bytes)+SUM(tx_bytes))/1048576 FROM observeBandwidthUsage AS o JOIN nodes AS n ON o.nodeId = n.id WHERE o.nodeId = ? GROUP BY entry ORDER BY entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Event Queue Size over Time by Node",
+      "format": "csv",
+      "logfile": "event_queue_size.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Event Queue Size"],
+          "query": "SELECT name, 15*entry, event_queue_size FROM observeKernelUsage AS o JOIN nodes AS n ON o.nodeId = n.id WHERE o.nodeId = ? GROUP BY entry ORDER BY entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Node Store Confirmed over Time by Node",
+      "format": "csv",
+      "logfile": "node_store_confirmed.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Node Store Confirmed"],
+          "query": "SELECT n.name, 15*o.entry, COUNT(*) FROM observeNodeStoreNodes AS o JOIN virtualNodes AS v ON o.vNodeId = v.id JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? AND v.type = 'peer' AND o.confirmed = 1 GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Node Store Unconfirmed over Time by Node",
+      "format": "csv",
+      "logfile": "node_store_unconfirmed.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Node Store Unconfirmed"],
+          "query": "SELECT n.name, 15*o.entry, COUNT(*) FROM observeNodeStoreNodes AS o JOIN virtualNodes AS v ON o.vNodeId = v.id JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? AND v.type != 'application' AND o.confirmed = 0 GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "One Hop Neighbors over Time by Node",
+      "format": "csv",
+      "logfile": "one_hop_neighbors.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "One Hop Neighbors"],
+          "query": "SELECT n.name, 15*o.entry, COUNT(*) FROM observeNodeStoreInterfaces AS o JOIN virtualNodes AS v ON o.vNodeId = v.id JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? AND v.type != 'application' AND v.type != 'local_device' AND o.is_up = 1 GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Cache Usage by Node",
+      "format": "csv",
+      "logfile": "current_num_do.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Number of Data Objects"],
+          "query": "SELECT n.name, 15*o.entry, o.current_num_do FROM observeCacheStrategy AS o JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%.5f"],
+          "default": ["", 0, 0.0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Cache Usage by Node",
+      "format": "csv",
+      "logfile": "current_capacity_ratio.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Capacity Ratio"],
+          "query": "SELECT n.name, 15*o.entry, o.current_capacity_ratio FROM observeCacheStrategy AS o JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%.5f"],
+          "default": ["", 0, 0.0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Cache Usage by Node",
+      "format": "csv",
+      "logfile": "total_do_evicted.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Total DO Evicted"],
+          "query": "SELECT n.name, 15*o.entry, o.total_do_evicted FROM observeCacheStrategy AS o JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0.0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Cache Usage by Node",
+      "format": "csv",
+      "logfile": "total_do_evicted_bytes.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Total DO Evicted Bytes"],
+          "query": "SELECT n.name, 15*o.entry, o.total_do_evicted_bytes FROM observeCacheStrategy AS o JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0.0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Cache Usage by Node",
+      "format": "csv",
+      "logfile": "total_do_hard_evicted.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Total DO Hard Evicted"],
+          "query": "SELECT n.name, 15*o.entry, o.total_do_hard_evicted FROM observeCacheStrategy AS o JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0.0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Cache Usage by Node",
+      "format": "csv",
+      "logfile": "total_do_hard_evicted_bytes.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Total DO Hard Evicted Bytes"],
+          "query": "SELECT n.name, 15*o.entry, o.total_do_hard_evicted_bytes FROM observeCacheStrategy AS o JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0.0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Cache Usage by Node",
+      "format": "csv",
+      "logfile": "total_do_inserted.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Total DO Inserted"],
+          "query": "SELECT n.name, 15*o.entry, o.total_do_inserted FROM observeCacheStrategy AS o JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0.0]
+        }
+      ]
+    },
+    {
+      "skip": false,
+      "type": ["nodes", "fetchall", "silent"],
+      "title": "Cache Usage by Node",
+      "format": "csv",
+      "logfile": "total_do_inserted_bytes.csv",
+      "fields": [
+        {
+          "type": "multi",
+          "name": ["Node", "Time", "Total DO Inserted Bytes"],
+          "query": "SELECT n.name, 15*o.entry, o.total_do_inserted_bytes FROM observeCacheStrategy AS o JOIN nodes AS n ON o.nodeId = n.id WHERE n.id = ? GROUP BY o.entry",
+          "args": ["id"],
+          "format": ["%s", "%d", "%d"],
+          "default": ["", 0, 0.0]
+        }
+      ]
+    }
+  ]
+}
+

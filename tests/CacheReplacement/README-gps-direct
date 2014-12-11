@@ -1,0 +1,200 @@
+DIRECT and Content-Based Caching Test for Android
+
+CBMEN INTERNAL ONLY.
+
+Last updated: 6/30/12
+--------------------------------------------------------------------------------
+
+This directory holds two test programs to test the content-based cache 
+replacement algorithm with DIRECT routing protocol that enhances 
+Haggle's opportunistic caching by purging obsolete data in a content-aware manner.
+
+No actual GPS data is used or generated. Instead a fixed location string is used, 
+because only the timestamps matter for the algorithm.
+
+To enable content-based caching with direct routing please use the config file:
+haggle/resouces/config-flood-direct-caching.xml 
+
+IMPORTANT: It needs to be installed as config.xml for Haggle to find it.
+
+Both test programs have to be launched through the adb shell.
+When compiling them from source you need the agcc toolchain for standalone
+native Android apps installed (see setup/CHaggleAppForAndroid.txt for details).
+
+For cache replacement module, the Data Manager is configured to include the:
+    <Replacement protocol="ReplacementTotalOrder"> 
+tag in config.xml.
+
+For DIRECT forwarding module, the Forwarding Manager is configure to include the: 
+    <Forwarder protocol="AlphaDirect"> 
+tag in config.xml. 
+
+For an example configuration, see config-flood-direct-caching.xml in the haggle/resources
+directory. An excerpt is replicated here:
+
+<DataManager set_createtime_on_bloomfilter_update="true">
+	<Aging period="3600" max_age="86400"/>
+	<Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+	<Replacement protocol="ReplacementTotalOrder">
+		<ReplacementTotalOrder MetricField="ContentCreationTime" IdField="ContentOriginator" TagField="ContentType" />
+	</Replacement>
+</DataManager>
+<ForwardingManager query_on_new_dataobject="true" periodic_dataobject_query_interval="0">
+	<Forwarder protocol="AlphaDirect">
+	</Forwarder>
+</ForwardingManager>
+
+The test programs are using the following attributes (configurable in config.xml):
+
+Name                  	    Value
+ContentType             =   GPS
+ContentOriginator       =   UniqueID string
+Location                =   Location string
+ContentCreationTime     =   Integer value (unix time() format)
+
+ContentType is the type of content, and dictates action taken upon the
+data.  In this case "GPS" means 'keep the latest GPS data'.  Thus, if
+it receives your GPS data with a timestamp of 500, and there is
+earlier GPS data, from you, with an earlier timestamp (e.g. 400), it
+will replace the earlier GPS data with later GPS data.
+
+ContentOriginator is the unique identifier of who sent it.  It can be
+rank/name/ssn, anything, as long it is unique to avoid conflict from
+another user.
+
+Location is any string value, having meaning only to the
+sending/receiving nodes.
+
+ContentCreationTime is an integer timestamp from unix time() format
+(Number of seconds since Jan 1, 1970, such as: "1341166750").
+
+All values are strings (even the ContentCreationTime, but its an ASCII
+representation of the number).
+
+
+Preparation for demo
+--------------------
+(see also docs/gotchas.txt for possible pitfalls and more details)
+
+1. Compile and install Haggle on three Android phones. 
+   To ease troubleshooting, please build with the option:
+   EXTRA_DEFINES=-DDEBUG
+
+2. For each phone, copy haggle/resources/config-flood-direct-caching.xml to
+   /data/data/org.haggle.kernel/files/config.xml
+
+3. Establish a basic 3-node chain scenario where an intermediate node forwards
+   data on behalf of two other nodes, using Alpha-DIRECT and the PhotoShare 
+   application.
+
+   For example:    
+
+        broadcast:     10.0.0.255
+        default route: eth0
+
+        phone1    <--->     phone2    <--->   phone3
+        10.0.0.20           10.0.0.21         10.0.0.22
+
+4. Run CORE to emulate the network
+
+	# sudo /etc/init.d/core start
+	# core
+   
+    IMPORTANT: Make sure "RJ45" is enabled in order for CORE to communicate with
+    the devices.
+
+5. On each phone, launch the PhotoShare app. 
+    The PhotoShare app lists discovered neighbors when you start the app:
+    - Verify that phone2 lists phone1 and phone3 as its neighbors. 
+    - Verify that phone1 lists phone2 as its neighbor.
+    - Verify that phone3 lists phone2 as its neighbor.
+
+6. On all the phones, register a common interest "direct" using PhotoShare application.
+
+7. To verify that the proper modules are enabled, on all of the phones search
+   for the following text in "haggle.log". 
+    - "AlphaDirect"
+    - "ReplacementTotalOrder"
+
+    This file can be found here:
+        - "/data/data/org.haggle.kernel/files/haggle.log"
+
+8. Complie the following two test programs using "make all" and install
+   them on the phone in a suitable directory using "adb push".
+   Both programs need to be launched through "adb shell".
+
+Test Program 1: gps_test (gps_test_android for Android application)
+-------------------------------------------------------------------
+
+The first program gps_test is started without any parameters on a
+single node. It publishes location beacons for three persons, one of
+them publishing location updates repeatedly. Occasionally obsolete
+location data is published (ContentCreationTime < 100).  If the content-based
+caching module ReplacementTotalOrder is enabled in the config.xml file
+no obsolete beacons should be shown.  Without content-based
+opportunistic caching (basic caching in Haggle) you will see that
+obsolete data is received by the application. You can remove the
+Replacement section from the DataManager in config.xml to test this.
+
+Test Program 2: gps_person (gps_person_android for Android application)
+-----------------------------------------------------------------------
+
+This is intended for a setup with two or more nodes. gps_test should
+be launched on each node with a different person name.
+
+Program Descriptions:
+
+gps_person: 
+    This is a generic person, with options to control every parameter.
+    The following parameters are supported:
+
+Optional:
+-r 0/1/2                : Listen for 'ContentType=GPS', and print results to CLI. 
+                          0=off, 1=print all, 2=print all but me
+-t <time in seconds>    : Time between each GPS beacon broadcast.  Default 15 seconds.
+-j <time in seconds>    : +/- seconds added to each beacon broadcast (jitter).  Default 3 seconds.
+-m <number>             : Maximum amount of GPS beacon broadcasts.   Default is 1000.
+-l <string>             : Location.   Default is "Nowhere"
+
+-n <name>               : use <name> for ContentOriginator value string and client haggle handle name.   
+                          Default is "Godzilla".   WARNING!   If you don't have unique names, 
+                          the GPS data will appear to be from same originator!
+
+Default setting: The name is Godzilla and a GPS beacon is sent 
+every 10 +/- 2 seconds (8-12 seconds). In the default setting
+all beacons are printed, including my own.
+
+The program will immediately send out a preliminary beacon when
+activated.  Then it is listening for GPS beacons, and print them to
+the screen.
+
+A simple test setup is to use two nodes which are initially connected,
+so they should see each others beacons. Using ifconfig you may
+disconnect the two nodes and reconnect after say one minute. Now the
+two nodes should exchange only the two most recent beacons and continue
+to track each other as before. Without content-based caching you will
+see that upon reconnection all accumulated beacons will be exchanged
+and printed.
+
+In the beginning, only two phones are connected in a chain: 
+
+	phone1 <---> phone2 <-/-> phone3 
+
+At phone1, run the test program with name "left". You will see location content is published 
+with ContentCreationTime. 
+	# gps_person_android -n left  
+
+Disconnect phone1 from phone2. Connect phone2 with phone3: 
+
+	phone1 <-/-> phone2 <---> phone3 
+
+At phone2, run the test program with name "right". You will only receive the most recent known location of 
+"left" (before the phone1 disconnected from the phone2). 
+	# gps_person_android -n right
+
+NOTE: One can also verify that ReplacementTotalOrder is operating correctly by
+checking the "haggle.db" file on the phones using a SQLite browser. Only the most
+recent copy (greatest "ContentCreationTime") of a piece of content should be listed,
+for a particular "ContentOriginator" and "ContentType". 
+
+

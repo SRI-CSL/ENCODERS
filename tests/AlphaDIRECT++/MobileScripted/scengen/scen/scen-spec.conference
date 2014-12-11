@@ -1,0 +1,47 @@
+[global]
+area = rect(700,500)
+start_time = 0
+stop_time = 90
+
+[speaker]
+
+num_nodes = 1
+offset = 50,20
+
+center_model = FixedWP
+center_model.wp1 = (100, 0, 20, 1)
+center_model.wp2 = (500, 0, 20, 1)
+
+member_area = rect(100, 100)
+member_model = Brownian
+member_model.T = 1
+member_model.V = 8
+
+
+[audience1]
+
+num_nodes = 20
+member_area = rect (250, 220)
+offset = 50, 150
+
+member_model = Brownian
+member_model.T = 2
+member_model.V = 5
+
+[audience2]
+
+num_nodes = 20
+member_area = rect (250, 220)
+offset = 400, 150
+
+member_model = Brownian
+member_model.T = 2
+member_model.V = 5
+
+[wanderers]
+
+num_nodes = 5
+offset = 50, 400
+member_area = rect(600, 100)
+member_model = Waypoint
+

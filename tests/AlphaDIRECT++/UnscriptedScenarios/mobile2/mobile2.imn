@@ -1,0 +1,144 @@
+node n1 {
+    type router
+    model PC
+    network-config {
+	hostname n1
+	!
+	interface eth0
+	 ip address 10.0.0.20/32
+	 ipv6 address 2001:0::20/128
+	!
+    }
+    canvas c1
+    iconcoords {165.0 291.0}
+    labelcoords {165.0 323.0}
+    interface-peer {eth0 n5}
+    services {DefaultRoute HaggleService}
+}
+
+node n2 {
+    type router
+    model PC
+    network-config {
+	hostname n2
+	!
+	interface eth0
+	 ip address 10.0.0.21/32
+	 ipv6 address 2001:0::21/128
+	!
+    }
+    canvas c1
+    iconcoords {372.0 327.0}
+    labelcoords {372.0 359.0}
+    interface-peer {eth0 n5}
+    services {DefaultRoute HaggleService}
+}
+
+node n3 {
+    type router
+    model PC
+    network-config {
+	hostname n3
+	!
+	interface eth0
+	 ip address 10.0.0.22/32
+	 ipv6 address 2001:0::22/128
+	!
+    }
+    canvas c1
+    iconcoords {599.0 326.0}
+    labelcoords {599.0 358.0}
+    interface-peer {eth0 n5}
+    services {DefaultRoute HaggleService}
+}
+
+node n4 {
+    type router
+    model PC
+    network-config {
+	hostname n4
+	!
+	interface eth0
+	 ip address 10.0.0.23/32
+	 ipv6 address 2001:0::23/128
+	!
+    }
+    canvas c1
+    iconcoords {813.0 287.0}
+    labelcoords {813.0 319.0}
+    interface-peer {eth0 n5}
+    services {DefaultRoute HaggleService}
+}
+
+node n5 {
+    type wlan
+    network-config {
+	hostname wlan5
+	!
+	interface wireless
+	 ip address 10.0.0.0/32
+	 ipv6 address 2001:0::0/128
+	!
+	mobmodel
+	coreapi
+	basic_range
+	!
+	scriptfile
+	mobile2.scen
+	!
+    }
+    custom-config {
+	custom-config-id basic_range
+	custom-command {3 3 9 9 9}
+	config {
+	275
+	54000000
+	0
+	20000
+	0
+	}
+    }
+    canvas c1
+    iconcoords {552.0 178.0}
+    labelcoords {552.0 210.0}
+    interface-peer {e0 n1}
+    interface-peer {e1 n2}
+    interface-peer {e2 n3}
+    interface-peer {e3 n4}
+}
+
+link l1 {
+    nodes {n5 n1}
+}
+
+link l2 {
+    nodes {n5 n2}
+}
+
+link l3 {
+    nodes {n5 n3}
+}
+
+link l4 {
+    nodes {n5 n4}
+}
+
+canvas c1 {
+    name {Canvas1}
+}
+
+option global {
+    interface_names no
+    ip_addresses yes
+    ipv6_addresses yes
+    node_labels yes
+    link_labels yes
+    ipsec_configs yes
+    exec_errors yes
+    show_api no
+    background_images no
+    annotations yes
+    grid yes
+    traffic_start 0
+}
+

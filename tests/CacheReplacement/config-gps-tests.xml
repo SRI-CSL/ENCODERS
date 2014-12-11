@@ -1,0 +1,39 @@
+<Haggle persistent="no">
+	<Attr name="ManagerConfiguration">*</Attr>
+	<SecurityManager security_level="LOW"/>
+	<DebugManager>
+		<DebugTrace enable="false"/>
+	</DebugManager>
+	<NodeManager>
+		<Node matching_threshold="0" max_dataobjects_in_match="10"/>
+		<NodeDescriptionRetry retries="3" retry_wait="10.0"/>
+	</NodeManager>
+	<ProtocolManager>
+		<TCPServer port="9697" backlog="30"/>
+	</ProtocolManager>
+	<DataManager set_createtime_on_bloomfilter_update="true">
+		<Aging period="3600" max_age="86400"/>
+		<Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+		<CacheStrategy name="CacheStrategyReplacementPurger">
+			<CacheStrategyReplacementPurger purger="CachePurgerParallel" replacement="CacheReplacementPriority">
+				<CachePurgerParallel> 
+					<CachePurger name="CachePurgerAbsTTL">
+						<CachePurgerAbsTTL purge_type="purge_by_timestamp" tag_field="ContentType" tag_field_value="DelByAbsTTL" keep_in_bloomfilter="false" min_db_time_seconds="1" />
+					</CachePurger>
+					<CachePurger name="CachePurgerRelTTL"> 
+						<CachePurgerRelTTL purge_type="purge_after_seconds" tag_field="ContentType" tag_field_value="DelByRelTTL" keep_in_bloomfilter="false" min_db_time_seconds="1" />
+					</CachePurger>
+				</CachePurgerParallel>
+				<CacheReplacementPriority>
+					<CacheReplacement name="CacheReplacementTotalOrder" priority="1">
+						<CacheReplacementTotalOrder metric_field="ContentCreationTime" id_field="ContentOriginator" tag_field="ContentType" tag_field_value="GPS" />
+					</CacheReplacement>
+				</CacheReplacementPriority>
+			</CacheStrategyReplacementPurger>
+		</CacheStrategy>
+	</DataManager>
+	<ForwardingManager query_on_new_dataobject="true" periodic_dataobject_query_interval="0">
+	  <Forwarder protocol="noForward">
+	  </Forwarder>
+	</ForwardingManager>
+</Haggle>

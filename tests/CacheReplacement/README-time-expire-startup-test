@@ -1,0 +1,118 @@
+Test Cache Purging at Haggle Startup
+====================================
+
+This is a scripted test intended to be executed on a single phone
+(see below for a test on Linux).
+
+One-time Setup
+--------------
+
+1. Compile and install Haggle on an Android phone.
+
+2. Copy config-noforward-caching-test.xml (or config-routing-caching-test.xml) 
+   to /data/data/org.haggle.kernel/files/config.xml
+
+3. Compile and push the programs "haggletest" and "now"
+   to /data/ directory on the phone. 
+
+4. Copy time-expire-startup-test.sh and time-expire-startup-test-b.sh to the /data/ on the phone.
+
+Preparation
+-----------
+
+5. Before running the demo, you must make sure that Haggle has a clean slate.
+
+6. Force quit any currently running instances of Haggle.
+
+7. Remove the following files:
+
+    /data/data/org.haggle.kernel/files/haggle.log
+    /data/data/org.haggle.kernel/files/haggle.db
+    /sdcard/haggle/*
+
+8. Launch Haggle. 
+
+    am startservice -a android.intent.action.MAIN -n org.haggle.kernel/org.haggle.kernel.Haggle
+
+Execute Test Scripts
+--------------------
+
+9. The time-expire-startup-test.sh exercises puring based on absolute and relative expiration times when the Haggle daemon starts up. 
+
+	cd /data
+	bash time-expire-startup-test.sh 
+	bash time-expire-startup-test-b.sh 
+
+   which will exercise purging feature at the startup time of Haggle daemon as below:
+
+	Purging on Haggle Startup based on relative and absolute expiration times
+	-------------------------------------------------------------------------
+	
+	To enable the feature ContentType=DelByRelTTL (or ContentType=DelByAbsTTL) should be set.
+	Publish DOs with purge_after_seconds= (or purge_by_timestamp=).
+
+	haggletest -c -s 0 -b 1 -e logfile1 pub ContentType=DelByRelTTL purge_after_seconds=15
+	haggletest -c -s 0 -b 1 -e logfile2 pub ContentType=DelByRelTTL purge_after_seconds=110
+	haggletest -c -s 0 -b 1 -e logfile3 pub ContentType=DelByAbsTTL purge_by_timestamp=1350261185
+	haggletest -c -s 0 -b 1 -e logfile4 pub ContentType=DelByAbsTTL purge_by_timestamp=1350261280
+
+	Stop the Haggle daemon and wait long enough to pass the expiration times of some DOs (i.e., 15 seconds), 
+	yet less than those of some DOs (i.e., 110 sencods).
+
+	Next, start the Haggle daemon, which will purge expired DOs.
+
+	Continute with the "bash time-expire-start-test-b.sh", which will purge the remaining DOs according to their expiration times.
+
+   second part of test script (i.e., time-expire-startup-test-b.sh) will continue as below:
+
+	Purging on Haggle Startup based on relative and absolute expiration times
+	-------------------------------------------------------------------------
+
+	The following subs would return 1 match each. NOP clears out the existing subs.
+
+	haggletest -c nop
+	haggletest -s 10 -e loginput1 part2 sub ContentType=DelByRelTTL
+	haggletest -c nop
+	haggletest -s 10 -e loginput2 part2 sub ContentType=DelByAbsTTL
+	haggletest -c nop
+
+	Wait long enough for remaining DOs to be expired.
+
+	The following subs should return no match. NOP clears out the existing subs.
+
+	haggletest -c nop
+	haggletest -s 10 -e loginput3 part2 sub ContentType=DelByRelTTL
+	haggletest -c nop
+	haggletest -s 10 -e loginput4 part2 sub ContentType=DelByAbsTTL
+
+	---------------------------------------------------------------------------
+	PASS!
+
+
+Test Cache Purging at Haggle Startup
+====================================
+
+This is a manual test intended for a single node on Linux
+or CORE with Linux containers.
+
+General idea of this test:
+  
+Have haggle shutdown with unexpired timed data objects. 
+When haggle restarts, purge all expired objects, and reschedule unexpired objects (with correct time remaining).
+
+This test has 2 parts:
+
+The first test publishes 4 data objects (2 RelTTL and 2 AbsTTL data objects).    
+It then kills the haggle daemon (manually started), and waits for the first 2 (1 RelTTL and 1 AbsTTL) to expire.
+
+When it restarts, it reschedules 2 objects to expire.  
+The script waits for a period of time for them to expire, and tests for that condition.
+
+How to test:
+
+1. Start the Haggle daemon "haggle -dd"
+2. Run "time-expire-startup.sh" 
+3. Stop the Haggle daemon "haggletest -x -q nop"  
+4. Wait for about 30 seconds 
+5. Start the Haggle daemon "haggle" (no -dd option) 
+6. Run time-expire-startup-b.sh 

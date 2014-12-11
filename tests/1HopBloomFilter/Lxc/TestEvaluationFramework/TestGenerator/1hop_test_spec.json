@@ -1,0 +1,381 @@
+[
+{
+    "test_name"          : "000-unittests-%%pretty%%",
+    "test_output_path"   : "../Testsuite/000-unittests-%%pretty%%",
+    "result_output_path" : "/tmp/000-unittests-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "custom_validate"    :  {
+        "path" : "./unittest_validate.sh"
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-1hop-unittest.xml",
+            "pretty_name" : "unittests"
+        },
+    "num_nodes"          : 1,
+    "duration"           : 70,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 200,
+    "area_width"         : 200,
+    "cpu_limit"          : "none",
+    "macphys_cfgs"       : [{
+        "nodes": [1],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 1
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "none",
+        "parameters" : {
+            "script" : [
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "001-canary-1hop-%%pretty%%",
+    "test_output_path"   : "../Testsuite/001-canary-1hop-%%pretty%%",
+    "result_output_path" : "/tmp/001-canary-1hop-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "custom_validate"    :  {
+        "path" : "./canary.sh"
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-1hop.xml",
+            "pretty_name" : "noforward"
+        },
+    "num_nodes"          : 3,
+    "duration"           : 70,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "cpu_limit"          : "none",
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 3
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 3,
+                    "time"     : 0,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "duration" : 7,
+                    "attributes" : { "key" : "value" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "002-1hop-consume-%%pretty%%",
+    "test_output_path"   : "../Testsuite/002-1hop-consume-%%pretty%%",
+    "result_output_path" : "/tmp/002-1hop-consume-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : "%%exp%%"
+        }
+    },
+    "config"             : 
+    { "^repeat" : [ 
+        { "^assign" : {
+            "path" : "./ExampleConfigs/config-1hop-consume.xml",
+            "pretty_name" : "yes-consume",
+            "replace_dict" : {
+                "%%consume%%" : "true",
+                "%%refresh%%" : "300000" 
+            }
+        },
+            "%%exp%%" : "1" 
+        },
+        { "^assign" : {
+            "path" : "./ExampleConfigs/config-1hop-consume.xml",
+            "pretty_name" : "no-consume",
+            "replace_dict" : {
+                "%%consume%%" : "false",
+                "%%refresh%%" : "300000" 
+            }
+        },
+            "%%exp%%" : "2"
+        }
+    ]
+    },
+    "num_nodes"          : 3,
+    "duration"           : 70,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "cpu_limit"          : "none",
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 3
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 3,
+                    "time"     : 0,
+                    "type"     : "sub",
+                    "max_match" : 1,
+                    "print_output" : "true",
+                    "duration" : 7,
+                    "attributes" : { "key" : "value" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "003-1hop-multi-consume-%%pretty%%",
+    "test_output_path"   : "../Testsuite/003-1hop-multi-consume-%%pretty%%",
+    "result_output_path" : "/tmp/003-1hop-multi-consume-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : "%%exp%%"
+        }
+    },
+    "config"             : 
+    { "^repeat" : [ 
+        { "^assign" : {
+            "path" : "./ExampleConfigs/config-1hop-consume.xml",
+            "pretty_name" : "yes-consume",
+            "replace_dict" : {
+                "%%consume%%" : "true",
+                "%%refresh%%" : "300000" 
+            }
+        },
+            "%%exp%%" : "2" 
+        },
+        { "^assign" : {
+            "path" : "./ExampleConfigs/config-1hop-consume.xml",
+            "pretty_name" : "no-consume",
+            "replace_dict" : {
+                "%%consume%%" : "false", 
+                "%%refresh%%" : "300000" 
+            }
+        },
+            "%%exp%%" : "4"
+        }
+    ]
+    },
+    "num_nodes"          : 4,
+    "duration"           : 85,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 800,
+    "cpu_limit"          : "none",
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3, 4],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 4
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 1,
+                    "time"     : 5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 3,
+                    "time"     : 0,
+                    "type"     : "sub",
+                    "max_match" : 1,
+                    "print_output" : "true",
+                    "duration" : 15,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 4,
+                    "time"     : 0,
+                    "type"     : "sub",
+                    "max_match" : 1,
+                    "print_output" : "true",
+                    "duration" : 15,
+                    "attributes" : { "key" : "value" }
+                }
+
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "004-1hop-grid-%%pretty%%",
+    "test_output_path"   : "../Testsuite/004-1hop-grid-%%pretty%%",
+    "result_output_path" : "/tmp/004-1hop-grid-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : "25"
+        }
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-1hop.xml",
+            "pretty_name" : "1hop"
+        },
+    "num_nodes"          : 9,
+    "duration"           : 100,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 300,
+    "area_width"         : 300,
+    "cpu_limit"          : "none",
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 100,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/1KB", 1 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 3,
+            "cols"    : 3
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "num_pub"  : 25,
+                    "file"     : "/tmp/1KB",
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 9,
+                    "time"     : 0,
+                    "max_match" : 25,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "key" : "value" }
+                }
+            ]
+        }
+    }
+}
+]

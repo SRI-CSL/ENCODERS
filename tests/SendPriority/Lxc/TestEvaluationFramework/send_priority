@@ -1,0 +1,4 @@
+Testsuite/000-unittests-N1D70s1-200x200-unittests
+Testsuite/001-canary-sendpriority-N2D70s1-400x400-noforward
+Testsuite/002-sendpriority-attr-N2D130s1-400x400-noforward
+Testsuite/003-sendpriority-complex-N2D130s1-400x400-noforward

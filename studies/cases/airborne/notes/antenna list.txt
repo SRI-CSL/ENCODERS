@@ -1,0 +1,20 @@
+Antenna master list:
+
+On sattelite:
+  - Ground link antenna, facing down, 0.8 degree angle
+  - Adjacent cluster link, omnidirectional, shorter range (say 50km or however far apart satellite clusters are)
+
+On AWACs:
+  - Static link to other AWACS
+  - 200 nautical mile range to jets
+  - To sattelite: antenna facing up, 0.8 degrees
+
+On Jets:
+  - To sattelite: antenna facing up, 0.8 degrees
+  - Can jets actually transmit? Document mentions something about receive only mode or low tx power. Low tx power would suggest sending to sattelite might not be possible.
+  - 200 nautical mile range to AWACs
+
+On Surface ship: (80nmi behind AWACs)
+  - connected to AWACS/ground
+On Ground: (1000nmi behind surface ship)
+  - connected to AWACs/ship

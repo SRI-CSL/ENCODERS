@@ -1,0 +1,277 @@
+node n1 {
+    type rj45
+    network-config {
+	hostname usb0
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {66.0 109.0}
+    labelcoords {66.0 141.0}
+    interface-peer {0 n13}
+}
+
+node n2 {
+    type rj45
+    network-config {
+	hostname usb1
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {345.0 460.0}
+    labelcoords {345.0 492.0}
+    interface-peer {0 n13}
+}
+
+node n3 {
+    type rj45
+    network-config {
+	hostname usb2
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {400.0 133.0}
+    labelcoords {400.0 165.0}
+    interface-peer {0 n13}
+}
+
+node n4 {
+    type rj45
+    network-config {
+	hostname usb3
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {131.0 62.0}
+    labelcoords {131.0 94.0}
+    interface-peer {0 n13}
+}
+
+node n5 {
+    type rj45
+    network-config {
+	hostname usb4
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {296.0 380.0}
+    labelcoords {296.0 412.0}
+    interface-peer {0 n13}
+}
+
+node n6 {
+    type rj45
+    network-config {
+	hostname usb5
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {495.0 122.0}
+    labelcoords {495.0 154.0}
+    interface-peer {0 n13}
+}
+
+node n7 {
+    type rj45
+    network-config {
+	hostname usb6
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {136.0 133.0}
+    labelcoords {136.0 165.0}
+    interface-peer {0 n13}
+}
+
+node n8 {
+    type rj45
+    network-config {
+	hostname usb7
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {246.0 461.0}
+    labelcoords {246.0 493.0}
+    interface-peer {0 n13}
+}
+
+node n9 {
+    type rj45
+    network-config {
+	hostname usb8
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {428.0 57.0}
+    labelcoords {428.0 89.0}
+    interface-peer {0 n13}
+}
+
+node n10 {
+    type rj45
+    network-config {
+	hostname usb9
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {217.0 195.0}
+    labelcoords {217.0 227.0}
+    interface-peer {0 n13}
+}
+
+node n11 {
+    type rj45
+    network-config {
+	hostname usb10
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {288.0 273.0}
+    labelcoords {288.0 305.0}
+    interface-peer {0 n13}
+}
+
+node n12 {
+    type rj45
+    network-config {
+	hostname usb11
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {324.0 198.0}
+    labelcoords {324.0 230.0}
+    interface-peer {0 n13}
+}
+
+node n13 {
+    type wlan
+    network-config {
+	hostname wlan13
+	!
+	interface wireless
+	 ip address 10.0.0.0/32
+	 ipv6 address 2001:0::0/128
+	!
+	mobmodel
+	coreapi
+	basic_range
+	!
+    }
+    custom-config {
+	custom-config-id basic_range
+	custom-command {3 3 9 9 9}
+	config {
+	110.29411764705883
+	54000000
+	0
+	20000
+	0
+	}
+    }
+    canvas c1
+    iconcoords {283.0 32.0}
+    labelcoords {283.0 64.0}
+    interface-peer {e0 n1}
+    interface-peer {e1 n2}
+    interface-peer {e2 n3}
+    interface-peer {e3 n4}
+    interface-peer {e4 n5}
+    interface-peer {e5 n6}
+    interface-peer {e6 n7}
+    interface-peer {e7 n8}
+    interface-peer {e8 n9}
+    interface-peer {e9 n10}
+    interface-peer {e10 n11}
+    interface-peer {e11 n12}
+}
+
+link l1 {
+    nodes {n13 n1}
+}
+
+link l2 {
+    nodes {n13 n2}
+}
+
+link l3 {
+    nodes {n13 n3}
+}
+
+link l4 {
+    nodes {n13 n4}
+}
+
+link l5 {
+    nodes {n13 n5}
+}
+
+link l6 {
+    nodes {n13 n6}
+}
+
+link l7 {
+    nodes {n13 n7}
+}
+
+link l8 {
+    nodes {n13 n8}
+}
+
+link l9 {
+    nodes {n13 n9}
+}
+
+link l10 {
+    nodes {n13 n10}
+}
+
+link l11 {
+    nodes {n13 n11}
+}
+
+link l12 {
+    nodes {n13 n12}
+}
+
+canvas c1 {
+    name {Canvas1}
+}
+
+option global {
+    interface_names no
+    ip_addresses yes
+    ipv6_addresses no
+    node_labels yes
+    link_labels yes
+    ipsec_configs yes
+    exec_errors yes
+    show_api no
+    background_images no
+    annotations yes
+    grid yes
+    traffic_start 0
+}
+

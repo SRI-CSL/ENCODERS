@@ -1,0 +1,120 @@
+LRU-K Caching Utility Demo Instruction
+======================================
+
+To test LRU-k, the following topology is used (refer configuration.jpg)
+
+    D
+    |
+A - B - C
+    |
+    E
+
+A:
+# busybox ifconfig usb0 10.0.0.10 broadcast 10.0.0.255 netmask 255.255.255.0
+# busybox route add default usb0
+
+B:
+# busybox ifconfig usb0 10.0.0.11 broadcast 10.0.0.255 netmask 255.255.255.0
+# busybox route add default usb0
+
+C:
+# busybox ifconfig usb0 10.0.0.12 broadcast 10.0.0.255 netmask 255.255.255.0
+# busybox route add default usb0
+
+D:
+
+# busybox ifconfig usb0 10.0.0.13 broadcast 10.0.0.255 netmask 255.255.255.0
+# busybox route add default usb0
+
+E:
+
+# busybox ifconfig usb0 10.0.0.14 broadcast 10.0.0.255 netmask 255.255.255.0
+# busybox route add default usb0
+
+One-time Setup
+--------------
+
+1. Compile and install Haggle on Android phones.
+
+2. Copy appropriate configuration files (config.xml for nodes A, C, D, E, config-caching.xml for node B)
+   to /data/data/org.haggle.kernel/files/config.xml
+
+3. Compile and push the program "haggletest"
+   to /data/ directory on the phones.
+
+4. Copy scripts (sender.sh, subscribe.sh, validate.sh, monitor.sh) to the /data/ on the phones.
+
+Preparation
+-----------
+
+5. Before running the demo, you must make sure that Haggle has a clean slate.
+
+6. Force quit any currently running instances of Haggle.
+
+7. Remove the following files:
+
+    /data/data/org.haggle.kernel/files/haggle.log
+    /data/data/org.haggle.kernel/files/haggle.db
+    /sdcard/haggle/*
+
+8. Launch Haggle.
+
+    am startservice -a android.intent.action.MAIN -n org.haggle.kernel/org.haggle.kernel.Haggle
+
+Execute Test Scripts
+--------------------
+
+9. Nodes C, D, E subscribe for large DO.
+
+    cd /data
+    bash monitor.sh
+
+10. Node B subscribes for all DOs.
+
+    cd /data
+    bash subscribe.sh
+
+11. Node A publishes 2 groups of 9 DOs. Each group consists of (in order) 1 large DO, 7 medium DOs, and 1 small DO (74K/73K/72K in size). 
+    cd /data
+    bash sender.sh
+
+12. Verify Node B contains the correct amount and right kind of DOs, after 'subscribe.sh' finished.
+
+    cd /data
+    bash validate.sh
+
+    Node B can only hold 10 DOs total.
+    Node B will pass the large DOs to nodes C, D, and E, which will cause the LRU value of the large DOs to be increased.
+    Thus, after all 18 DOs have been received from node A, 2 large DOs (1 from each group) and the recent 8 DOs received will reside in the cache.
+
+
+History (extra notes):
+
+ export DEVA="3034F644FC7A00EC"; export DEVB="3930FD5EBAD700EC";  export DEVC="3530897F2C3A00EC"; export DEVD="3133E8B7548100EC"; export DEVE="35351BDB547600EC"
+ adb -s $DEVA push config.xml /data/data/org.haggle.kernel/files/config.xml
+ adb -s $DEVB push config-caching.xml /data/data/org.haggle.kernel/files/config.xml
+ adb -s $DEVC push config.xml /data/data/org.haggle.kernel/files/config.xml
+ adb -s $DEVD push config.xml /data/data/org.haggle.kernel/files/config.xml
+ adb -s $DEVE push config.xml /data/data/org.haggle.kernel/files/config.xml
+ adb -s $DEVE push config.xml /data/data/org.haggle.kernel/files/config.xml
+ adb -s $DEVD push config.xml /data/data/org.haggle.kernel/files/config.xml
+ adb -s $DEVA push monitor.sh /data/
+ adb -s $DEVB push monitor.sh /data/
+ adb -s $DEVC push monitor.sh /data/
+ adb -s $DEVD push monitor.sh /data/
+ adb -s $DEVE push monitor.sh /data/
+ adb -s $DEVA push sender.sh /data/
+ adb -s $DEVB push sender.sh /data/
+ adb -s $DEVC push sender.sh /data/
+ adb -s $DEVD push sender.sh /data/
+ adb -s $DEVE push sender.sh /data/
+ adb -s $DEVA push subscribe.sh /data/
+ adb -s $DEVB push subscribe.sh /data/
+ adb -s $DEVC push subscribe.sh /data/
+ adb -s $DEVD push subscribe.sh /data/
+ adb -s $DEVE push subscribe.sh /data/
+ adb -s $DEVA push validate.sh /data/
+ adb -s $DEVB push validate.sh /data/
+ adb -s $DEVC push validate.sh /data/
+ adb -s $DEVD push validate.sh /data/
+ adb -s $DEVE push validate.sh /data/

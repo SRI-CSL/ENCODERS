@@ -1,0 +1,61 @@
+Test Combination of Replacement and Purging
+===========================================
+
+One-time Setup
+--------------
+
+1. Compile and install Haggle on two Android phones (A, B).
+
+2. Copy config-noforward-caching-test.xml (or config-routing-caching-test.xml) 
+   to /data/data/org.haggle.kernel/files/config.xml
+
+3. Compile and push the program "haggletest" to /data/ directory on the phones. 
+
+Preparation
+-----------
+
+4. Before running the demo, you must make sure that Haggle has a clean slate.
+
+5. Force quit any currently running instances of Haggle.
+
+6. Remove the following files:
+
+    /data/data/org.haggle.kernel/files/haggle.log
+    /data/data/org.haggle.kernel/files/haggle.db
+    /sdcard/haggle/*
+
+7. Launch Haggle.
+
+    am startservice -a android.intent.action.MAIN -n org.haggle.kernel/org.haggle.kernel.Haggle
+
+Execute Test Steps
+------------------
+
+8. Node A publishes. 
+
+    haggletest -s 0 -b 1 pub ContentType=TotalOrder ContentOrigin=suns-tech ContentCreateTime=10 RoutingType=Flood DataType=amalgamation 
+
+9. Node B subscribes, which should return 1 match with ContentCreateTime=10.
+
+    haggletest -s 5 step2 sub DataType=amalgamation
+
+10. Node A publishes content that cannot replace the existing content, with a large lifespan. It should not be inserted.
+
+    haggletest -s 0 -b 1 pub ContentType=TotalOrder ContentOrigin=suns-tech ContentCreateTime=5 RoutingType=Flood DataType=amalgamation ContentType=DelByRelTTL purge_after_seconds=500
+
+11. Node B subscribes, which should return 1 match with ContentCreateTime=10 due to replacement based on ContentCreatTime. 
+
+    haggletest -s 5 step3 sub DataType=amalgamation
+
+12. Node A publishes content that will replace the exisitng content, with a moderate lifespan. It should replace, and be deleted after 45 seconds.
+
+    haggletest -s 0 -b 1 pub ContentType=TotalOrder ContentOrigin=suns-tech ContentCreateTime=50 RoutingType=Flood DataType=amalgamation ContentType=DelByRelTTL purge_after_seconds=45
+
+13. Node B subscribes, which should return 1 match with ContentCreateTime=50. 
+
+    haggletest -s 5 step4 sub DataType=amalgamation
+
+14. Wait 45 seconds to let purging happen. Then Node B subscribes, which should return nothing.
+
+    haggletest -s 5 step4b sub DataType=amalgamation
+

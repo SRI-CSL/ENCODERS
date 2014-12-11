@@ -1,0 +1,30 @@
+This is a test to verify LOCAL is working correctly.
+
+It involves 5 nodes, a source node (S), an intermediate node (I), and 3 destination nodes (D1-D3).
+
+         +----+
+         | D1 |
+         +----+
+            |
++---+    +----+    +----+
+| S |----| I  |----| D2 |
++---+    +----+    +----+
+            |
+         +----+
+         | D3 |
+         +----+
+
+
+The test does the following:
+1.  Node I has a very small cache, only capable of holding 3 DO's, at most.
+2.  Node I publishes a local Data object
+3.  Node S publishes 10 data objects
+4.  Nodes D1-D3 subcribe to the content, which Node S publishes.
+
+To verify if it works:
+Node I must have the original Data Object it published locally
+
+
+To execute the test:
+Make sure the testrunner is set up (see docs/README-testrunner-setup) and the testrunner scripts
+for your platform are in your $PATH, then use the commands "generate_test_list.sh ." and "run.sh ."

@@ -1,0 +1,195 @@
+[
+{
+    "test_name"          : "001-canary-eval2-sendpriority-%%pretty%%",
+    "test_output_path"   : "../Eval2/001-canary-eval2-sendpriority-%%pretty%%",
+    "result_output_path" : "/tmp/001-canary-eval2-sendpriority-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "config"             : 
+	{ "^repeat" : [
+        {
+            "path" : "./ExampleConfigs/config-sendpriority-eval.xml",
+            "pretty_name" : "eval-disabled",
+        	"replace_dict" : {
+            	"%%enable%%" : "false",
+            	"%%parallel_factor%%" : "1"
+        	}
+        },
+        {
+            "path" : "./ExampleConfigs/config-sendpriority-eval.xml",
+            "pretty_name" : "eval-enabled",
+        	"replace_dict" : {
+            	"%%enable%%" : "true",
+            	"%%parallel_factor%%" : "1"
+        	}
+        }
+		]
+	},
+    "num_nodes"          : 9,
+    "duration"           : 130,
+    "warmup"             : 10,
+    "seed"               : {"^repeat" : [ 1, 2, 3 ] },
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "cpu_limit"          : "none",
+    "macphys_cfgs"       : [{
+        "nodes": [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/p1", 1000 ],
+        [ "/tmp/p2", 1001 ], 
+        [ "/tmp/p3", 1002 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 3,
+            "cols"    : 3
+        }
+    },
+    "application_cfg"    : {
+        "name" : "distribution_overlay",
+        "pretty_name" : "eval-app",
+        "parameters" : {
+           "pub_distributions" : [
+                {
+                    "nodes" : [5],
+                    "delay_s"    : 1,
+                    "duration_s" : 100,
+                    "max_pubs" : 999999,
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 2 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "k", "v"], [ "priority", "3" ] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 10,
+                            "elements" : [ "/tmp/p1" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 1.2,
+                            "high" : 1.2
+                        }
+                    }
+                },
+                {
+                    "nodes" : [5],
+                    "delay_s"    : 1,
+                    "duration_s" : 100,
+                    "max_pubs" : 999999,
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 2 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "k", "v"], [ "priority", "2" ] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 10,
+                            "elements" : [ "/tmp/p2" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 1,
+                            "high" : 1
+                        }
+                    }
+                },
+                {
+                    "nodes" : [5],
+                    "delay_s"    : 1,
+                    "duration_s" : 100,
+                    "max_pubs" : 999999,
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 2 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "k", "v"], [ "priority", "1" ] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 10,
+                            "elements" : [ "/tmp/p3" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0.8,
+                            "high" : 0.8
+                        }
+                    }
+                }
+            ],
+            "sub_distributions" : [ 
+                {
+                    "nodes" : [ 1, 2, 3, 4, 6, 7, 8, 9 ],
+                    "delay_s"    : 1,
+                    "duration_s" : 100,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "k", "v" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 200,
+                            "high"  : 200
+                        }
+                    }
+                }
+            ]
+          }
+      }
+}
+]

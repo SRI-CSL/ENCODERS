@@ -1,0 +1,92 @@
+[
+{
+    "test_name"          : "001",
+    "test_output_path"   : "Testsuite/001",
+    "result_output_path" : "TestOutput/001",
+    "config"             : {"^repeat" : [
+        { "^assign" : 
+            {
+                "path" : "./config.xml"
+            },
+          "%%diss%%" : "sspray"
+        }
+    ]
+    },
+    "num_nodes"          : 2,
+    "duration"           : 680,
+    "warmup"             : 10,
+    "seed"               : { "^repeat" : [1] },
+    "area_height"        : 1200,
+    "area_width"         : 1200,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/1MB", 1000 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "overlay",
+        "parameters": {
+            "mobilities" : [
+                {
+                    "nodes" : [1],
+                    "name" :  "rwp",
+                    "offset_x" : 0,
+                    "offset_y" : 0,
+                    "parameters" : {
+                        "add_to_parent_seed" : 1,
+                        "area_width"         : 400,
+                        "area_height"        : 400,
+                        "rwp_v_min"          : 1,
+                        "rwp_v_max"          : 7,
+                        "rwp_p_max"          : 5
+                    }
+                },
+                {
+                    "nodes" : [2],
+                    "name" :  "circle",
+                    "offset_x" : 100,
+                    "offset_y" : 100,
+                    "parameters" : {
+                        "area_width" : 1000,
+                        "area_height" : 1000,
+                        "velocity" : 50,
+                        "circle_density" : 30
+                    }
+                }
+              ]
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "pretty_app",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 90,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "key1" : "value1", "key2" : "value2", "key3" : "value3" }
+                },
+               {
+                    "node_num" : 2,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "duration" : 460,
+                    "threshold" : 75,
+                    "attributes" : { "key1" : "value1", "key2" : "value2", "key3" : "value3", "key4" : "value4" }
+               }
+            ]
+        }
+    }
+}
+]

@@ -1,0 +1,111 @@
+What is the Android Testrunner?
+-------------------------------
+
+The Android Testrunner is a system for running repeatable tests for SRI's CBMEN solution on Android phones.
+It manages setup and teardown of test facilities, including the CORE network emulator. It executes test scripts,
+then pulls results from the phones and stores them. It can also run tests over the air using SAIC's mesh networking
+application, if available.
+
+
+Prerequisites
+-------------
+
+* A set of rooted Android phones running some variant of Gingerbread. Specifically, we tested using CyanogenMod 7.2.
+* Core 4.6
+* Emane 0.8.1
+* Bonnmotion 2.0 (included in ../setup/tools/ directory)
+* Android SDK, with Platform Tools installed
+* Appropriate environment variable settings:
+  * ANDROID_HOME should point to your Android SDK installation
+  * $ANDROID_HOME/tools and $ANDROID_HOME/platform tools in your $PATH
+  * Bonnmotion in your $PATH
+
+
+Initial Setup
+-------------
+
+1. Kill ADB and make sure it's running as root. This is necessary because non-root ADB cannot send
+   debugging commands to phones with a USB network connection.
+
+   sudo killall adb
+   sudo adb devices
+
+2. Make a list of devices that are plugged into the system.
+
+  studies/framework/android/bin/makeDeviceList.sh
+
+  This will put a list of connected devices in /tmp/device_ids.txt. You will need to regenerate
+  this file whenever your computer reboots, because /tmp gets wiped.
+
+3. Set ANDROID_TESTRUNNER in your environment to point to the AndroidTestRunner directory:
+  studies/framework/android/testrunner
+
+4. Configure the phones.
+
+  studies/framework/android/bin/setup/configurePhones.sh
+
+  This script does five things:
+      1. Changes the hostname of each phone to be SRI$NUM where $NUM is the first 5 digits of the device's ADB identifier.
+      2. Edits build.prop to increase heap limit to 300MB.
+      3. Installs requisite system networking settings in /etc/sysctl.conf on the phone.
+      4. Installs the SAIC Tethering app for turning on USB tethering automatically.
+      5. Installs the arphelper app and gives it suid root permissions.
+  You should only need to run this script once.
+
+5. If you plan to run OTA tests, you'll need to disable the lockscreen on each phone.
+   This can be accomplished by running the Settings app and going into
+     CyanogenMod Settings > Tablet tweaks
+   And checking the box next to "Disable lockscreen".
+
+Per-Test Setup
+--------------
+
+1. Compile Haggle.
+
+2. Copy the Haggle-debug.apk and haggletest binaries to a directory of your choice.
+
+3. Install Haggle
+
+  studies/framework/android/bin/setup/installHaggle.sh $DIR
+
+  Where $DIR is the directory where you put the Haggle binaries.
+
+
+Test Generator
+--------------
+
+1. Make a directory in "cases", and write/copy a test_spec.json file for it (and any other required files,
+   such as config files, if you are copying an existing test). If you are copying an existing LXC test,
+   you will have to make a few edits to test_spec.json. Namely, remove the test_template so that the
+   android test runner can use the appropriate default (or set your own).
+
+2. From that directory, run
+
+  studies/framework/android/bin/generate.sh <your_test_case_name>
+  studies/framework/android/bin/test_list.sh <your_test_case_name>
+
+  This will generate an AndroidTestSuite directory containing the test scripts.
+
+3. If you are trying to run an existing test that does not have a test_spec.json file,
+   you will have to port it manually to the new testrunner. Instructions are included
+   in README-porting.
+
+Test Runner
+-----------
+
+studies/framework/android/bin/run.sh <your_test_case_name>
+
+or
+
+studies/framework/android/bin/runota.sh <your_test_case_name>
+to use Over The Air networking instead of CORE.
+
+Test Report
+-----------
+
+Run logreport/testreport.py <OUTPUT_DIR> to generate a report with some basic statistics about the test run.
+
+Known Issues
+------------
+
+* Phones will sometimes randomly fail to execute test commands. This may result in test failure, or CORE failure, depending on what failed.

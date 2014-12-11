@@ -1,0 +1,553 @@
+{
+    "base_configs": {
+        "base_plot_line_per_node_linear" : {
+            "colors": ["b", "g", "r", "c", "m", "y", "k"],
+            "linestyles": ["-", "--", "-.", ":"],
+            "markers": [".", "o", "v", "^", "<", ">", "1", "2", "3", "4", "s", "p", "*", "|", "_", "x", "+", "h", "H", "D"],
+            "markersize": 4,
+            "grid": true,
+            "xlim_min": 0,
+            "xlim_max": 1800,
+            "xlim_tick": 200,
+            "outputsettings": {
+                "bbox_inches": "tight"
+            },
+            "legend": {
+                "loc": "lower center",
+                "bbox_to_anchor": [0.5, -0.3],
+                "ncol": 10,
+                "fancybox": true,
+                "shadow": true,
+                "columnspacing": 1.0,
+                "labelspacing": 0.0,
+                "handletextpad": 0.0,
+                "handlelength": 1.5 
+            }
+        },
+        "base_plot_line_per_category_cumulative_linear" : {
+            "colors": ["b", "g", "r", "c", "m", "y", "k"],
+            "linestyles": ["-", "--", "-.", ":"],
+            "markers": [".", "o", "v", "^", "<", ">", "1", "2", "3", "4", "s", "p", "*", "|", "_", "x", "+", "h", "H", "D"],
+            "markersize": 4,
+            "grid": true,
+            "xlim_min": 0,
+            "xlim_max": 1800,
+            "xlim_tick": 200,
+            "outputsettings": {
+                "bbox_inches": "tight"
+            },
+            "legend": {
+                "loc": "lower center",
+                "bbox_to_anchor": [0.5, -0.3],
+                "ncol": 10,
+                "fancybox": true,
+                "shadow": true,
+                "columnspacing": 1.0,
+                "labelspacing": 0.0,
+                "handletextpad": 0.0,
+                "handlelength": 1.5 
+            }
+        },
+        "base_plot_bar_per_category_two_axes_log_linear" : {
+            "colors": ["b", "g", "r", "c", "m", "y", "k"],
+            "y1scale": "log",
+            "y2scale": "linear",
+            "y2lim_min": 0.0,
+            "y2lim_max": 1.0,
+            "barwidth": 0.12,
+            "offset": 0.24,
+            "gap": 2,
+            "ygap": 1,
+            "align": "center",
+            "outputsettings": {
+                "bbox_inches": "tight"
+            },
+            "legend": {
+                "loc": "lower center",
+                "bbox_to_anchor": [0.5, -0.2],
+                "ncol": 10,
+                "fancybox": true,
+                "shadow": true,
+                "columnspacing": 1.0,
+                "labelspacing": 0.0,
+                "handletextpad": 0.0,
+                "handlelength": 1.5 
+            }
+        }
+    },
+
+    "plots": [
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "cpu.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "CPU Usage over time",
+                "xlabel": "Time (s)",
+                "ylabel": "CPU Usage (s)",
+                "outputfile": "cpu.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "memory.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Memory Usage over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Memory Usage (MB)",
+                "outputfile": "memory.eps"
+            }
+        },
+        {  
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "max_rss.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Max RSS Usage over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Max RSS Usage (MB)",
+                "outputfile": "max_rss.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "bandwidth_rx.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Received Bandwidth over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Received Bandwidth (MB)",
+                "outputfile": "bandwidth_rx.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "bandwidth_tx.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Transmitted Bandwidth over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Transmitted Bandwidth (MB)",
+                "outputfile": "bandwidth_tx.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "bandwidth_tx_rx.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Total Bandwidth over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Total Bandwidth (MB)",
+                "outputfile": "bandwidth_tx_rx.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "event_queue_size.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Event Queue Size over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Event Queue Size",
+                "outputfile": "event_queue_size.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "node_store_confirmed.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Confirmed Neighbors over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Confirmed Neighbors",
+                "outputfile": "node_store_confirmed.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "node_store_unconfirmed.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Unconfirmed Neighbors over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Unconfirmed Neighbors",
+                "outputfile": "node_store_unconfirmed.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "one_hop_neighbors.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "One Hop Neighbors over time",
+                "xlabel": "Time (s)",
+                "ylabel": "One Hop Neighbors",
+                "outputfile": "one_hop_neighbors.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "current_num_do.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Number of Data Objects in Cache over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Number of Data Objects in Cache",
+                "outputfile": "current_num_do.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "current_capacity_ratio.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Cache Capacity Ratio over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Cache Capacity Ratio",
+                "outputfile": "current_capacity_ratio.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "total_do_evicted.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Total DO Evicted over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Total DO Evicted",
+                "outputfile": "total_do_evicted.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "total_do_evicted_bytes.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Total DO Evicted Bytes over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Total DO Evicted Bytes",
+                "outputfile": "total_do_evicted_bytes.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "total_do_hard_evicted.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Total DO Hard Evicted over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Total DO Hard Evicted",
+                "outputfile": "total_do_hard_evicted.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "total_do_hard_evicted_bytes.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Total DO Hard Evicted Bytes over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Total DO Hard Evicted Bytes",
+                "outputfile": "total_do_hard_evicted_bytes.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "total_do_inserted.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Total DO Inserted over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Total DO Inserted",
+                "outputfile": "total_do_inserted.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_node",
+            "base_config": "base_plot_line_per_node_linear",
+            "config": {
+                "data": {
+                    "filename": "total_do_inserted_bytes.csv",
+                    "header": 2,
+                    "markevery": 5
+                },
+                "title": "Total DO Inserted Bytes over time",
+                "xlabel": "Time (s)",
+                "ylabel": "Total DO Inserted Bytes",
+                "outputfile": "total_do_inserted_bytes.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_category_cumulative",
+            "base_config": "base_plot_line_per_category_cumulative_linear",
+            "config": {
+                "data": [
+                    {
+                        "filename": "delay_rel_to_request_a1.csv",
+                        "header": 2,
+                        "title": " ",
+                        "markevery": 100
+                    }
+                ],
+                "title": "Cumulative Delivery Over Time - A1",
+                "xlabel": "Time (s)",
+                "ylabel": "Data Objects Delivered by time",
+                "outputfile": "cumulative_delivery_over_time_a1.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_category_cumulative",
+            "base_config": "base_plot_line_per_category_cumulative_linear",
+            "config": {
+                "data": [
+                    {
+                        "filename": "delay_rel_to_request_a2a3.csv",
+                        "header": 2,
+                        "title": " ",
+                        "markevery": 100
+                    }
+                ],
+                "title": "Cumulative Delivery Over Time - A2+A3",
+                "xlabel": "Time (s)",
+                "ylabel": "Data Objects Delivered by time",
+                "outputfile": "cumulative_delivery_over_time_a2a3.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_category_cumulative",
+            "base_config": "base_plot_line_per_category_cumulative_linear",
+            "config": {
+                "data": [
+                    {
+                        "filename": "delay_rel_to_request_all.csv",
+                        "header": 2,
+                        "title": " ",
+                        "markevery": 100
+                    }
+                ],
+                "title": "Cumulative Delivery Over Time - ALL",
+                "xlabel": "Time (s)",
+                "ylabel": "Data Objects Delivered by time",
+                "outputfile": "cumulative_delivery_over_time_all.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_category_cumulative",
+            "base_config": "base_plot_line_per_category_cumulative_linear",
+            "config": {
+                "data": [
+                    {
+                        "filename": "delay_rel_to_creation_a1.csv",
+                        "header": 2,
+                        "title": " ",
+                        "markevery": 100
+                    }
+                ],
+                "title": "Delivery Latency - A1",
+                "xlabel": "Latency (s)",
+                "ylabel": "Data Objects Delivered within latency",
+                "outputfile": "latency_a1.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_category_cumulative",
+            "base_config": "base_plot_line_per_category_cumulative_linear",
+            "config": {
+                "data": [
+                    {
+                        "filename": "delay_rel_to_creation_a2a3.csv",
+                        "header": 2,
+                        "title": " ",
+                        "markevery": 100
+                    }
+                ],
+                "title": "Delivery Latency - A2+A3",
+                "xlabel": "Latency (s)",
+                "ylabel": "Data Objects Delivered within latency",
+                "outputfile": "latency_a2a3.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_line_per_category_cumulative",
+            "base_config": "base_plot_line_per_category_cumulative_linear",
+            "config": {
+                "data": [
+                    {
+                        "filename": "delay_rel_to_creation_all.csv",
+                        "header": 2,
+                        "title": " ",
+                        "markevery": 100
+                    }
+                ],
+                "title": "Delivery Latency - ALL",
+                "xlabel": "Latency (s)",
+                "ylabel": "Data Objects Delivered within latency",
+                "outputfile": "latency_all.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_bar_per_category_two_axes",
+            "base_config": "base_plot_bar_per_category_two_axes_log_linear",
+            "config": {
+                "data": [
+                    {
+                        "filename": "dissemination_stats.csv",
+                        "header": 2,
+                        "title": ""
+                    }
+                ],
+                "title": "Overall Performance Summary",
+                "labels": ["Tx", "Rx", "DRx", "A2+A3", "A1"],
+                "xlabel": "", 
+                "y1len": 3,
+                "y1label": "Total bandwidth (MB)",
+                "y2len": 2,
+                "y2scale": "linear",
+                "y2label": "Delivery Fraction (%)",
+                "outputfile": "dissemination_stats.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_bar_per_category_two_axes",
+            "base_config": "base_plot_bar_per_category_two_axes_log_linear",
+            "config": {
+                "data": [
+                    {
+                        "filename": "utility.csv",
+                        "header": 2,
+                        "title": ""
+                    }
+                ],
+                "title": "Utility",
+                "labels": ["Utility"],
+                "xlabel": "", 
+                "y1len": 1,
+                "y1label": "Utility",
+                "y2len": 0,
+                "y2label": "",
+                "y1scale": "linear",
+                "outputfile": "utility.eps"
+            }
+        },
+        {
+            "skip": false,
+            "type": "plot_bar_per_category_two_axes",
+            "base_config": "base_plot_bar_per_category_two_axes_log_linear",
+            "config": {
+                "data": [
+                    {
+                        "filename": "availability_responsiveness.csv",
+                        "header": 2,
+                        "title": ""
+                    }
+                ],
+                "title": "Data Availability Summary",
+                "labels": ["Availability", "Responsiveness"],
+                "xlabel": "", 
+                "y1len": 1,
+                "y1label": "Availability (%)",
+                "y2len": 1,
+                "y2label": "Responsiveness",
+                "y1scale": "linear",
+                "y2lim_max": 30,
+                "outputfile": "availability_responsiveness.eps"
+            }
+        }
+    ]
+}

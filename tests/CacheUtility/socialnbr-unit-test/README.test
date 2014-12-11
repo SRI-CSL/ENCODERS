@@ -1,0 +1,34 @@
+Using the picture test-setup.png as a template, we have 12 nodes, divided into
+four social groups:
+
+  Nodes 1-3 are social group 'A'.
+  Nodes 4-6 are social group 'B'.
+  Nodes 7-9 are social group 'C'.
+  Nodes 10-12 are not in a defined social group.
+
+This test (socialnbr-proof-should-pass) proves that nodes can retain/prefer to
+cache content from their own social group.
+
+We use the following conditions:
+
+1. Each node publishes 1 data object for their social group and with a global
+   attribute (plt=plt). Thus, there will be 3 DO's for social group 'A', 3 for
+   'B', and 3 for 'C', all of which will be tagged with plt=plt.
+2. Each node is interested in their social group (squad=X), and in the global
+   attribute (plt=plt).
+3. The undefined nodes are ONLY subscribed to global attribute (plt=plt).
+
+We have the following criteria to be successful:
+
+1. 100% delivery rate: Each data object is received 15 times. 12 times for the
+   global plt=plt subscriptions, and 3 more times for the squad=X subscriptions.
+2. Each node in the social group has all of their social group content in cache
+   when the test finishes. E.g. for nodes 1-3, each of those nodes will have
+   all 3 squad=A attribute DOs cached.
+
+We will compare it against Neighborhood utility (only) caching by running a test
+(socialnbr-should-fail) with the same configuration and actions, but using the
+CacheUtilityNeighborhood function instead of CacheUtilityNeighborhoodSocial.
+Neighborhood tends to be temporally inclined (e.g. earlier received, earlier
+distributed, more likely to be purged), and so the test will fail due to
+relevant in-group content being purged from nodes' caches.

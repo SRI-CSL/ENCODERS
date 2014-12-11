@@ -1,0 +1,220 @@
+Tests for First-Class Applications Semantics
+============================================
+
+The following examples have been tested with CORE lxc containers and
+on the phones.
+
+Config files suitable for this test:
+
+resources/config-noforward-fca.xml (for one or two connected nodes)
+resources/config-flood-direct-fca.xml (to exercise interest-driven routing)
+resources/config-flood-prophets-fca.xml (to exercise routing with Prophet-S)
+resources/config-flood-direct-proactive-fca.xml (to exercise proactive dissemination)
+
+The following sample tests exercise the functionality of the semantics
+branch. All these tests require the following config setting which
+enables Haggle to maintain first-class applications, i.e.  explicit
+representations of all subscriptions (i.e. application node
+descriptions) in the network:
+
+        <ApplicationManager 
+            first_class_applications="true">
+        </ApplicationManager>
+
+To make sure that the NodeDescription attribute does not interfere with the semantics
+please make sure to set node_description_attribute_weight="0" and,  if you are not 
+using in-memory-node descriptions, better set count_node_descriptions="false",
+as in the following excepts:
+
+       <NodeManager>
+                <Node matching_threshold="0" max_dataobjects_in_match="10" node_description_attribute="empty" node_description_attribute_weight="0"/>
+                <NodeDescriptionRetry retries="3" retry_wait="10.0"/>
+        </NodeManager>
+
+        <DataManager set_createtime_on_bloomfilter_update="true">
+                <Aging period="3600" max_age="86400"/>
+                <Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+                <DataStore>
+                        <SQLDataStore count_node_descriptions="false"/>
+                </DataStore>
+        </DataManager>
+
+
+NOTE: It is instructive to use an SQLite brower to inspect the state
+of the Haggle database haggle.db while exeuting the following steps.
+
+Basic Queries
+-------------
+
+Publish data objects with two attribute/value pairs:
+
+haggletest pub ContentType=Map Location=Kirkuk
+
+The data object can be retrieved by the following subscription:
+
+haggletest -z -c sub Location=Kirkuk
+
+The option -z clear the application Bloomfilter after registration so
+that potentially delivered objects can be delivered again, and -c
+clears the application interest to start with a well-defined state.
+
+Threshold Queries
+-----------------
+
+You may execute pub and sub on the same or on different
+nodes. The behavior should be equivalent.
+
+Publish data object with tree attributes:
+
+haggletest pub A B C
+
+Disjuntive query:
+Query for all data objects with attribute X or A.
+
+haggletest -z -c sub X A
+
+After subscribing the published data object should be returned.
+(you can exit haggletest with Ctrl-C).
+
+Conjunctive query:
+Query for all data objects with attribute X and A.
+
+haggletest -z -c -t 100 sub X A
+
+The option -t 100 means that a treshold of 100% needs
+to be reached to count as a match, i.e. all attributes
+of the subscription need to be included in the data object
+we are looking for.
+
+No data object should be returned in this case.
+
+Conjunctive query:
+Query for all data objects with attributes A, B, and C.
+
+haggletest -z -c -t 100 sub A B C
+
+The published data object should be returned.
+
+N-out-of-M query:
+Query for all data objects with at least 66% of attributes A, B, and
+X, meaning at least two out of the given three must be present.
+
+haggletest -z -c -t 66 sub A B X
+
+The published data object should be returned.
+
+In contrast
+
+haggletest -z -c -t 66 sub A X Y
+
+one matching attribute is not sufficient for a data object match.
+
+Threshold query:
+Query for all data objects with at least 80% relevance given weighted
+attributes A,B,C,D with 50%,30%,10%, and 10% importance, respectively.
+
+haggletest -z -c -t 80 sub A:50 B:30 C:10 D:10
+
+The published data object should be returned.
+
+haggletest -z -c -t 80 sub A:10 B:10 C:30 D:50
+
+No data object should be returned with the query.
+
+Limiting the Number of Matches
+------------------------------
+
+You may execute pub and sub on the same or on different
+nodes. The behavior will NOT be equivalent.
+
+Publish 100 data objects with different time stamp and
+sequence number attributes, and an attribute called TEST.
+
+haggletest -b 100 pub TEST
+
+Query for data objects with TEST attribute limiting number
+of matches on remote nodes to 10.
+
+haggletest -c -m 10 sub TEST
+(-m 10 can be omitted if it is configured are default)
+
+All 100 data objects should be returned if sub is executed
+on the same node as pub. 
+
+Otherwise, the number of data objects returned is limited to 10. 
+In that case the next 10 objects can be obtained by using another
+invocation (without -z, otherwise the same data objects are returned):
+
+haggletest -c -m 10 sub TEST
+
+or alternatively
+
+haggletest -u -q nop
+
+to explicitly refresh the interest.
+
+If node description refresh is enabled, 10 next objects are returned
+automatically with each refresh. For example the config files
+  resource/config-flood-prophets-fca.xml and
+  resource/config-flood-direct-fca.xml
+enable this feature (with 30s refresh time).
+
+The following will clear the Bloom filter and return all local data
+objects (that have been previously fetched) plus any data objects from
+other nodes (in our case 10 from the publisher if executed on the 
+other node).
+
+haggletest -z -c -m 10 sub TEST
+
+Note that in general, since multiple nodes can contribute to answering
+a query, there is not gurantee that the number of data objects
+received by an application is bounded by the local bound specififed.
+More answers can also be returned due to interest refresh meachanisms
+that are routing-algorithm dependent. Hence, -m 10 should be used to
+signal that the subscriber is interested in at least 10 results.
+
+Furthermore, if we keep a standing subscription
+
+haggletest -z -c -m 10 sub TEST (no Ctrl-C)
+
+the next 10 results are returned and an attempt is made
+to route any results that become available to the subscriber
+without couting towards the bound. This can be observed
+by executing, e.g.
+
+haggletest -b 5 pub TEST
+
+on the other node.
+
+Ranking of Results
+------------------
+
+Results are ranked at each node first by matching-similarity
+(assuming the matching threshold is at least reached) and then
+by create time (representing the freshness of information).
+
+Publish two data objects with X and Y attributes:
+
+haggletest -b 2 pub X Y
+
+Publish two data objects with X attributes:
+
+haggletest -b 2 pub X
+
+Query for data object with X and Y but only require 50% similariy:
+
+haggletest -z -c -t 50 sub X Y
+
+In our simple two node network four results should be returned
+in the order:
+
+1. last published data object with X Y (with SequenceNumber = 2)
+2. first published data object with X Y (with SequenceNumber = 1)
+3. last published data object with X (with SequenceNumber = 2)
+4. first published data object with X (with SequenceNumber = 1)
+
+However, since data objects are returned to applications
+in the order received, and multiple nodes can contribute to
+answering the query there is not guarantee that the ranking
+is always preserved.
+

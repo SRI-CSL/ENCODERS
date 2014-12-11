@@ -1,0 +1,104 @@
+Network Coding and Fragmentation Tests
+======================================
+
+The following examples have been tested on CORE with Linux containers
+with static networks of up to 30 nodes.
+
+Config files suitable for this test:
+
+resources/config-coding.xml (for one or two connected nodes)
+resources/config-flood-direct-coding.xml (to exercise network coding with interest-driven routing)
+resources/config-flood-direct-coding-fca.xml (to exercise it with first-class applications)
+resources/config-flood-direct-fragmentation.xml (to exercise fragmentation with interest-driven routing)
+resources/config-flood-direct-fragmentation-fca.xml (to exercise it with first-class applications)
+
+Corresponding files with signing tag will execise signatures in combination with the features above:
+
+resources/config-flood-direct-coding-signing.xml
+resources/config-flood-direct-coding-signing-fca.xml
+resources/config-flood-direct-fragmentation-signing.xml
+resources/config-flood-direct-fragmentation-signing-fca.xml
+
+The relavant excepts from the configuration file are
+
+        <NetworkCodingManager enable_network_coding="true" max_age_block="300"
+	      resend_delay="0.1" resend_reconstructed_delay="10.0"
+	      delay_delete_networkcodedblocks="300.0" delay_delete_reconstructed_networkcodedblocks="10.0" 
+	      min_network_coding_file_size="32769" block_size="32768"
+	      number_blocks_per_dataobject="1">
+        </NetworkCodingManager>
+
+for network coding with 32K block, and
+
+        <FragmentationManager enable_fragmentation="true" max_age_fragment="300"
+            resend_delay="0.1" resend_reconstructed_delay="60.0" 
+            delay_delete_fragments="300.0" delay_delete_reconstructed_fragments="60.0"
+            min_fragmentation_file_size="32769" fragment_size="32768"
+            number_fragments_per_dataobject="1">        
+        </FragmentationManager>
+
+for fragmentation with 32K fragments.
+
+Both coding and fragmentation can work without signatures, e.g. using
+
+	<SecurityManager security_level="LOW"/>
+
+or signing enabled at all levels, e.g.
+
+	<SecurityManager security_level="HIGH"/>
+
+For preparation it is useful to create a number of testfiles of different sizes:
+
+dd if=/dev/zero -of=/tmp/testfile-100K bs=1024 count=100
+dd if=/dev/zero -of=/tmp/testfile-1M bs=1024 count=1024
+
+Basic Network Coding Test
+-------------------------
+
+Publish 100K file:
+
+haggletest pub file /tmp/testfile-100K abc
+
+On another node execute
+
+haggletest sub abc
+
+and the original data object should be returned.
+
+While the subscription is active, publish 10 more 100K files:
+
+haggletest -b 10 pub file /tmp/testfile-100K abc
+
+and 10 more files should be received (flow through mode).
+
+On yet another node execute
+
+haggletest sub abc
+
+and the 11 data objects should be returned (query mode).
+This last query will also exercise the reencoding of
+opportunistically cached data objects.
+
+As another test you might want to publish 
+a 1M file instead of 10 files of 100K using:
+
+haggletest pub file /tmp/testfile-1M abc
+
+This will generate at least 32 blocks which
+need to come together to reconstruct the original object.
+
+Basic Fragmentation Test
+------------------------
+
+The fragmentation test should exhibit the same
+black box behaviour as the previous test.
+Only the config file needs to be replaced.
+
+Combined Network Coding / Fragmentation and Signing Tests
+---------------------------------------------------------
+
+In these tests both end-to-end signatures as well as block/fragment
+signatures are used. The tests are exactly the same as the basic
+tests, but each data object delivered should have a signee
+and a signature field (that Haggle has verified before passing
+it to the application).

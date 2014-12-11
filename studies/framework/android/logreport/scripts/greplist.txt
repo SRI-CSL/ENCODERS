@@ -1,0 +1,63 @@
+STARTUP
+PREPARE SHUTDOWN
+SHUTDOWN EVENT
+SHUTDOWN COMPLETED
+New node desc
+New node contact
+Receiving beacon
+onIncomingDataObject
+report_interface
+report_dead
+Neighbor list size
+was added
+incoming on
+Deleting file
+sendToApplication\}: Sending data object
+Send result SUCCESS for application
+Data object retrieved from queue, sending to
+scheduled for local application, not retrieving data
+bytes into file
+Sending REJECT
+Sending ACCEPT
+Sending ACK
+Incoming data object
+Data object is obsolete - not sending
+to target Unnamed node
+All Applications
+ARP cache entry was missing
+Connection timed out
+Running protocol
+because neighbor interface
+Accepted client with socket
+connecting to
+successfully connected to
+Did not receive accept/reject control message
+ERROR
+Generated block
+Generated fragment
+fully reconstructed
+forcing shutdown
+is obsolete - not sending
+Opened file
+Sending data object
+already in bloom filter - no event generated
+Protocol timed out while getting data
+Peer already had data object
+Data object discarded to reduce load
+Peer not in node store
+unexpected session number
+Data object receive failed
+Data object send to
+Creating reconstruction task for block
+Creating reconstruction task for fragment
+Received innovative block: 1
+is already in Bloomfilter
+Processing block
+closed connection
+DONE!
+Node description create time lower than on existing neighbor node. IGNORING node description
+node description from third party node
+received from third party describes a neighbor -- ignoring!
+Sending packet
+Got packet
+Cannot recognize header

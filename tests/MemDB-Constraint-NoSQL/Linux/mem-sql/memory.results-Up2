@@ -1,0 +1,204 @@
+Threshold: 5000/100
+===========================
+Used bytes: 5973792, Free bytes: 21973216, SQL: 10563920
+
+Threshold: 5000/200
+===========================
+Used bytes: 6175264, Free bytes: 21771744, SQL: 10563920
+
+Threshold: 5000/300
+===========================
+Used bytes: 6394272, Free bytes: 21552736, SQL: 10563920
+
+Threshold: 5000/400
+===========================
+Used bytes: 6722128, Free bytes: 21224880, SQL: 10563920
+
+Threshold: 5000/500
+===========================
+Used bytes: 7203440, Free bytes: 20743568, SQL: 10563920
+
+Threshold: 5000/600
+===========================
+Used bytes: 7541344, Free bytes: 20405664, SQL: 10563920
+
+Threshold: 5000/700
+===========================
+Used bytes: 8333072, Free bytes: 19613936, SQL: 10563920
+
+Threshold: 5000/800
+===========================
+Used bytes: 8862304, Free bytes: 19084704, SQL: 10563920
+
+Threshold: 5000/900
+===========================
+Used bytes: 9633568, Free bytes: 18313440, SQL: 10563920
+
+Threshold: 5000/1000
+===========================
+Used bytes: 9797552, Free bytes: 18149456, SQL: 10563920
+
+Threshold: 5000/1100
+===========================
+Used bytes: 10043280, Free bytes: 17903728, SQL: 10563920
+
+Threshold: 5000/1200
+===========================
+Used bytes: 10189120, Free bytes: 17757888, SQL: 10563920
+
+Threshold: 5000/1300
+===========================
+Used bytes: 10435200, Free bytes: 17511808, SQL: 10563920
+
+Threshold: 5000/1400
+===========================
+Used bytes: 10635424, Free bytes: 17311584, SQL: 10563920
+
+Threshold: 5000/1500
+===========================
+Used bytes: 11121248, Free bytes: 16825760, SQL: 10563920
+
+Threshold: 5000/1600
+===========================
+Used bytes: 11892176, Free bytes: 16054832, SQL: 10563920
+
+Threshold: 5000/1700
+===========================
+Used bytes: 12194960, Free bytes: 15752048, SQL: 10563920
+
+Threshold: 5000/1800
+===========================
+Used bytes: 12613888, Free bytes: 15333120, SQL: 10563920
+
+Threshold: 5000/1900
+===========================
+Used bytes: 13076768, Free bytes: 14870240, SQL: 10563920
+
+Threshold: 5000/2000
+===========================
+Used bytes: 13367360, Free bytes: 14579648, SQL: 10563920
+
+Threshold: 5000/2100
+===========================
+Used bytes: 13739296, Free bytes: 14207712, SQL: 10563920
+
+Threshold: 5000/2200
+===========================
+Used bytes: 13908272, Free bytes: 14038736, SQL: 10563920
+
+Threshold: 5000/2300
+===========================
+Used bytes: 14034400, Free bytes: 13912608, SQL: 10563920
+
+Threshold: 5000/2400
+===========================
+Used bytes: 14337536, Free bytes: 13609472, SQL: 10563920
+
+Threshold: 5000/2500
+===========================
+Used bytes: 14445600, Free bytes: 13501408, SQL: 10563920
+
+Threshold: 5000/2600
+===========================
+Used bytes: 15211424, Free bytes: 12735584, SQL: 10563920
+
+Threshold: 5000/2700
+===========================
+Used bytes: 15509360, Free bytes: 12437648, SQL: 10563920
+
+Threshold: 5000/2800
+===========================
+Used bytes: 16414736, Free bytes: 11532272, SQL: 10563920
+
+Threshold: 5000/2900
+===========================
+Used bytes: 16901568, Free bytes: 11045440, SQL: 10563920
+
+Threshold: 5000/3000
+===========================
+Used bytes: 17451472, Free bytes: 10495536, SQL: 10563920
+
+Threshold: 5000/3100
+===========================
+Used bytes: 18064848, Free bytes: 9882160, SQL: 10563920
+
+Threshold: 5000/3200
+===========================
+Used bytes: 18459056, Free bytes: 9487952, SQL: 10563920
+
+Threshold: 5000/3300
+===========================
+Used bytes: 18615712, Free bytes: 9331296, SQL: 10563920
+
+Threshold: 5000/3400
+===========================
+Used bytes: 18796400, Free bytes: 9150608, SQL: 10563920
+
+Threshold: 5000/3500
+===========================
+Used bytes: 19396144, Free bytes: 8550864, SQL: 10563920
+
+Threshold: 5000/3600
+===========================
+Used bytes: 19677152, Free bytes: 8269856, SQL: 10563920
+
+Threshold: 5000/3700
+===========================
+Used bytes: 20021136, Free bytes: 7925872, SQL: 10563920
+
+Threshold: 5000/3800
+===========================
+Used bytes: 20243472, Free bytes: 7703536, SQL: 10563920
+
+Threshold: 5000/3900
+===========================
+Used bytes: 20534976, Free bytes: 7412032, SQL: 10563920
+
+Threshold: 5000/4000
+===========================
+Used bytes: 20617808, Free bytes: 7329200, SQL: 10563920
+
+Threshold: 5000/4100
+===========================
+Used bytes: 20819920, Free bytes: 7127088, SQL: 10563920
+
+Threshold: 5000/4200
+===========================
+Used bytes: 21034992, Free bytes: 6912016, SQL: 10563920
+
+Threshold: 5000/4300
+===========================
+Used bytes: 21650432, Free bytes: 6296576, SQL: 10563920
+
+Threshold: 5000/4400
+===========================
+Used bytes: 21943056, Free bytes: 6003952, SQL: 10563920
+
+Threshold: 5000/4500
+===========================
+Used bytes: 22401376, Free bytes: 5545632, SQL: 10563920
+
+Threshold: 5000/4600
+===========================
+Used bytes: 22756448, Free bytes: 5190560, SQL: 10681608
+
+Threshold: 5000/4700
+===========================
+Used bytes: 23472800, Free bytes: 4474208, SQL: 10890216
+
+Threshold: 5000/4800
+===========================
+Used bytes: 24082448, Free bytes: 3864560, SQL: 11098824
+
+Threshold: 5000/4900
+===========================
+Used bytes: 24907360, Free bytes: 3039648, SQL: 11297256
+
+Threshold: 5000/5000
+===========================
+Used bytes: 25022640, Free bytes: 2924368, SQL: 11504592
+
+Threshold: 5000/5000
+===========================
+Used bytes: 25014288, Free bytes: 2932720, SQL: 11507136
+

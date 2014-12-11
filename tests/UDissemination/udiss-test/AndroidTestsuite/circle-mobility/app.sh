@@ -1,0 +1,308 @@
+#!/bin/bash
+TFILE="$(mktemp /data/tmp/temp.XXXX)"
+NOW="$(date '+%s')"
+NODE="$1"
+APPS_OUTPUT="$2"
+FAILLOG="$3"
+rm -f ${TFILE}
+if [ "${NODE}" == "n0" ]; then
+    echo "bogus node"
+elif [ "${NODE}" == "n1" ]; then
+    TMPPUB=$(mktemp /data/tmp/temp.XXXX)
+    TMPPUBERR=$(mktemp /data/tmp/temp.XXXX)
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/100k_n1\"" >> ${TMPPUB}
+    ( [ "$(haggletest -p 138 -j ContentOriginator -f /data/tmp/test_output.1394236142266.n1.137.pubs.houtput -g ${TMPPUB} appPUB1 2> ${TMPPUBERR} > /dev/null; echo $? > /data/tmp/test_output.1394236142266.n1.137.errcode; cat /data/tmp/test_output.1394236142266.n1.137.errcode)" != "0" ] && (echo "${NODE}: $(date) \"haggletest -p 138 -j ContentOriginator -f /data/tmp/test_output.1394236142266.n1.137.pubs.houtput -g ${TMPPUB} appPUB1\" failed, code: $(cat /data/tmp/test_output.1394236142266.n1.137.errcode) $(cat ${TMPPUBERR})!" >> ${FAILLOG}) )&
+    sleep 139.00
+    rm -f ${TMPPUB} ${TMPPUBERR}
+    tail -n +1 /data/tmp/test_output.1394236142266.n1.*{houtput,appout} >> ${TFILE}
+    busybox ifconfig usb0 >> ${TFILE}
+    rm -f /data/tmp/test_output.1394236142266.n1.*
+elif [ "${NODE}" == "n2" ]; then
+    TMPPUB=$(mktemp /data/tmp/temp.XXXX)
+    TMPPUBERR=$(mktemp /data/tmp/temp.XXXX)
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"k=v;priority=3\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    echo "1.00,pub,\"priority=3;k=v\",\"/data/tmp/102k_n2\"" >> ${TMPPUB}
+    ( [ "$(haggletest -p 138 -j ContentOriginator -f /data/tmp/test_output.1394236142266.n2.138.pubs.houtput -g ${TMPPUB} appPUB 2> ${TMPPUBERR} > /dev/null; echo $? > /data/tmp/test_output.1394236142266.n2.138.errcode; cat /data/tmp/test_output.1394236142266.n2.138.errcode)" != "0" ] && (echo "${NODE}: $(date) \"haggletest -p 138 -j ContentOriginator -f /data/tmp/test_output.1394236142266.n2.138.pubs.houtput -g ${TMPPUB} appPUB\" failed, code: $(cat /data/tmp/test_output.1394236142266.n2.138.errcode) $(cat ${TMPPUBERR})!" >> ${FAILLOG}) )&
+    sleep 139.00
+    rm -f ${TMPPUB} ${TMPPUBERR}
+    tail -n +1 /data/tmp/test_output.1394236142266.n2.*{houtput,appout} >> ${TFILE}
+    busybox ifconfig usb0 >> ${TFILE}
+    rm -f /data/tmp/test_output.1394236142266.n2.*
+else
+    exit 0
+fi
+cat ${TFILE} >> ${APPS_OUTPUT}
+rm -f ${TFILE}

@@ -1,0 +1,768 @@
+[
+{
+    "pretty_settings"    : {
+        "comment"         : "This is the test used to evaluate dissemination protocols in the SIGCOMM ICN paper.",
+            "verbosity"       : 1,
+            "max_len"         : 100,
+            "enable_mobility" : "false",
+            "enable_app"      : "false",
+            "enable_macphy"   : "false"
+    },
+    "test_name"          : "%%pretty%%-acm-icn",
+    "test_output_path"   : "Testsuite/%%pretty%%-acm-icn",
+    "result_output_path" : "TestOutput/%%pretty%%-acm-icn",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 1
+        }
+    },
+    "config"             : {
+        "^repeat" : [
+               {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "no-security",
+                    "replace_dict"   : {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 0.0,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5,
+                            "%%window_size%%" : 30,
+                            "%%initial_loss_rate%%": 1.0
+                    },
+                    "security_cfg" :     {
+                        "defaultSecurityParameters":    {
+                            "securityLevel":        "LOW"
+                        },
+                        "perNodeSecurityParameters":    {},
+                        "staticKeyPairs":   [],
+                        "authorities":      {}
+                    }
+                },
+                {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "signatures",
+                    "replace_dict"   : {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 0.0,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5,
+                            "%%window_size%%" : 30,
+                            "%%initial_loss_rate%%": 1.0
+                    },
+                    "security_cfg" :     {
+                        "defaultSecurityParameters":    {
+                            "securityLevel":        "HIGH",
+                            "rsaKeyLength":         2048,
+                            "signatureChaining":    true,
+			    "compositeSecurityDataRequests": true
+                        },
+                        "perNodeSecurityParameters":    {},
+                        "staticKeyPairs":   [],
+                        "authorities":      {
+                            "n11":    {
+                                "certifiedNodes":   [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "staticallyCertifiedNodes":     [],
+                                "roles":    {}
+                            },
+                            "n24":    {
+                                "certifiedNodes":   [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "staticallyCertifiedNodes":     [],
+                                "roles":    {}
+                            }
+                        }
+                    }
+                },
+                {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "signatures-static",
+                    "replace_dict"   : {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 0.0,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5,
+                            "%%window_size%%" : 30,
+                            "%%initial_loss_rate%%": 1.0
+                    },
+                    "security_cfg" :     {
+                        "defaultSecurityParameters":    {
+                            "securityLevel":        "HIGH",
+                            "rsaKeyLength":         2048,
+                            "signatureChaining":    true
+                        },
+                        "perNodeSecurityParameters":    {},
+                        "staticKeyPairs":   [
+                            "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                        ],
+                        "authorities":      {
+                            "n11":    {
+                                "certifiedNodes":   [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "staticallyCertifiedNodes":     [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "roles":    {}
+                            },
+                            "n24":    {
+                                "certifiedNodes":   [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "staticallyCertifiedNodes":     [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "roles":    {}
+                            }
+                        }
+                    }
+                },
+                {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "encryption",
+                    "replace_dict"   : {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 0.0,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5,
+                            "%%window_size%%" : 30,
+                            "%%initial_loss_rate%%": 1.0
+                    },
+                    "security_cfg" :     {
+                        "defaultSecurityParameters":    {
+                            "securityLevel":        "VERYHIGH",
+                            "rsaKeyLength":         2048,
+                            "signatureChaining":    true,
+                            "encryptFilePayload":   true,
+                            "compositeSecurityDataRequests": true
+                        },
+                        "perNodeSecurityParameters":    {},
+                        "staticKeyPairs":   [],
+                        "authorities":      {
+                            "n11":    {
+                                "certifiedNodes":   [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "staticallyCertifiedNodes":     [],
+                                "roles":    {
+                                    "role1":    {
+                                        "encryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "decryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "authorizedNodes":      [
+                                            "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n1", "n2", "n3"  
+                                        ],
+                                        "provisionedNodes":     [],
+                                        "preProvisionedNodes":  []
+                                    },
+                                    "role2":    {
+                                        "encryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "decryptionAttributes": [],
+                                        "authorizedNodes":      [
+                                            "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31" 
+                                        ],
+                                        "provisionedNodes":     [],
+                                        "preProvisionedNodes":  []
+                                    }
+                                }
+                            },
+                            "n24":    {
+                                "certifiedNodes":   [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "staticallyCertifiedNodes":     [],
+                                "roles":    {
+                                    "role1":    {
+                                        "encryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "decryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "authorizedNodes":      [
+                                            "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31", "n1", "n2", "n3"
+                                        ],
+                                        "provisionedNodes":     [],
+                                        "preProvisionedNodes":  []
+                                    },
+                                    "role2":    {
+                                        "encryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "decryptionAttributes": [],
+                                        "authorizedNodes":      [
+                                            "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19" 
+                                        ],
+                                        "provisionedNodes":     [],
+                                        "preProvisionedNodes":  []
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "encryption-static",
+                    "replace_dict"   : {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 0.0,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5,
+                            "%%window_size%%" : 30,
+                            "%%initial_loss_rate%%": 1.0
+                    },
+                    "security_cfg" :     {
+                        "defaultSecurityParameters":    {
+                            "securityLevel":        "VERYHIGH",
+                            "rsaKeyLength":         2048,
+                            "signatureChaining":    true,
+                            "encryptFilePayload":   true
+                        },
+                        "perNodeSecurityParameters":    {},
+                        "staticKeyPairs":   [
+                            "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                        ],
+                        "authorities":      {
+                            "n11":    {
+                                "certifiedNodes":   [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "staticallyCertifiedNodes":     [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "roles":    {
+                                    "role1":    {
+                                        "encryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "decryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "authorizedNodes":      [
+                                            "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19" , "n1", "n2", "n3"
+                                        ],
+                                        "provisionedNodes":     [],
+                                        "preProvisionedNodes":  [
+                                            "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n1", "n2", "n3"
+                                        ]
+                                    },
+                                    "role2":    {
+                                        "encryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "decryptionAttributes": [],
+                                        "authorizedNodes":      [
+                                            "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31" 
+                                        ],
+                                        "provisionedNodes":     [],
+                                        "preProvisionedNodes":  [
+                                            "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31" 
+                                        ]
+                                    }
+                                }
+                            },
+                            "n24":    {
+                                "certifiedNodes":   [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "staticallyCertifiedNodes":     [
+                                    "n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31"
+                                ],
+                                "roles":    {
+                                    "role1":    {
+                                        "encryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "decryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "authorizedNodes":      [
+                                            "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31", "n1", "n2", "n3"  
+                                        ],
+                                        "provisionedNodes":     [],
+                                        "preProvisionedNodes":  [
+                                            "n20", "n21", "n22", "n23", "n24", "n25", "n26", "n27", "n28", "n29", "n30", "n31", "n1", "n2", "n3"  
+                                        ]
+                                    },
+                                    "role2":    {
+                                        "encryptionAttributes": [
+                                            "ATTR1", "ATTR2", "ATTR3", "ATTR4"
+                                        ],
+                                        "decryptionAttributes": [],
+                                        "authorizedNodes":      [
+                                            "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19" 
+                                        ],
+                                        "provisionedNodes":     [],
+                                        "preProvisionedNodes":  [
+                                            "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+    ] },
+    "num_nodes"          : 31,
+    "duration"           : 1200,
+    "warmup"             : 45,
+    "seed"               : {"^repeat" : [21, 31, 41]},
+    "area_height"        : 800,
+    "area_width"         : {"^repeat" : [800]},
+    "macphys_cfgs"    : {"^repeat" : [
+           [{
+                "nodes": [1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31] ,
+                "name" : "emane_ieee80211abg",
+                "pretty_name" : "80211-24mbps",
+                "parameters": {
+                    "standard_mode"      : 3,
+                    "max_distance_m"     : 1000,
+                    "unicast_rate_mode"  : 9,
+                    "multicast_rate_mode"  : 9,
+                    "system_noise_figure" : "4",
+                    "antenna_gain_dbi"   : -5,
+                    "transmit_power_dbx" : 0,
+                    "antenna_type"       : "omnidirectional",
+                    "pathloss_mode"      : "freespace",
+                    "bandwidth_khz"      : 22000
+                }
+            }]
+    ]},
+    "cpu_limit"          : {"^repeat" : [30]},
+    "files"              : [ 
+        [ "/tmp/512K", 512 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "overlay",
+        "parameters": {
+            "mobilities" : [
+                {
+                    "nodes" : [1],
+                    "name" :  "datamule",
+                    "offset_x" : 0,
+                    "offset_y" : 0,
+                    "parameters" : {
+                        "reference_1_x"    : 155.0,
+                        "reference_1_y"    : 30.0,                    
+                        "reference_2_x"    : 255.0,
+                        "reference_2_y"    : 30.0,
+                        "velocity" : 1.4,
+                        "stay" : 60
+                    }
+                },
+                {
+                    "nodes" : [2],
+                    "name" :  "datamule",
+                    "offset_x" : 0,
+                    "offset_y" : 0,
+                    "parameters" : {
+                        "reference_1_x"    : 255.0,
+                        "reference_1_y"    : 80.0,                    
+                        "reference_2_x"    : 155.0,
+                        "reference_2_y"    : 80.0,
+                        "velocity" : 1.4,
+                        "stay" : 60
+                    }
+                },
+                {
+                    "nodes" : [3],
+                    "name" :  "datamule",
+                    "offset_x" : 0,
+                    "offset_y" : 0,
+                    "parameters" : {
+                        "reference_1_x"    : 155.0,
+                        "reference_1_y"    : 130.0,
+                        "reference_2_x"    : 255.0,
+                        "reference_2_y"    : 130.0,
+                        "velocity" : 1.4,
+                        "stay" : 60
+                    }
+                },
+                {
+                    "nodes" : [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
+                    "name" : "grid",
+                    "offset_x" : 0,
+                    "offset_y" : 0,
+                    "parameters" : {
+                        "area_width"    : 160,
+                        "area_height"    : 160,
+                        "rows"    : 4,
+                        "cols"    : 4,
+                        "max_spacing_m" : 30
+                    }
+                },
+                {
+                    "nodes" : [20,21,22,23,24,25,26,27,28,29,30,31],
+                    "name" : "grid",
+                    "offset_x" : 250,
+                    "offset_y" : 0,
+                    "parameters" : {
+                        "area_width"    : 160,
+                        "area_height"    : 160,
+                        "rows"    : 3,
+                        "cols"    : 4,
+                        "max_spacing_m" : 30
+                    }
+                }
+        ]
+        }
+    },
+
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "pretty_app",
+        "parameters" : {
+            "script" : [
+
+                {
+                    "node_num" : 15,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "sa" : "sa", "Access" : "(N11.ATTR1 AND N11.ATTR2 AND N11.ATTR3 AND N11.ATTR4) OR (N24.ATTR1 AND N24.ATTR2 AND N24.ATTR3 AND N24.ATTR4)" },
+                    "num_pub"  : 4,
+		    "pause"    : 5
+                },
+
+
+                {
+                    "node_num" : 20,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "sa" : "sa", "Access" : "(N11.ATTR1 AND N11.ATTR2 AND N11.ATTR3 AND N11.ATTR4) OR (N24.ATTR1 AND N24.ATTR2 AND N24.ATTR3 AND N24.ATTR4)" },
+                    "num_pub"  : 4,
+		    "pause"    : 5
+                },
+	
+
+		{
+                    "node_num" : 7,
+                    "time"     : 21,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "sl" : "sl", "Access" : "(N11.ATTR1 AND N11.ATTR2 AND N11.ATTR3 AND N11.ATTR4)" },
+                    "num_pub"  : 1
+                },
+                {
+                    "node_num" :11,
+                    "time"     : 26,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "sl" : "sl", "Access" : "(N11.ATTR1 AND N11.ATTR2 AND N11.ATTR3 AND N11.ATTR4)" },
+                    "num_pub"  : 1
+                },
+                {
+                    "node_num" : 15,
+                    "time"     : 31,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "sl" : "sl", "Access" : "(N11.ATTR1 AND N11.ATTR2 AND N11.ATTR3 AND N11.ATTR4)" },
+                    "num_pub"  : 1
+                },
+                {
+                    "node_num" : 19,
+                    "time"     : 36,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "sl" : "sl", "Access" : "(N11.ATTR1 AND N11.ATTR2 AND N11.ATTR3 AND N11.ATTR4)" },
+                    "num_pub"  : 1
+                },
+
+
+		{
+                    "node_num" : 20,
+                    "time"     : 21,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "sr" : "sr", "Access" : "(N24.ATTR1 AND N24.ATTR2 AND N24.ATTR3 AND N24.ATTR4)" },
+                    "num_pub"  : 1
+                },
+                {
+                    "node_num" : 24,
+                    "time"     : 26,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "sr" : "sr", "Access" : "(N24.ATTR1 AND N24.ATTR2 AND N24.ATTR3 AND N24.ATTR4)" },
+                    "num_pub"  : 1
+                },
+                {
+                    "node_num" : 28,
+                    "time"     : 31,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "sr" : "sr", "Access" : "(N24.ATTR1 AND N24.ATTR2 AND N24.ATTR3 AND N24.ATTR4)" },
+                    "num_pub"  : 1
+                },
+
+
+
+
+
+
+
+
+		{
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa"  }
+                },
+                {
+                    "node_num" : 2,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa"  }
+                },
+                {
+                    "node_num" : 3,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa"  }
+                },
+
+
+                {
+                    "node_num" : 4,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 5,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 6,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 7,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 8,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 9,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 10,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 11,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 12,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 13,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 14,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 15,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 16,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 17,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 18,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+                {
+                    "node_num" : 19,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sl" : "sl"  }
+                },
+
+
+
+                {
+                    "node_num" : 20,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 21,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 22,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 23,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 24,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 25,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 26,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 27,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 28,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 29,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 30,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                },
+                {
+                    "node_num" : 31,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : {  "sa" : "sa", "sr" : "sr"  }
+                }
+            ]
+        }
+    },
+    "neighbor_monitor" : {
+        "comment"        : "COMMENT: keep track of local neighborhood using arp and ping.",
+        "enable_neighbor_monitor" : "true",
+        "neighbor_monitor_max_latency_ms" : 40,
+        "neighbor_monitor_period_s" : 1
+    }
+}
+]
+

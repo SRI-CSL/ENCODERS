@@ -1,0 +1,110 @@
+1. Compiling the Scenario Generator
+
+Simply do a "make" to compile. Makefile can be modified if needed.
+
+2. Running the Scenario Generator
+
+Run "./scengen" to generate scenarios. 
+
+The program takes two inputs. One is "model-spec", which contains the
+default parameters, and normally does not need to be changed. If changes
+are needed, it has to be done with caution. The other input, scenario
+specification is the file "scen-spec", which describes the scenario
+needed.
+
+3. Viewing the scenario
+
+The "ad-hockey" program, initially developed for the wireless extention to 
+NS-2 by CMU, can be used to view the mobility scenario without running any 
+simulations. The original ad-hockey is available at:
+    http://www.monarch.cs.cmu.edu/cmu-ns.html
+
+However, the ad-hockey needs some slight modifications before it can not 
+display the scenario correctly because of the changes of NS-2 scenario format. 
+A modified version of ad-hockey is included in the "./ad-hockey/" directory.
+
+3. The Format of Scenario Specification
+
+Every line of the file "scen-spec" begins with a "#" is a comment and will
+not be processed. Also, empty lines are ignored. The file is divided into
+sections, each of them begins with the line "[section_name]", and ends
+implictly when another section begins. Within each section, each non-empty
+is a parameter of that section, which has the form "key = value". The
+spacing is not significant.
+
+Each scenario must have a section named "global" or "Global", which
+contains global information about the scenario, "area", "start_time" and
+"stop_time". A sample global section is given below:
+
+#####################
+
+    [global]
+    area = rect(1000,500)
+    start_time = 0
+    stop_time = 90
+
+#####################
+
+the parameter "area" specifies the simulation area. The "area =
+rect(1000,500)" above tells the scenario generator that the simulation
+area is a 1000m by 500m rectangle. So far, only rectangle areas are
+supported.
+
+Every other sections are treated as specifications of groups of nodes.
+Each of the group must contain at least two parameters, "num_nodes" and
+"member_model". Other parameters are optional. Examles of these parameters
+and their descriptions are as follows:
+
+########################################################
+
+# total number of nodes in this group is 30
+    num_nodes = 30
+
+# use random waypoint model to model member nodes
+    member_model = Waypoint 
+
+# the member nodes moves in a 300m by 300m rectangle
+# default is the same as the entire scenarion
+    member_area = rect(300,300)
+
+# the offset of the group relative to the whole scenario is (50, 150)
+# default is (0, 0)
+    offset = (50, 150)
+
+# use brownian motion model to model the center
+# if not specified, center point will not move
+    center_model = Brownian
+
+# set the parameter "param" for the member model to be "value"
+    member_model.param = value
+
+# set the parameter "param" for the center model to be "value"
+    center_model.param = value
+
+# For the last two parameters, the kind of "param" can be specified depends
+# on the models used, which can be found in the file "model-spec".
+
+# To let the model generate accelerated movements, use the following:
+    center_model.ACC_T = time 
+    center_model.ACC_A = acceleration
+# or,
+    member_model.ACC_T = time 
+    member_model.ACC_A = acceleration
+# depending on whether the model is applied to the center or the member
+
+########################################################
+
+Sample scenario specification files and the corresponding scenario files 
+can be found in directory "./scen/".
+
+4. To Add/Modify Models
+
+If new models are to be added, or existing models need to be modified,
+please read the file "MODELS" for details.
+
+
+5. Contacts
+
+Author: Li Qiming
+Email: liqiming@gmail.com
+

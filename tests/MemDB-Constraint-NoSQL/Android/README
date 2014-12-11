@@ -1,0 +1,42 @@
+This README discusses using the scripts with the self test for memory/database
+compression. To get all 3 runs, you will have to run haggle 3 times, changing
+the configuration file each time.
+
+1.  Choose a configuration file.
+a. config-sql.xml - sqlite version
+b. config-nosql.xml - in memory version (refer to 2a)
+c. config-nosql-compact.xml - in memory version, using compaction (refer to 2a)
+
+2.  Compile Haggle and place Haggle-debug.apk in the current directory.
+a.  To use the no-sql memory option, edit haggle/src/hagglekernel/main.cpp, and
+    change line 94 from
+
+  static bool useMemoryDB = false;
+
+to
+
+  static bool useMemoryDB = true;
+
+3. Run the test by invoking ./test.sh <config-file-name> where <config-file-name>
+   is the config file you wish to use for this test run. Either Make sure the
+   phone you are using for testing is the only one plugged in to your computer,
+   or edit the .sh scripts and change "adb" to "adb -s <device>" where <device>
+   is the device number you want to test on, from "adb devices".
+
+4. Wait for Haggle to exit on the phone. The best way to do this is to run
+   tail -f on /data/data/org.haggle.kernel/files/haggle.log on the phone and
+   wait for a line like "SHUTDOWN COMPLETE" to appear.
+
+5.  Run result.sh to pull the haggle log from the phone. Extract the data into
+    an appropriate data file by running 'makeplot.sh <name>'.
+a.  For sql, use the name 'plot-sql.dat'
+b.  For memory (non sqlite), use the name 'plot-nocompact.dat'
+c.  For memory with compaction (non sqlite), use the name 'plot-compact.dat'
+
+6.   Run the script 'gnuplot mem-changes.plot'. Make sure the 3 files from
+     step 5 are present in the current directory. This will produce a postscript
+     graph of the 3 plots, named 'show-mem-usage.eps'.
+
+7.  The test takes about 800 seconds per test. This is to avoid a queue problem,
+    where we take a measurement with a non empty queue, giving an incorrect
+    expected memory value.

@@ -1,0 +1,98 @@
+[
+{
+    "pretty_settings"    : {
+        "comment"         : "This is a scenario that just generates haggle node IDs",
+            "verbosity"       : 1,
+            "max_len"         : 100,
+            "enable_mobility" : "falses",
+            "enable_app"      : "false",
+            "enable_macphy"   : "true"
+    },    
+    "test_name"          : "diss-%%pretty%%",
+    "test_output_path"   : "Testsuite/diss-%%pretty%%",
+    "result_output_path" : "TestOutput/diss-%%pretty%%",
+    "config"             : 
+	{
+            "path"           : "TestConfigs/config-none.xml.template",
+            "pretty_name"    : "NONE-U1-T3-200",
+            "replace_dict"   :
+                {
+	            "%%max_cap%%" : "200000",
+		    "%%water_cap%%" : "190000",
+		    "%%neighbor_fudge%%" : 2,
+                    "%%debug_type%%" : "STAT",
+		    "%%fca%%" : "false",
+                    "%%bf_capacity%%" : "8000",
+                    "%%dedupe%%" : "false",
+		    "%%fnmax%%" : 1,
+		    "%%neighborhood%%" : 1,
+		    "%%popularity%%"   : 0,
+		    "%%max_forwarding_delay%%" : 2000,
+		    "%%max_forwarding_delay_base%%" : 20,
+		    "%%nd_min_send_delay_base%%" : 1000,
+		    "%%nd_min_send_delay_linear%%" : 100,
+		    "%%nd_min_send_delay_square%%" : 10,
+		    "%%bcast_min_send_delay_base%%" : 100,
+		    "%%bcast_min_send_delay_linear%%" : 10,
+		    "%%bcast_min_send_delay_square%%" : 1,
+		    "%%bcast_use_control_protocol%%" : "false",
+		    "%%bcast_connectionWaitMillis%%" : 1000,
+		    "%%bcast_maxSendTimeouts%%" : 2,
+		    "%%bcast_maxProtocolErrors%%" : 2,
+		    "%%nc_enable_forwarding%%" : "true",
+		    "%%nc_node_desc_update_on_reconstruction%%" : "true",
+		    "%%nc_max_age_block%%" : "3600",
+		    "%%nc_max_age_decoder%%" : "3600",
+		    "%%nc_min_encoder_delay_base%%" : "100",
+              	    "%%nc_min_encoder_delay_linear%%" : "10",
+		    "%%nc_min_encoder_delay_square%%" : "1",
+		    "%%nc_resend_delay%%" : "0",
+		    "%%nc_resend_reconstructed_delay%%" : "10.0",
+		    "%%nc_delay_delete_networkcodedblocks%%" : "3600",
+		    "%%nc_delay_delete_reconstructed_networkcodedblocks%%" : "3600",
+		    "%%nc_min_network_coding_file_size%%" : "32769",
+		    "%%nc_block_size%%" : "32768"
+                }
+
+	},
+    "num_nodes"          : %%NUM_NODES%%,
+    "duration"           : 180,
+    "warmup"             : 40,
+    "seed"               : 1 ,
+    "area_height"        : 450,
+    "area_width"         : 450,
+    "macphys_cfgs"       : [ {
+        "nodes": %%ARRAY_STRING%%,
+        "name" : "emane_ieee80211abg",
+        "pretty_name" : "80211-24mbps",
+        "parameters": {
+            "standard_mode"      : 3,
+            "max_distance_m"     : 1000,
+            "unicast_rate_mode"  : 9,
+            "multicast_rate_mode"  : 9,
+	    "system_noise_figure" : "4",
+            "antenna_gain_dbi"   : -5,
+            "transmit_power_dbx" : 0,
+            "antenna_type"       : "omnidirectional",
+            "pathloss_mode"      : "freespace",
+            "bandwidth_khz"      : 22000
+        }
+    } ],
+    "cpu_limit"          : 15,
+    "files": [],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : %%NUM_NODES%%
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "none",
+        "parameters" : {
+            "script" : [
+            ]
+        }
+    }
+}]

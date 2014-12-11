@@ -1,0 +1,5 @@
+# nodes: 5, max time: 70.000000, max x: 600.00, max y: 600.00                   
+# nominal range: 300.00 link bw: 54000000.00                                    
+# pause: 30.00, min speed 0.00 max speed: 0.00 
+$ns_ at 2.00 "$node_(5) setdest 862.0 138.0 25.0"
+$ns_ at 35.00 "$node_(5) setdest 117.0 138.0 25.0"

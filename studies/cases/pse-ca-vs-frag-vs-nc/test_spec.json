@@ -1,0 +1,589 @@
+[
+{
+    "pretty_settings"    : {
+        "comment"         : "This is the test used to evaluate the performance of context aware coding vs fragmentation vs network coding; with a basic security configuration.",
+            "verbosity"       : 1,
+            "max_len"         : 100,
+            "enable_mobility" : "true",
+            "enable_app"      : "true",
+            "enable_macphy"   : "true"
+    },
+    "test_name"          : "diss-%%pretty%%",
+    "test_output_path"   : "Testsuite/pse-ca-vs-frag-vs-nc-%%pretty%%",
+    "result_output_path" : "TestOutput/pse-ca-vs-frag-vs-nc-%%pretty%%",
+    "config"             : {"^repeat" : [
+	{
+            "path"           : "TestConfigs/config-none.xml.template",
+            "pretty_name"    : "ca",
+            "replace_dict"   :
+                {
+	            "%%max_cap%%" : "200000",
+		    "%%water_cap%%" : "190000",
+		    "%%neighbor_fudge%%" : 2,
+                    "%%debug_type%%" : "STAT",
+		    "%%fca%%" : "false",
+                    "%%bf_capacity%%" : "8000",
+                    "%%dedupe%%" : "false",
+		    "%%fnmax%%" : 1,
+		    "%%neighborhood%%" : 1,
+		    "%%popularity%%"   : 0,
+		    "%%max_forwarding_delay%%" : 2000,
+		    "%%max_forwarding_delay_base%%" : 20,
+		    "%%nd_min_send_delay_base%%" : 1000,
+		    "%%nd_min_send_delay_linear%%" : 100,
+		    "%%nd_min_send_delay_square%%" : 10,
+		    "%%bcast_min_send_delay_base%%" : 100,
+		    "%%bcast_min_send_delay_linear%%" : 10,
+		    "%%bcast_min_send_delay_square%%" : 1,
+		    "%%bcast_use_control_protocol%%" : "false",
+		    "%%bcast_connectionWaitMillis%%" : 1000,
+		    "%%bcast_maxSendTimeouts%%" : 2,
+		    "%%bcast_maxProtocolErrors%%" : 2,
+		    "%%nc_enable_forwarding%%" : "true",
+		    "%%nc_node_desc_update_on_reconstruction%%" : "true",
+		    "%%nc_max_age_block%%" : "3600",
+		    "%%nc_max_age_decoder%%" : "3600",
+		    "%%nc_min_encoder_delay_base%%" : "100",
+              	    "%%nc_min_encoder_delay_linear%%" : "10",
+		    "%%nc_min_encoder_delay_square%%" : "1",
+		    "%%nc_resend_delay%%" : "0",
+		    "%%nc_resend_reconstructed_delay%%" : "10.0",
+		    "%%nc_delay_delete_networkcodedblocks%%" : "3600",
+		    "%%nc_delay_delete_reconstructed_networkcodedblocks%%" : "3600",
+		    "%%nc_min_network_coding_file_size%%" : "32769",
+		    "%%nc_block_size%%" : "32768",
+		    "%%enable_fragmentation%%" : "true",
+                    "%%enable_network_coding%%" : "false",
+		    "%%min_time_between_toggles%%" : "5.0",
+		    "%%periodic_loss_estimate_interval%%" : "5",
+		    "%%loss_rate_threshold%%" : "0.5",
+		    "%%window_size%%" : "30.0",
+		    "%%initial_loss_rate%%": "0.0"
+                }
+	},
+	{
+            "path"           : "TestConfigs/config-none.xml.template",
+            "pretty_name"    : "frag",
+            "replace_dict"   :
+                {
+	            "%%max_cap%%" : "200000",
+		    "%%water_cap%%" : "190000",
+		    "%%neighbor_fudge%%" : 2,
+                    "%%debug_type%%" : "STAT",
+		    "%%fca%%" : "false",
+                    "%%bf_capacity%%" : "8000",
+                    "%%dedupe%%" : "false",
+		    "%%fnmax%%" : 1,
+		    "%%neighborhood%%" : 1,
+		    "%%popularity%%"   : 0,
+		    "%%max_forwarding_delay%%" : 2000,
+		    "%%max_forwarding_delay_base%%" : 20,
+		    "%%nd_min_send_delay_base%%" : 1000,
+		    "%%nd_min_send_delay_linear%%" : 100,
+		    "%%nd_min_send_delay_square%%" : 10,
+		    "%%bcast_min_send_delay_base%%" : 100,
+		    "%%bcast_min_send_delay_linear%%" : 10,
+		    "%%bcast_min_send_delay_square%%" : 1,
+		    "%%bcast_use_control_protocol%%" : "false",
+		    "%%bcast_connectionWaitMillis%%" : 1000,
+		    "%%bcast_maxSendTimeouts%%" : 2,
+		    "%%bcast_maxProtocolErrors%%" : 2,
+		    "%%nc_enable_forwarding%%" : "true",
+		    "%%nc_node_desc_update_on_reconstruction%%" : "true",
+		    "%%nc_max_age_block%%" : "3600",
+		    "%%nc_max_age_decoder%%" : "3600",
+		    "%%nc_min_encoder_delay_base%%" : "100",
+              	    "%%nc_min_encoder_delay_linear%%" : "10",
+		    "%%nc_min_encoder_delay_square%%" : "1",
+		    "%%nc_resend_delay%%" : "0",
+		    "%%nc_resend_reconstructed_delay%%" : "10.0",
+		    "%%nc_delay_delete_networkcodedblocks%%" : "3600",
+		    "%%nc_delay_delete_reconstructed_networkcodedblocks%%" : "3600",
+		    "%%nc_min_network_coding_file_size%%" : "32769",
+		    "%%nc_block_size%%" : "32768",
+		    "%%enable_fragmentation%%" : "true",
+                    "%%enable_network_coding%%" : "false",
+		    "%%min_time_between_toggles%%" : "5.0",
+		    "%%periodic_loss_estimate_interval%%" : "5",
+		    "%%loss_rate_threshold%%" : "1.1",
+		    "%%window_size%%" : "30.0",
+		    "%%initial_loss_rate%%": "0.0"
+                }
+	},
+        {
+            "path"           : "TestConfigs/config-none.xml.template",
+            "pretty_name"    : "nc",
+            "replace_dict"   :
+                {
+	            "%%max_cap%%" : "200000",
+		    "%%water_cap%%" : "190000",
+		    "%%neighbor_fudge%%" : 2,
+                    "%%debug_type%%" : "STAT",
+		    "%%fca%%" : "false",
+                    "%%bf_capacity%%" : "8000",
+                    "%%dedupe%%" : "false",
+		    "%%fnmax%%" : 1,
+		    "%%neighborhood%%" : 1,
+		    "%%popularity%%"   : 0,
+		    "%%max_forwarding_delay%%" : 2000,
+		    "%%max_forwarding_delay_base%%" : 20,
+		    "%%nd_min_send_delay_base%%" : 1000,
+		    "%%nd_min_send_delay_linear%%" : 100,
+		    "%%nd_min_send_delay_square%%" : 10,
+		    "%%bcast_min_send_delay_base%%" : 100,
+		    "%%bcast_min_send_delay_linear%%" : 10,
+		    "%%bcast_min_send_delay_square%%" : 1,
+		    "%%bcast_use_control_protocol%%" : "false",
+		    "%%bcast_connectionWaitMillis%%" : 1000,
+		    "%%bcast_maxSendTimeouts%%" : 2,
+		    "%%bcast_maxProtocolErrors%%" : 2,
+		    "%%nc_enable_forwarding%%" : "true",
+		    "%%nc_node_desc_update_on_reconstruction%%" : "true",
+		    "%%nc_max_age_block%%" : "3600",
+		    "%%nc_max_age_decoder%%" : "3600",
+		    "%%nc_min_encoder_delay_base%%" : "100",
+              	    "%%nc_min_encoder_delay_linear%%" : "10",
+		    "%%nc_min_encoder_delay_square%%" : "1",
+		    "%%nc_resend_delay%%" : "0",
+		    "%%nc_resend_reconstructed_delay%%" : "10.0",
+		    "%%nc_delay_delete_networkcodedblocks%%" : "3600",
+		    "%%nc_delay_delete_reconstructed_networkcodedblocks%%" : "3600",
+		    "%%nc_min_network_coding_file_size%%" : "32769",
+		    "%%nc_block_size%%" : "32768",
+		    "%%enable_fragmentation%%" : "false",
+                    "%%enable_network_coding%%" : "true",
+		    "%%min_time_between_toggles%%" : "5.0",
+		    "%%periodic_loss_estimate_interval%%" : "5",
+		    "%%loss_rate_threshold%%" : "0.0",
+		    "%%window_size%%" : "30.0",
+		    "%%initial_loss_rate%%": "0.0"
+                }
+	}
+       ] },
+    "num_nodes"          : 30,
+    "duration"           : 1880,
+    "warmup"             : 40,
+    "seed"               : {"^repeat" : [ 41, 61, 62, 73 ] } ,
+    "area_height"        : 450,
+    "area_width"         : 450,
+    "macphys_cfgs"       : [ {
+        "nodes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+        "name" : "emane_ieee80211abg",
+        "pretty_name" : "80211-24mbps",
+        "parameters": {
+            "standard_mode"      : 3,
+            "max_distance_m"     : 1000,
+            "unicast_rate_mode"  : 9,
+            "multicast_rate_mode"  : 9,
+	    "system_noise_figure" : "4",
+            "antenna_gain_dbi"   : -5,
+            "transmit_power_dbx" : 0,
+            "antenna_type"       : "omnidirectional",
+            "pathloss_mode"      : "freespace",
+            "bandwidth_khz"      : 22000
+        }
+    } ],
+    "cpu_limit"          : 30,
+    "files"              : [
+        [ "/tmp/1KB",       1    ],
+        [ "/tmp/5KB",       5    ],
+        [ "/tmp/10KB",      10   ],
+        [ "/tmp/250KB",    250   ],
+        [ "/tmp/251KB",    251   ],
+        [ "/tmp/500KB",    500   ],
+        [ "/tmp/501KB",    501   ],
+        [ "/tmp/1MB",     1000   ],
+        [ "/tmp/1.001MB", 1001   ]
+    ],
+    "security_cfg" :     {
+        "defaultSecurityParameters":    {
+            "securityLevel":        "LOW",
+            "encryptFilePayload":   false
+        }
+    },
+    "mobility_cfg"       : {
+       "name" : "overlay",
+        "pretty_name" : "3squads",
+        "parameters": {
+            "mobilities" : [
+                {
+                    "nodes" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    "name" : "nomadic",
+                    "parameters" : {
+                        "add_to_parent_seed" : 1,
+                        "v_min"             : 1.3,
+                        "v_max"             : 1.5,
+                        "p_max"             : 2,
+                        "avg_group_size"    : 10,
+                        "max_center_dist_m" : 75,
+                        "std_group_size"    : 0,
+                        "ref_max_pause_s"   : 2
+                    }
+                },
+                {
+                    "nodes" : [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+                    "name" : "nomadic",
+                    "parameters" : {
+                        "add_to_parent_seed" : 2,
+                        "v_min"             : 1.3,
+                        "v_max"             : 1.5,
+                        "p_max"             : 2,
+                        "avg_group_size"    : 10,
+                        "max_center_dist_m" : 75,
+                        "std_group_size"    : 0,
+                        "ref_max_pause_s"   : 2
+                    }
+                },
+                {
+                    "nodes" : [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+                    "name" : "nomadic",
+                    "parameters" : {
+                        "add_to_parent_seed" : 3,
+                        "v_min"             : 1.3,
+                        "v_max"             : 1.5,
+                        "p_max"             : 2,
+                        "avg_group_size"    : 10,
+                        "max_center_dist_m" : 75,
+                        "std_group_size"    : 0,
+                        "ref_max_pause_s"   : 2
+                    }
+                }
+            ]
+        }
+    },
+    "application_cfg"    : {
+        "name" : "distribution_overlay",
+        "pretty_name" : "stat-app",
+        "parameters" : {
+            "pub_distributions" : [
+ {
+                    "nodes" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+                    "delay_s"    : 1,
+                    "duration_s" : 1280,
+                    "max_pubs" : 999999,
+                    "extra_attributes": { "Access" : "N1.ATTR1" },
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 6 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "sa", "sa"], [ "ContentType", "DelByRelTTL" ], [ "purge_after_seconds", "10" ], [ "RoutingType", "Flood" ], [ "ContentType", "TotalOrder" ], [ "ContentOrigin", "${NODE}" ] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 10,
+                            "elements" : [ "/tmp/1KB", "/tmp/5KB", "/tmp/10KB" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 10,
+                            "high" : 10
+                        }
+                    }
+                },
+                {
+                    "nodes" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+                    "delay_s"    : 1,
+                    "duration_s" : 1280,
+                    "max_pubs" : 999999,
+                    "extra_attributes": { "Access" : "N1.ATTR1" },
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 3 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "sl", "sl"], [ "ContentType", "DelByRelTTL" ], [ "purge_after_seconds", "900" ] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 20,
+                            "elements" : [ "/tmp/250KB", "/tmp/500KB", "/tmp/1MB" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type"   : "exponential",
+                        "parameters" : {
+                            "seed" : 20,
+                            "lam"  : 0.01667
+                        }
+                    }
+                },
+                {
+                    "nodes" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    "delay_s"    : 1,
+                    "duration_s" : 1280,
+                    "max_pubs" : 999999,
+                    "extra_attributes": { "Access" : "N1.ATTR1" },
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 3 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "s1", "s1"], [ "ContentType", "DelByRelTTL" ], [ "purge_after_seconds", "400" ] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 1,
+                            "elements" : [ "/tmp/251KB", "/tmp/501KB", "/tmp/1.001MB" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type"   : "exponential",
+                        "parameters" : {
+                            "seed" : 1,
+                            "lam"  : 0.003334
+                        }
+                    }
+                },
+                {
+                    "nodes" : [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+                    "delay_s"    : 1,
+                    "duration_s" : 1280,
+                    "max_pubs" : 999999,
+                    "extra_attributes": { "Access" : "N1.ATTR1" },
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 3 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "s2", "s2"], [ "ContentType", "DelByRelTTL" ], [ "purge_after_seconds", "400" ] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 2,
+                            "elements" : [ "/tmp/251KB", "/tmp/501KB", "/tmp/1.001MB" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type"   : "exponential",
+                        "parameters" : {
+                            "seed" : 2,
+                            "lam"  : 0.003334
+                        }
+                    }
+                },
+                {
+                    "nodes" : [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+                    "delay_s"    : 1,
+                    "duration_s" : 1280,
+                    "max_pubs" : 999999,
+                    "extra_attributes": { "Access" : "N1.ATTR1" },
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 3 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "s3", "s3"], [ "ContentType", "DelByRelTTL" ], [ "purge_after_seconds", "400" ] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 3,
+                            "elements" : [ "/tmp/251KB", "/tmp/501KB", "/tmp/1.001MB" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type"   : "exponential",
+                        "parameters" : {
+                            "seed" : 3,
+                            "lam"  : 0.003334
+                        }
+                    }
+                }
+              ],
+            "sub_distributions" : [
+                {
+                    "nodes" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+                    "delay_s"    : 1,
+                    "duration_s" : 1800,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "sa", "sa" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 1800,
+                            "high"  : 1800
+                        }
+                    }
+                },
+                {
+                    "nodes" : [1, 11, 21],
+                    "delay_s"    : 1,
+                    "duration_s" : 1800,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "sl", "sl" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 1800,
+                            "high"  : 1800
+                        }
+                    }
+                },
+                {
+                    "nodes" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    "delay_s"    : 1,
+                    "duration_s" : 1800,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "s1", "s1" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 1800,
+                            "high"  : 1800
+                        }
+                    }
+                },
+                {
+                    "nodes" : [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+                    "delay_s"    : 1,
+                    "duration_s" : 1800,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "s2", "s2" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 1800,
+                            "high"  : 1800
+                        }
+                    }
+                },
+                {
+                    "nodes" : [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+                    "delay_s"    : 1,
+                    "duration_s" : 1800,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "s3", "s3" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 1800,
+                            "high"  : 1800
+                        }
+                    }
+                }
+	   ]
+        }
+    }
+}]

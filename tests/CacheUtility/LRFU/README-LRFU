@@ -1,0 +1,68 @@
+LRFU Caching Utility Demo Instruction
+=====================================
+
+To test LRFU, the following topology is used (refer configuration.jpg)
+
+        D
+        |
+A - B - C - E
+
+One-time Setup
+--------------
+
+1. Compile and install Haggle on Android phones.
+
+2. Copy appropriate configuration files (config-direct.xml for nodes A, B, D, E, config-caching.xml for node C)
+   to /data/data/org.haggle.kernel/files/config.xml
+
+3. Compile and push the program "haggletest"
+   to /data/ directory on the phones.
+
+4. Copy scripts (sender.sh, validate.sh) to the /data/ on the phones.
+
+Preparation
+-----------
+
+5. Before running the demo, you must make sure that Haggle has a clean slate.
+
+6. Force quit any currently running instances of Haggle.
+
+7. Remove the following files:
+
+    /data/data/org.haggle.kernel/files/haggle.log
+    /data/data/org.haggle.kernel/files/haggle.db
+    /sdcard/haggle/*
+
+8. Launch Haggle.
+
+    am startservice -a android.intent.action.MAIN -n org.haggle.kernel/org.haggle.kernel.Haggle
+
+Execute Test Scripts
+--------------------
+
+9. Nodes D and E subscribe to small DOs. 
+
+    cd /data
+    haggletest -w 5 sub first=file
+
+10. Node C subscribes to all DOs.
+
+    cd /data
+    haggletest -w 50 sub key=value
+
+11. Node A publishes 5 groups of 10 DOs.
+    Each group has 1 small DO, 8 medium DOs, and 1 large DO (71K/72K/73K in size).
+
+    cd /data
+    bash sender.sh
+
+12. Verify Node C contains the correct amount and right kind of DOs.
+
+    cd /data
+    bash validate.sh
+
+    Node C can only hold 10 DOs total.
+    Node C will pass the small DOs to node D, which will cause the LRFU value of the small DOs to be increased.
+    Thus, after all 50 DOs have been received from node A, 5 small DOs (1 from each group) and the recent 5 DOs received will reside in the cache.
+
+

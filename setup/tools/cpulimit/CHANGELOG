@@ -1,0 +1,167 @@
+=========== Changes in 2.1 ================
+
+* Added the --quiet (-q) flag to make 
+limitcpu run silently
+
+* Install as "limitcpu" not "cpulimit"
+
+=========== Changes in 2.0 ================
+
+* Added the -- flag to make sure child processes
+  run with command line flags would not confuse
+  cpulimit.
+
+* Corrected output of child process name in verbose mode.
+
+=========== Changes in 1.9 ================
+
+* Swapped out __MACH__ pre-compiler flag for __APPLE__ to
+  avoid conflicts with GNU Hurd.
+
+
+* Added --kill (-k) and --restore (-r) flags to allow
+  target processes to be killed and restored rather than
+  simply throttled.
+
+* Made sure version number is accepted from Makefile.
+
+=========== Changes in 1.8 ================
+
+* Added separate build targets for Linux, FreeBSD and OS X.
+  See the compiling section of the README file.
+
+* Applied patch from FreeBSD to our upstream code to make
+  future updates on FreeBSD easier.
+
+* When displaying verbose output, cpulimit now redisplays
+  the column headers every 20 lines.
+
+* Fixed limiting CPU usage on multicore machines when
+  the desired usage limit is great than 100%.
+  ie A machine with 4 cores can now properly limit
+  multi-threaded applications to, say, 150% or 250%.
+
+* Added test application (busy). See "test" directory.
+  To build the test software, run "make tests".
+
+* Removed memrchr() call to allow program to compile on OS X.
+
+* Updated Makefile to work with OS X.
+
+* Fixed OS X compiler error. Macs do not understand
+  CLOCK_REALTIME
+
+* Added patch from Debian which added compiler flags. This
+  should "harden" CPUlimit on Debian.
+  Thanks to Gregor for supplying this patch.
+
+
+============= Changes in 1.7 ===============
+
+* Minor code cleanup.
+
+* Make sure we do not try to throttle our own process.
+
+* Added "tarball" option to the Makefile to assist
+  in packaging. Moved version number to the makefile.
+
+* Added version information to CPUlimit's help screen.
+
+* Detect the number of CPU cores on the machine and
+  cap the % we can limit. 1 CPU means we can
+  limit processes 1-100%, 2 means 1-200%, 4 means 1-400%.
+
+* Removed extra priority changes. We now only bump
+  our priority once, if we have access to do so.
+  Also simplified priority increases so it's flexible
+  rather than "all or nothing".
+
+* Since we now attempt to detect the number of CPUs
+  available, we also give the user the ability to
+  override our guess. The -c and --cpu flags have
+  been added for this purpose.
+
+* Commands can be launched and throttled by appending
+  commands to the end of CPUlimit's argument list. For
+  example:
+  cpulimit -l 25 firefox
+
+
+======== Changes in 1.6 ============
+
+* Updated copyright notice in README file.
+
+* Made sure we define a reasonable buffer size
+  if PATH_MAX is not already defined. Fixes
+  building on Hurd.
+
+
+======== Changes in 1.5 ============
+
+* Updated man page and cpulimit's "--help" page to
+  reflect support for multi-core CPUs.
+
+* Added example of using cpulimit in a shell
+  in the man page and the README file.
+
+* The Makefile now uses the default compiler
+  on the system, "cc", and tries to fall back
+  on gcc if no other compiler is found.
+
+
+======== Changes in 1.4 ============
+
+* We can now accept limits of 100% or higher. Useful for multi-core
+  systems.
+
+* Perform sanity check when getting jiffies. Should prevent memory
+  errors if we cannot open proc data.
+
+* Added copyright to README.
+
+
+========== Changes in 1.3 ============
+
+* Updated license information in cpulimit.c and README file
+
+* The -b flag is now shown under options instead of targets
+  in the help text.
+
+* Include man page from Debian with updates.
+
+
+========= Changes in 1.2 ===========
+
+* Applied Debian patch for checking to see if and how much we can
+  adjust our own process priority.
+
+* Added LICENSE file so there wouldn't be any confusion about
+  what license CPUlimit uses.
+
+* Applied Debian's patch for long options to avoid segfault.
+
+* Applied Debian's Makefile patch.
+
+* Added Debian patch to avoid opendir leaks.
+
+* Added -b command line parameter to make CPUlimit 
+  run in the background, returning control the the 
+  user's terminal.
+
+* When cpulimit is launched with one PID to track
+  once that process no longer exists, CPUlimit
+  will exit. Same behaviour as though the lazy
+  flag was set.
+
+* Ported CPUlimit to FreeBSD
+
+
+======= cpulimit-1.1 released ============
+
+* Fixed a segmentation fault if controlled process exited in particular circumstances
+* Better CPU usage estimate
+* Fixed a <0 %CPU usage reporting in rare cases
+* Replaced MAX_PATH_SIZE with PATH_MAX already defined in <limits.h>
+* Command line arguments now available
+* Now is possible to specify target process by pid
+

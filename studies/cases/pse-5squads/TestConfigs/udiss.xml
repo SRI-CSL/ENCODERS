@@ -1,0 +1,19 @@
+<ReplicationManager name="ReplicationManagerUtility" >
+  <ReplicationManagerUtility enabled="true" run_self_test="false"
+    forward_poll_period_ms="13550" compute_period_ms="16200"
+    forward_on_node_change="true" forward_on_do_insert="false"
+    knapsack_optimizer="ReplicationKnapsackOptimizerGreedy"
+    global_optimizer="ReplicationGlobalOptimizerFixedWeights"
+    utility_function="ReplicationUtilityAggregateMin" >
+    <ReplicationGlobalOptimizerFixedWeights min_utility_threshold="0.1" >
+                   <Factor name="ReplicationUtilityAggregateMin" weight="1" />
+                   <Factor name="ReplicationUtilityAttribute" weight="1" />
+    </ReplicationGlobalOptimizerFixedWeights>
+    <ReplicationKnapsackOptimizerGreedy discrete_size="1"  />
+    <ReplicationUtilityAggregateMin name="ReplicationUtilityAggregateMin">
+                    <Factor name="ReplicationUtilityAttribute" >
+        <ReplicationUtilityAttribute name="ReplicationUtilityAttribute" attribute_name="repl_priority" attr_max_value="36.0"/>
+                    </Factor>
+    </ReplicationUtilityAggregateMin>
+  </ReplicationManagerUtility>
+</ReplicationManager>

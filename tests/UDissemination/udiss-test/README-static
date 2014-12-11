@@ -1,0 +1,18 @@
+This verification test will ensure the phase2-basic-udissemination test should work correctly.
+
+
+The following steps are done.
+
+1.  Two nodes in contact (no mobility).
+2.  One of the nodes publish 6 data objects, of various sizes.
+3.  Neither nodes subscribe to any content.
+4.  The utilities are setup to do 2 things:
+a.  Importance - only 5 of the 6 DO's will meet the replication watermark and be replicated.
+b.  Wait - To verify correct utility pipeline functionality, this custom utility will wait 15 seconds before allowing content to be sent.   If time < 15s, output is 0.   If time >=15s, output is 1.
+5.  The sizes and importance are calculated.    The knapsack and priority dissemination will send the highest utility/size DO's first.  
+6.  After the test is over, node n2, should contain 5 nodes.   Each DO should be recieved in the highest utility/size order, and verified.
+7.  If the above conditions are met, the test passes.
+
+To execute the test:
+Make sure the testrunner is set up (see docs/README-testrunner-setup) and the testrunner scripts
+for your platform are in your $PATH, then use the commands "generate_test_list.sh ." and "run.sh ."

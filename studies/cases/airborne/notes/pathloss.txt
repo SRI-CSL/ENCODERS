@@ -1,0 +1,29 @@
+Freespace pathloss = 20.0 * log10(41.916900439033640 * (FrequencyHz / 1000000.0) * (distanceMeters / 1000.0));
+
+
+for example, with 2.347GHz, at 706336m distance
+
+  20.0 * log10(41.916900439033640 * (2437000000 / 1000000.0) * (706336 / 1000.0)) = 157.165120638 = approx 158
+
+or at 200nmi distance (370400m)
+
+  20.0 * log10(41.916900439033640 * (2437000000 / 1000000.0) * (370400 / 1000.0)) = 151.558313366 = approx 152
+
+satellite communication threshold:
+  txPower + txAntennaGain + rxAntennaGain - 158 > -174 + 4 + 10 log10(1000000)
+  txPower + txAntennaGain + rxAntennaGain - 158 > -110
+
+ground communication threshold:
+  txpower + txAntennaGain + rxAntennaGain - 152 > -110
+
+Assuming constant default txpower of 0.0dbm and equal tx/rx antenna gain:
+
+sattlite:
+  2*gain - 158 > -110
+  2*gain > 48
+  gain > 24
+
+ground:
+  2*gain - 152 > -110
+  2*gain > 42
+  gain > 21

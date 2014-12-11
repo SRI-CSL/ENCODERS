@@ -1,0 +1,31 @@
+Email from command line guide
+
+Adapted From:
+-----
+
+http://www.techrepublic.com/blog/security/use-ssmtp-to-send-e-mail-simply-and-securely/440
+
+sudo apt-get install ssmtp
+
+sudo useradd ssmtp -g nogroup -s /sbin/nologin -d /nonexistent -c "sSMTP-psuedo-user"
+sudo chown ssmtp /etc/ssmtp/ssmtp.conf
+sudo chmod 650 /etc/ssmtp/ssmtp.conf
+
+sudo vim /etc/ssmtp/ssmtp.conf
+
+root=sam@suns-tech.com
+AuthUser=sam@suns-tech.com
+AuthPass=******
+mailhub=smtpout.secureserver.net:465
+rewriteDomain=suns-tech.com
+hostname=sam-hp.suns-tech.com
+FromLineOverride=YES
+UseTLS=YES
+
+To: sam@suns-tech.com
+From: sam@suns-tech.com
+Subject: Sent from terminal!
+
+OK some stuff!
+
+sudo ssmtp sam@suns-tech.com < /tmp/testmsg 

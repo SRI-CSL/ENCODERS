@@ -1,0 +1,29 @@
+[global]
+area = rect(1500, 300)
+start_time = 0
+stop_time = 300
+seed = 2
+print_dest_comments = 1
+
+[team0]
+num_nodes = 1
+member_area = rect (0, 0)
+offset = 0, 0
+
+member_model = Waypoint
+member_model.T_min = 0
+member_model.T_max = 0
+member_model.V_min = 0
+member_model.V_max = 0
+
+[team1]
+
+num_nodes = 10
+member_area = rect (1500, 300)
+offset = 0, 0
+
+member_model = Waypoint
+member_model.T_min = 0
+member_model.T_max = 5
+member_model.V_min = 1
+member_model.V_max = 7

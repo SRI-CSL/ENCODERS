@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE eventservice SYSTEM "file:///usr/share/emane/dtd/eventservice.dtd">
+<eventservice name="Sample Event Service" deployment="deployment.xml">
+  <param name="eventservicegroup" value="224.1.2.8:45703"/>
+  <param name="eventservicedevice" value="lo"/>
+  <generator name="Emulation Event Log Generator" definition="eelgenerator.xml"/>
+</eventservice>
+

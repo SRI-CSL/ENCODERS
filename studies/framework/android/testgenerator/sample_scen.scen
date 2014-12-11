@@ -1,0 +1,5 @@
+# nodes: 2, max time: 226.00, max x: 400.00, max y: 400.00
+$node_(0) set X_ 125.00
+$node_(0) set Y_ 200.00
+$node_(1) set X_ 275.00
+$node_(1) set Y_ 200.00

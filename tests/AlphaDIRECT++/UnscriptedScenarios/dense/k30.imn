@@ -1,0 +1,739 @@
+node n1 {
+    type router
+    model PC
+    network-config {
+	hostname n1
+	!
+	interface eth0
+	 ip address 10.0.0.20/32
+	 ipv6 address 2001:0::20/128
+	!
+    }
+    canvas c1
+    iconcoords {236.0 302.0}
+    labelcoords {247.0 335.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n2 {
+    type router
+    model PC
+    network-config {
+	hostname n2
+	!
+	interface eth0
+	 ip address 10.0.0.21/32
+	 ipv6 address 2001:0::21/128
+	!
+    }
+    canvas c1
+    iconcoords {377.0 310.0}
+    labelcoords {377.0 330.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n3 {
+    type router
+    model PC
+    network-config {
+	hostname n3
+	!
+	interface eth0
+	 ip address 10.0.0.22/32
+	 ipv6 address 2001:0::22/128
+	!
+    }
+    canvas c1
+    iconcoords {272.0 315.0}
+    labelcoords {291.0 351.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n4 {
+    type wlan
+    network-config {
+	hostname wlan4
+	!
+	interface wireless
+	 ip address 10.0.0.0/32
+	 ipv6 address 2001:0::0/128
+	!
+	mobmodel
+	coreapi
+	basic_range
+	!
+    }
+    custom-config {
+	custom-config-id basic_range
+	custom-command {3 3 9 9 9}
+	config {
+	275
+	54000000
+	0
+	20000
+	0
+	}
+    }
+    canvas c1
+    iconcoords {387.0 126.0}
+    labelcoords {387.0 158.0}
+    interface-peer {e0 n1}
+    interface-peer {e1 n2}
+    interface-peer {e2 n3}
+    interface-peer {e3 n5}
+    interface-peer {e4 n6}
+    interface-peer {e5 n7}
+    interface-peer {e6 n8}
+    interface-peer {e7 n9}
+    interface-peer {e8 n10}
+    interface-peer {e9 n11}
+    interface-peer {e10 n12}
+    interface-peer {e11 n13}
+    interface-peer {e12 n14}
+    interface-peer {e13 n15}
+    interface-peer {e14 n16}
+    interface-peer {e15 n17}
+    interface-peer {e16 n18}
+    interface-peer {e17 n19}
+    interface-peer {e18 n20}
+    interface-peer {e19 n21}
+    interface-peer {e20 n22}
+    interface-peer {e21 n23}
+    interface-peer {e22 n24}
+    interface-peer {e23 n25}
+    interface-peer {e24 n26}
+    interface-peer {e25 n27}
+    interface-peer {e26 n28}
+    interface-peer {e27 n29}
+    interface-peer {e28 n30}
+    interface-peer {e29 n31}
+}
+
+node n5 {
+    type router
+    model PC
+    network-config {
+	hostname n5
+	!
+	interface eth0
+	 ip address 10.0.0.23/32
+	 ipv6 address 2001:0::23/128
+	!
+    }
+    canvas c1
+    iconcoords {322.0 296.0}
+    labelcoords {326.0 327.0}
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n4}
+}
+
+node n6 {
+    type router
+    model PC
+    network-config {
+	hostname n6
+	!
+	interface eth0
+	 ip address 10.0.0.24/32
+	 ipv6 address 2001:0::24/128
+	!
+    }
+    canvas c1
+    iconcoords {273.0 296.0}
+    labelcoords {273.0 328.0}
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n4}
+}
+
+node n7 {
+    type router
+    model PC
+    network-config {
+	hostname n7
+	!
+	interface eth0
+	 ip address 10.0.0.25/32
+	 ipv6 address 2001:0::25/128
+	!
+    }
+    canvas c1
+    iconcoords {317.0 316.0}
+    labelcoords {317.0 348.0}
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n4}
+}
+
+node n8 {
+    type router
+    model PC
+    network-config {
+	hostname n8
+	!
+	interface eth0
+	 ip address 10.0.0.26/32
+	 ipv6 address 2001:0::26/128
+	!
+    }
+    canvas c1
+    iconcoords {420.0 311.0}
+    labelcoords {417.0 352.0}
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n4}
+}
+
+node n9 {
+    type router
+    model PC
+    network-config {
+	hostname n9
+	!
+	interface eth0
+	 ip address 10.0.0.27/32
+	 ipv6 address 2001:0::27/128
+	!
+    }
+    canvas c1
+    iconcoords {230.0 328.0}
+    labelcoords {250.0 360.0}
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n4}
+}
+
+node n10 {
+    type router
+    model PC
+    network-config {
+	hostname n10
+	!
+	interface eth0
+	 ip address 10.0.0.28/32
+	 ipv6 address 2001:0::28/128
+	!
+    }
+    canvas c1
+    iconcoords {406.0 282.0}
+    labelcoords {406.0 314.0}
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n4}
+}
+
+node n11 {
+    type router
+    model PC
+    network-config {
+	hostname n11
+	!
+	interface eth0
+	 ip address 10.0.0.29/32
+	 ipv6 address 2001:0::29/128
+	!
+    }
+    canvas c1
+    iconcoords {369.0 292.0}
+    labelcoords {369.0 324.0}
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n4}
+}
+
+node n12 {
+    type router
+    model PC
+    network-config {
+	hostname n12
+	!
+	interface eth0
+	 ip address 10.0.0.30/32
+	 ipv6 address 2001:0::30/128
+	!
+    }
+    canvas c1
+    iconcoords {241.0 350.0}
+    labelcoords {254.0 361.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n13 {
+    type router
+    model PC
+    network-config {
+	hostname n13
+	!
+	interface eth0
+	 ip address 10.0.0.31/32
+	 ipv6 address 2001:0::31/128
+	!
+    }
+    canvas c1
+    iconcoords {283.0 356.0}
+    labelcoords {283.0 388.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n14 {
+    type router
+    model PC
+    network-config {
+	hostname n14
+	!
+	interface eth0
+	 ip address 10.0.0.32/32
+	 ipv6 address 2001:0::32/128
+	!
+    }
+    canvas c1
+    iconcoords {316.0 345.0}
+    labelcoords {336.0 392.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n15 {
+    type router
+    model PC
+    network-config {
+	hostname n15
+	!
+	interface eth0
+	 ip address 10.0.0.33/32
+	 ipv6 address 2001:0::33/128
+	!
+    }
+    canvas c1
+    iconcoords {379.0 343.0}
+    labelcoords {379.0 375.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n16 {
+    type router
+    model PC
+    network-config {
+	hostname n16
+	!
+	interface eth0
+	 ip address 10.0.0.34/32
+	 ipv6 address 2001:0::34/128
+	!
+    }
+    canvas c1
+    iconcoords {415.0 351.0}
+    labelcoords {415.0 383.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n17 {
+    type router
+    model PC
+    network-config {
+	hostname n17
+	!
+	interface eth0
+	 ip address 10.0.0.35/32
+	 ipv6 address 2001:0::35/128
+	!
+    }
+    canvas c1
+    iconcoords {250.0 385.0}
+    labelcoords {251.0 431.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n18 {
+    type router
+    model PC
+    network-config {
+	hostname n18
+	!
+	interface eth0
+	 ip address 10.0.0.36/32
+	 ipv6 address 2001:0::36/128
+	!
+    }
+    canvas c1
+    iconcoords {287.0 384.0}
+    labelcoords {287.0 416.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n19 {
+    type router
+    model PC
+    network-config {
+	hostname n19
+	!
+	interface eth0
+	 ip address 10.0.0.37/32
+	 ipv6 address 2001:0::37/128
+	!
+    }
+    canvas c1
+    iconcoords {328.0 383.0}
+    labelcoords {328.0 415.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n20 {
+    type router
+    model PC
+    network-config {
+	hostname n20
+	!
+	interface eth0
+	 ip address 10.0.0.38/32
+	 ipv6 address 2001:0::38/128
+	!
+    }
+    canvas c1
+    iconcoords {381.0 387.0}
+    labelcoords {381.0 419.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n21 {
+    type router
+    model PC
+    network-config {
+	hostname n21
+	!
+	interface eth0
+	 ip address 10.0.0.39/32
+	 ipv6 address 2001:0::39/128
+	!
+    }
+    canvas c1
+    iconcoords {418.0 391.0}
+    labelcoords {418.0 423.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n22 {
+    type router
+    model PC
+    network-config {
+	hostname n22
+	!
+	interface eth0
+	 ip address 10.0.0.40/32
+	 ipv6 address 2001:0::40/128
+	!
+    }
+    canvas c1
+    iconcoords {250.0 419.0}
+    labelcoords {259.0 438.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n23 {
+    type router
+    model PC
+    network-config {
+	hostname n23
+	!
+	interface eth0
+	 ip address 10.0.0.41/32
+	 ipv6 address 2001:0::41/128
+	!
+    }
+    canvas c1
+    iconcoords {282.0 418.0}
+    labelcoords {282.0 450.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n24 {
+    type router
+    model PC
+    network-config {
+	hostname n24
+	!
+	interface eth0
+	 ip address 10.0.0.42/32
+	 ipv6 address 2001:0::42/128
+	!
+    }
+    canvas c1
+    iconcoords {328.0 420.0}
+    labelcoords {328.0 452.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n25 {
+    type router
+    model PC
+    network-config {
+	hostname n25
+	!
+	interface eth0
+	 ip address 10.0.0.43/32
+	 ipv6 address 2001:0::43/128
+	!
+    }
+    canvas c1
+    iconcoords {377.0 424.0}
+    labelcoords {377.0 456.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n26 {
+    type router
+    model PC
+    network-config {
+	hostname n26
+	!
+	interface eth0
+	 ip address 10.0.0.44/32
+	 ipv6 address 2001:0::44/128
+	!
+    }
+    canvas c1
+    iconcoords {412.0 427.0}
+    labelcoords {434.0 446.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n27 {
+    type router
+    model PC
+    network-config {
+	hostname n27
+	!
+	interface eth0
+	 ip address 10.0.0.45/32
+	 ipv6 address 2001:0::45/128
+	!
+    }
+    canvas c1
+    iconcoords {259.0 449.0}
+    labelcoords {259.0 481.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n28 {
+    type router
+    model PC
+    network-config {
+	hostname n28
+	!
+	interface eth0
+	 ip address 10.0.0.46/32
+	 ipv6 address 2001:0::46/128
+	!
+    }
+    canvas c1
+    iconcoords {284.0 454.0}
+    labelcoords {284.0 486.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n29 {
+    type router
+    model PC
+    network-config {
+	hostname n29
+	!
+	interface eth0
+	 ip address 10.0.0.47/32
+	 ipv6 address 2001:0::47/128
+	!
+    }
+    canvas c1
+    iconcoords {324.0 442.0}
+    labelcoords {324.0 474.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n30 {
+    type router
+    model PC
+    network-config {
+	hostname n30
+	!
+	interface eth0
+	 ip address 10.0.0.48/32
+	 ipv6 address 2001:0::48/128
+	!
+    }
+    canvas c1
+    iconcoords {364.0 438.0}
+    labelcoords {364.0 470.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+node n31 {
+    type router
+    model PC
+    network-config {
+	hostname n31
+	!
+	interface eth0
+	 ip address 10.0.0.49/32
+	 ipv6 address 2001:0::49/128
+	!
+    }
+    canvas c1
+    iconcoords {408.0 442.0}
+    labelcoords {408.0 474.0}
+    interface-peer {eth0 n4}
+    services {DefaultRoute HaggleService}
+}
+
+link l1 {
+    nodes {n4 n1}
+}
+
+link l2 {
+    nodes {n4 n2}
+}
+
+link l3 {
+    nodes {n4 n3}
+}
+
+link l4 {
+    nodes {n4 n5}
+}
+
+link l5 {
+    nodes {n4 n6}
+}
+
+link l6 {
+    nodes {n4 n7}
+}
+
+link l7 {
+    nodes {n4 n8}
+}
+
+link l8 {
+    nodes {n4 n9}
+}
+
+link l9 {
+    nodes {n4 n10}
+}
+
+link l10 {
+    nodes {n4 n11}
+}
+
+link l11 {
+    nodes {n4 n12}
+}
+
+link l12 {
+    nodes {n4 n13}
+}
+
+link l13 {
+    nodes {n4 n14}
+}
+
+link l14 {
+    nodes {n4 n15}
+}
+
+link l15 {
+    nodes {n4 n16}
+}
+
+link l16 {
+    nodes {n4 n17}
+}
+
+link l17 {
+    nodes {n4 n18}
+}
+
+link l18 {
+    nodes {n4 n19}
+}
+
+link l19 {
+    nodes {n4 n20}
+}
+
+link l20 {
+    nodes {n4 n21}
+}
+
+link l21 {
+    nodes {n4 n22}
+}
+
+link l22 {
+    nodes {n4 n23}
+}
+
+link l23 {
+    nodes {n4 n24}
+}
+
+link l24 {
+    nodes {n4 n25}
+}
+
+link l25 {
+    nodes {n4 n26}
+}
+
+link l26 {
+    nodes {n4 n27}
+}
+
+link l27 {
+    nodes {n4 n28}
+}
+
+link l28 {
+    nodes {n4 n29}
+}
+
+link l29 {
+    nodes {n4 n30}
+}
+
+link l30 {
+    nodes {n4 n31}
+}
+
+canvas c1 {
+    name {Canvas1}
+}
+
+option global {
+    interface_names no
+    ip_addresses yes
+    ipv6_addresses yes
+    node_labels yes
+    link_labels yes
+    ipsec_configs yes
+    exec_errors yes
+    show_api no
+    background_images no
+    annotations yes
+    grid yes
+    traffic_start 0
+}
+

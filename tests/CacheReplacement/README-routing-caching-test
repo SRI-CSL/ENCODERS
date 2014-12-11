@@ -1,0 +1,147 @@
+Testing Combination of Caching and Routing
+==========================================
+
+This example in intended for a three setup with CORE and
+Linux containers or CORE and phones.
+
+Suitable config file to use:
+
+config-routing-caching-test.xml
+
+Nodes A and B are publishers and Node C is a subscriber.
+
+
+1. Test Expiration of Data Objects  
+----------------------------------
+
+  Expectations:   Send 2 expiring data objects.   
+  Node B should receive both, and have one of the objects expire.   
+  When node C moves into range, only 1 object should be alive, and passed to node C.
+
+  Setup:   3 nodes labelled A, B, and C.   A and B are within contact range, C is outside range.
+  Test RelTTL: 
+
+Node A:
+
+haggletest -s 0 -b 1 pub ContentType=DelByRelTTL purge_after_seconds=5 RoutingType=Flood DataType=GPS 
+haggletest -s 0 -b 1 pub ContentType=DelByRelTTL purge_after_seconds=45 RoutingType=Flood DataType=GPS 
+
+Mobility: Wait more than 5 seconds.
+          Move node C into contact range with Node B, but Not node A.
+
+Node C:
+
+haggletest -s 5 sub DataType=GPS 
+
+Expect 1 object, with field purge_after_seconds=45.
+
+
+2. Test Replacement of Data objects
+-----------------------------------
+
+  Setup:  Node A can only talk to node B, Node B can communicate with Node A, C. 
+          Proper replacement should not propagate.
+
+  Expectations:  This will be done in 3 tests.  
+
+  The first will test lexicographical ordering, to ensure proper operation, using 2 attributs.
+
+  The second will be single attribute replacement.   
+  It should not interfere with the prior lexicographical test.
+
+  Assume (A, B) is in the DB.  If a new object enters the system (C, D) we expect the following:
+  (a)  If A > C, drop object (C, D)
+  (b)  If A < C, delete object (A, B), insert object (C, D)
+  (c)  If A = C, then we compare B to D.
+     (i)   If B > D, we drop object (C, D)
+     (ii)  If B < D, we delete object (A, B), insert object (C, D)
+     (iii) If B = D, we insert object (C, D).  Ergo, we have 2 objects (A, B), (C, D).
+
+--- TEST 1 ---
+
+Node A:
+
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  MissionTimestamp=500  ContentCreateTime=10 RoutingType=Flood DataType=Secret 
+
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  MissionTimestamp=490  ContentCreateTime=20 RoutingType=Flood DataType=Secret 
+
+Case (a) should occur.
+
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  MissionTimestamp=510  ContentCreateTime=10 RoutingType=Flood DataType=Secret 
+
+Case (b) should occur.
+
+Mobility: Move Node C into range of Node B, but not Node A.
+
+Node C:
+
+haggletest -s 5 test1a sub DataType=Secret 
+
+Expect 1 object with MissionTimestamp=510, ContentCreateTime=10.
+
+
+Node A:
+
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  MissionTimestamp=510  ContentCreateTime=20 RoutingType=Flood DataType=Secret 
+
+Case (c-ii) should occur.
+
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  MissionTimestamp=510  ContentCreateTime=10 RoutingType=Flood DataType=Secret
+
+Case (c-i) should occur.
+
+Node C:
+
+haggletest -s 5 test1b sub DataType=Secret
+
+Expect 1 object with MissionTimestamp=510, ContentCreateTime=20.
+
+Node A:
+
+haggletest -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  MissionTimestamp=510  ContentCreateTime=20 RoutingType=Flood DataType=Secret
+Case (c-iii) should occur.
+
+Node C:
+
+haggletest -s 5 test1c sub DataType=Secret
+
+Expect 2 objects with MissionTimestamp=510, ContentCreateTime=20.
+
+
+--- TEST 2 ---
+
+Node A:
+
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  MissionTimestamp=600 RoutingType=Flood DataType=Secret 
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  ContentCreateTime=50 RoutingType=Flood DataType=Secret
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  MissionTimestamp=610 RoutingType=Flood DataType=Secret 
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  ContentCreateTime=60 RoutingType=Flood DataType=Secret
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  MissionTimestamp=590 RoutingType=Flood DataType=Secret 
+haggletest  -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=suns-tech  ContentCreateTime=20 RoutingType=Flood DataType=Secret
+
+Node C:
+
+haggletest -s 5 test2a sub DataType=Secret
+
+Expect 4 objects: 2 with MissionTimestamp=510, ContentCreateTime=20;
+                  1 with ContentCreateTime=60;
+                  1 with MissionTimestamp=610.
+
+
+--- TEST 3 ---
+
+Node A:
+
+haggletest  -c -s 0 -b 1  pub ContentType=TotalOrder ContentOrigin=SRI  MissionTimestamp=700 RoutingType=Flood DataType=Secret
+
+Node C:
+
+haggletest  -c -s 0 -b 1 test3 sub DataType=Secret 
+
+Expect 5 objects: 2 with ContentOrigin=suns-tech MissionTimestamp=510, ContentCreateTime=20;
+                  1 with ContentOrigin=SRI, ContentCreateTime=70;
+                  1 with ContentOrigin=suns-tech, MissionTimestamp=610;
+                  1 with ContentCreateTime=20.
+
+
+

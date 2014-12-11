@@ -1,0 +1,284 @@
+Utility-based Caching Automated Tests
+=====================================
+
+This file describes the included utilty based caching test cases.
+
+Note that the tests are timing sensitive (in some cases this is mandatory
+since the utility functions themselves are time sensitive).
+
+-----
+
+Quick overview:
+
+All of the tests contained here have more than 1 node. Although
+CacheStrategyUtility supports cache management of locally published files,
+we do not recommend this mode since it may cause locally published files to
+be deleted and we believe that Haggle should only be resposible for creating
+or removing files in its temporary directory (~/.Haggle).
+
+Typically, we only examine the cache on node 2, through use of the "stats"
+data object, denoted with attributes CacheStrategyUtility=stats.
+The "stats" DO returns list of top 10 DOs that present top utility, bottom
+utility, largest, and oldest.
+Each "stats" DO includes the size (which is used to identify if the correct DO
+purged) and utility value (0, 1) of the corresponding DO.
+
+Tests 001-003 follow these steps:
+a.   Send a small file first, followed by 8 medium files, then 1 large file.
+b.   Since purging (for cases 1-3) defaults to DO creation time, which activates either on DO insert and/or polling.
+c.   The expected DOs to be purged: the small DO file first, then 2 medium DOs (i.e., first 3 DOs sent).
+
+
+Test descriptions:
+-----
+
+001-N2-fixed-cache-create-time-event-r1:
+
+n1 (pub, no caching) <-> n2 (sub, with caching)
+
+Overview:
+LRU is disabled. Polling is disabled. Event-based purging is enabled. DO
+create time is used for purging.
+
+The purpose of this test is to exercise the most basic form of utility based
+caching. Here we do not specify any utility functions, but instead rely upon
+the default eviction behavior by creation time, thus the cache acts as a
+FIFO queue based on creation time. We specify the cache size and the
+published data object sizes so that we can fit at most 7 data objects in the
+cache. The publisher publishes 10 data objects, and the subscriber receives
+all 10 of these data objects. At the end of the test, we subscribe to the
+stats data object on node 2 and check the cache to verify that only the
+newest data objects remain (we use the data object sizes to uniqely identify
+them).
+
+In this test, the utility based caching has disabled poll-based execution
+of the pipeline, and instead we only execute the pipeline on data object
+insertion (purge_poll_period_ms="0" purge_on_insert="true").
+
+002-N2-fixed-cache-create-time-period-r1:
+
+n1 (pub, no caching) <-> n2 (sub, with caching)
+
+Overview: LRU is disabled. Polling is enabled. Event-based purging is
+disabled. DO create time is used for purging.
+
+This test is identical to the previous one, except we disable insertion based
+execution of the pipeline and only enable poll based execution
+(purge_poll_period_ms="2000" purge_on_insert="false").
+
+003-N2-fixed-cache-create-time-both-r1:
+
+n1 (pub, no caching) <-> n2 (sub, with caching)
+
+Overview: LRU is disabled. Polling and event-based purging are enabled.
+
+This test is identical to the previous one, except both insertion based
+AND poll based execution of the pipeline is enabled.
+(purge_poll_period_ms="2000" purge_on_insert="true").
+
+004-N5-fixed-cache-LRFU-count-r1:
+
+                            n3 (sub, no caching)
+                                    |
+n1 (pub, no caching) -- n2 (sub, with caching)
+                                    |
+                            n4 (sub, no caching)
+
+The purpose of this test is to exercise the utility based caching with a
+LRFU positive utility function. LRFU in the Haggle framework is slightly
+different than LRFU in traditional CPU type architectures. Here, data objects
+are not a fixed size, and there is not a concrete notion of a "data access".
+We define a data access to be either receiving the data object or sending
+the data object to a neighbor.
+
+In this example, n1 publishes 10 data objects and n2's cache can only fit 7.
+n3 and n4 only subscribe for the first data object that n1 publishes.
+They do so at specific times to boost the utility of the first data
+so that they remain in n2's cache (despite being the oldest by
+creation time).
+
+As in the other tests, n2 subscribes to the stats data object at the end
+to determine which data objects are in the cache (they are identified
+by size). This test uses the virtual time access accounting method.
+
+LRFU is enabled. Polling and event-based purging are enabled.
+It follows these steps:
+a.  Have 3 nodes (n2,n3,n4) request the smallest file.
+b.  Node n1 publishes the smallest file, then 8 medium files, then 1 large file.
+c.  3 medium files should be purged. The smallest file should be cached, due to being requested multiple times.
+
+005-N5-fixed-cache-LRU-k-time-aging-r1:
+
+                            n3 (sub, no caching)
+                                    |
+n1 (pub, no caching) -- n2 (sub, with caching)
+                                    |
+                            n4 (sub, no caching)
+
+This test is very similar to 004, but instead of just boosting the first
+data object, we boost the first 3 data objects. This test uses the LRU_K
+algorithm with the real time access time accounting method. We use a K-value
+of 2.
+
+LRU-K is enabled. Polling and event-based purging are enabled. It follows
+these steps (k=2):
+a.  Node n1 publishes 7 DOs, which is the maximum cache capacity without
+    purging.
+b.  Node n2 subscribes for all DOs.
+c.  Nodes n3 and n4 request the first 3 DOs.
+d.  Node n1 publishes 3 more DOs.
+e.  Monitor results. The 3 oldest DOs and recent 4 DOs should be in the cache
+    of Node n2.
+
+To identify the recent 4 DOs, the last DO is large size. Thus, we expect 1
+small, 3 large, and 3 medium DOs are in the cache.
+
+006-N2-fixed-cache-purgers-r1:
+
+n1 (pub, no caching) <-> n2 (sub, with caching)
+
+The purpose of this test is to exercise purging policies within the cache
+utility framework. These purging policies are the same as those supported
+in the original CacheReplacement framework, but they are treated as first class
+utility functions in the utility caching pipeline (they can be composed
+as any other utility function). Due to this generality, the semantics for
+purging are slightly different: the actual purging only occurs on execution
+of the pipeline, as opposed to at the exact moment the data object expires.
+Due to this eventual consistency, for these tests we set the purge_poll_period
+and compute_period artificially low.
+
+In this test, n1 publishes 11 data objects, some eligble for purging and
+others not. n2 can only fit 7 data objects, and evicts older data objects in
+favor of newer data objects which may be purged later. We confirm both
+positively and negatively that only the proper data objects are purged
+when they should be purged. For example, we publish a data object
+with a "purge_by_timestamp=1900000000" (sometime in 2030) and confirm
+that it remains in the cache (using the stats data object, as in the other
+tests). We also try to subscribe to all of the data objects at the end of
+the test to confirm that only the proper number are returned (i.e. even
+though the cahce has space, the stale data objects are still purged).
+
+007-N2-fixed-cache-replacement-r1:
+
+n1 (pub, no caching) <-> n2 (sub, with caching)
+
+The purpose of this test is to demonstrate cache replacement in the context of
+utility based caching. We maintain the hard constraint replacement policy
+through use of the AggregateMin utility function, so that even if a data
+object has high utility it can still be evicted if it is subsumed by some other
+data object.
+
+In this test, we have a new time utility function which artifically boosts
+the data objects utility to 1 at all times. We then insert both data objects
+that are eligible for replacement and data objects that are inelligible. We
+then verify that the subsumed data objects are evicted, the ineligible data
+objects remain in the cache, and the "fresh" data objects that are eligible
+for replacement remain in the cache. Note that this test does _NOT_ use
+priority replacement.
+
+008-N2-simple-bf-delay-delete-r1
+
+n1 (pub, no caching) <-> n2 (sub, with caching)
+
+The purpose of this test is to demonstrate the delayed bloomfilter removal
+feature. Using the options bloomfilter_remove_delay_ms="2000" and
+keep_in_bloomfilter="false", data objects that are evicted by utility based
+caching will be removed from the bloomfilter only after 2 seconds.  This
+feature is useful to temporarily inhibit redundant transmissions which may
+occur when a data object is evicted from a node and one of its neighbors
+immediately tries to send it the evicted data object.
+
+In this test, n1 publishes two data objects, one which will remain in the
+cache, and another which is evicted from the cache after 2 seconds.
+n2 subscribes to these data objects, and we verify that the first data object
+is only received once, while the second data object is received twice
+(only after the bloomfilter removal delay).
+
+009-N3-simple-neighborhood-r1
+
+n1 (pub, no caching) <-> n2 (sub, with caching) <-> n3 (pub, no caching)
+
+The purpose of this test is to demonstrate the neighborhood utility function.
+This utility function attempts to increase cache diversity by reducing the
+the number of duplicate data objects within a 1-hop neighborhood.
+Specifically, for each data object in the cache, we construct a ratio of one
+minus the number of replicas within 1-hop, divided by the number neighbors.
+Thus, if all neighbors have the data object then the data object has utility 0.
+We test the "neighbor_fudge" and and set "discrete_probablistic" to false.
+The neighbor fudge is used to decrease this ratio: we sum the fudge to the
+number of neighbors. The purpose of the "discrete_probabilistic" option is
+to prevent synchronized deletions of a data object. Here, instead of returning
+the computed ratio 'r', it returns 0 or 1. It returns 1 approximaitely every
+'r' times the comptue function is called, and 0 approximately every '1-r' times
+the compute function is called.
+
+n1 publishes 2 data objects that both n2 and n3 are interested in. We then
+use the stats data object at n2 to determine their computed utilities, and
+verify that the neighborhood computes the proper value.
+
+010-N2-fixed-cache-replacement-priority-r1
+
+n1 (pub, no caching) <-> n2 (sub, with caching)
+
+This test is very similar to 007, but also tests priority replacement. Here
+replacement operates on data objects within the same equivalence class, as
+in CacheReplacement.
+
+011-N3-simple-attribute-r1
+
+n1 (pub, no caching) <-->  n2 (sub, with caching) <---> n3 (sub, with caching)
+
+The purpose of this test is to demonstrate the attribute utility function.
+This utility function is used to mark the priority or importance of, individual data objects.
+By using a tag to identify the importance, in this test it is 'utility', and giving it a value.
+N1 publishes 3 data objects of similiar size but varying importance (values of '1', '0.6' and '0.5').
+
+N2 subscribes to the content of N1, but only has the capacity to retain two of the three data objects
+it will receive from N1.    N2 then purges content, based upon the attribute tag.    Since the tag
+value of '0.5' will be the lowest, that content is purged.
+
+N3 subscribes to the same content as N2, after N2 has received all three data objects.
+Since N2 had to purge the lower value important data object, Only the data objects published
+with higher value importance, of tagged values '1' and '0.6' will be received.
+
+This test verifies the self reported priority attribute is working correctly, to verify correct purging
+of low self-reported priority content.
+
+
+012-N2-discrete-sizes-r1
+
+n1 (pub, no caching) <-> n2 (sub, with caching)
+
+The purpose of this test is to demonstrate the discrete_size parameter for the CacheKnapSackOptimizerGreedy module.
+If 'discrete_size' is not set, it defaults to '1'.     This is used to consider blocks of data, of a size range,
+as equal, in terms of the knapsack.  Normally the knapsack uses the calculation of (utility value)/(INT(file_size/discrete_size)+1).    This give enormous leverage to smaller files, over larger files, for purging consideration.    Since we dont
+wish to overly penalize larger content, the discrete_size parameter was added.  
+As an example, if two data objects, d0 having size of 10k bytes, and d1, having a size of 1K bytes are received by a node.
+Assume d0 has a utility of '0.5' and d1 has a utility value of '1'.
+With a 'discrete_size' of '1', d0 has a purge value of 0.5/1000, while d1 has a purge value of 1/10000.     To be considered equally for purging, d0 would need a utility of 0.1, to have equal purging value of d1.   Of course, a file of 1GB in size and low utility, it makes to purge, if necessary to perserve smaller content.    To avoid this problem, 'discrete_size' is set up to better marginalize against unfair purging.    If 'discrete_size' = 20000, in our example above, d0 would have a purge value of 0.5/((INT(1k/20k)+1)) = 0.5 and d1 would have a purge value of 1.0/((INT(10k/20k)+1)) = 1.    Under this discrete_size value, d0 would be purged before d1.
+
+In this test, N1 publishes 10 data object (first, 72KB data object, 8 x 73KB data Objects, then last, 1 x 74KB data object).
+N2 can only store 7 data objects, and the discrete_size='52200' gives all data objects equal purging value.
+Then, N2 must purge based upon create time of the data object, so the first data object, of size 72KB and the first 73KB data object will be purged.    This is verified by having 6 x 73KB data objects and a single 74KB data object.
+
+
+013-N2-hop-count-r1
+
+n1 (pub, no caching) <-->  n2 (sub, no caching) <---> n3 (sub, no caching)
+
+The purpose of this test is to demonstrate the hop-count utility, to limit data object dissemination.
+Node n1 publishes a single data object, using the hop-count metadata tag and setting the maximum hop count to '1'.
+This limits propagation to 1-hop, at most.   The initial hop count is set to zero (the maximum hop count is the upper constraint).
+Node n2 subscribes to the published content, and receives the data object.    The data object has a value of '1',
+and it modifies the metadata to increate the hop count number to '1'.   Since hop_count !> max_hop_count (1 !> 1), the
+data object has a utility of '1'.
+Node n3 subscribes to the same content, and receive the data object.    Since N3 is configured ot purge_on_insert, the data object utility is calculated as '0' (since it has gone 2 hops), and is purged.
+This test verifies N2 has a cached copy of the data object, but N3 does not.
+
+
+014-N2-hop-count-geometric-r1
+
+n1 (pub, no cahing) <-->  n2 (sub, no caching) <---> n3 (sub, no caching)  <----> n4 (sub, no caching) <----->  n5 (sub, no caching)
+
+This test is very similar to 013, but instead of using a step function to determine utility after a predetermined
+amount of hops, using geometric progression.    

@@ -1,0 +1,57 @@
+Porting Tests from TestRunner-LXC Manually
+------------------------------------------
+
+If you only have a Testsuite directory and no test_spec.json from which to
+generate a new one, you will have to port your test to work with the Android
+testing framework.
+
+
+*NEW* Automatic Test Conversion
+-------------------------------
+
+You may now use the automatic test conversion script, test_convert.py to
+convert a testsuite from LXC to Android. Run 'test_convert.py -h' for details.
+
+Manual Test Conversion
+----------------------
+
+1. Make a copy of the AndroidTestGenerator/TestTemplate directory.
+
+2. Copy over app.sh, custom_validate.sh, echo_duration.sh, mobile.imn.template,
+   mobile.scen, and any config.xml files from the old test.
+
+3. Fill in template information. The following files will need to be edited:
+
+  * echo_num_devices.sh: Replace %%num_devices%% with the number of phones.
+  * echo_output_path.sh: Replace %%output_path%% with the directory you want
+    test output to be saved in. You can look this up in the original test in
+    echo_output_path.sh file. Look for a line that reads:
+
+    ODIR=$(dirname "../../../<test-name>/TestOutput/<test-case>")
+
+    The part in quotes is %%output_path%%.
+
+4. Edit start_up.sh. Copy lines from the start_up.sh in the original test
+   directory that look like:
+
+    dd if=/dev/urandom of=/tmp/<filename> bs=1024 count=10 &> /dev/null
+
+  and use them to replace %%dd_string%%. Replace %%push_string%% with corresponding
+  lines that read:
+
+    adb_n $NUM_DEVICES "push /tmp/<filename> /data/tmp/<filename>" &> /dev/null
+
+  Where <filename> in the new line matches <filename> in the old line.
+
+5. Edit tear_down.sh. For each dd line in start_up.sh, add a line that reads
+
+    rm /tmp/<filename>
+
+  to tear_down.sh in place of %%rm_string%%.
+
+6. Edit app.sh:
+  * Replace every occurrence of "/tmp" with "/data/tmp"
+  * Replace "/sbin/ifconfig eth0" with "busybox ifconfig usb0"
+  * Replace every occurrence of "mktemp" with "mktemp /data/tmp/temp.XXXX"
+
+7. Edit mobile.imn.template. This is covered in the file README-porting-lxc-to-android-core

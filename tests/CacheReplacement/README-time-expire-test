@@ -1,0 +1,75 @@
+Caching Purging Demo Instruction    
+================================
+
+One-time Setup
+--------------
+
+1. Compile and install Haggle on an Android phone.
+
+2. Copy config-noforward-caching-test.xml (or config-routing-caching-test.xml) 
+   to /data/data/org.haggle.kernel/files/config.xml
+
+3. Compile and push the programs "haggletest" and "now"
+   to /data/ directory on the phone. 
+
+4. Copy time-expire-test.sh to the /data/ on the phone.
+
+Preparation
+-----------
+
+5. Before running the demo, you must make sure that Haggle has a clean slate.
+
+6. Force quit any currently running instances of Haggle.
+
+7. Remove the following files:
+
+    /data/data/org.haggle.kernel/files/haggle.log
+    /data/data/org.haggle.kernel/files/haggle.db
+    /sdcard/haggle/*
+
+8. Launch Haggle. 
+
+    am startservice -a android.intent.action.MAIN -n org.haggle.kernel/org.haggle.kernel.Haggle
+
+Execute Test Scripts
+--------------------
+
+9. The time-expire-test.sh exercises puring based on absolute and relative expiration times. 
+
+	cd /data
+	bash time-expire-test.sh 
+
+   which will exercise purging feature as below:
+
+	Purging based on relative and absolute expiration times
+	-------------------------------------------------------
+
+	To enalbe the feature ContentType=DelByRelTTL (or ContentType=DelByAbsTTL) should be set.
+	Publish DOs with purge_after_seconds= (or purge_by_timestamp=).
+
+	haggletest -c -s 0 -e logfile1 pub ContentType=DelByRelTTL DataType=Rel name=Rel1 purge_after_seconds=15
+	haggletest -c -s 0 -e logfile2 pub ContentType=DelByRelTTL DataType=Rel name=Rel2 purge_after_seconds=120
+	haggletest -c -s 0 -e logfile3 pub ContentType=DelByAbsTTL DataType=Abs name=Abs1 purge_by_timestamp=1350256398
+	haggletest -c -s 0 -e logfile4 pub ContentType=DelByAbsTTL DataType=Abs name=Abs2 purge_by_timestamp=1350256503
+
+	Wait long enough for the half of DOs to be expired.
+
+	Now, the following subs should return 1 match due to expiration.
+
+	haggletest -s 7 -e loginput1 rel1 sub DataType=Rel
+	haggletest -s 7 -e loginput2 abs1 sub DataType=Abs
+	haggletest -s 7 -e loginput3 rel2 sub name=Rel2
+	haggletest -s 7 -e loginput4 abs2 sub name=Abs2
+	
+	Wait long enough for remaining DOs to be expired.
+
+	haggletest -s 7 -e loginput1 rel3 sub name=Rel2
+	haggletest -s 7 -e loginput2 abs3 sub name=Abs2
+
+	Now, the following subs return no match.
+
+	haggletest -s 7 -e loginput1 rel3 sub name=Rel2
+	haggletest -s 7 -e loginput2 abs3 sub name=Abs2
+
+	-------------------------------------------------------
+	PASS!

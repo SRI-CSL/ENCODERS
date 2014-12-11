@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE deployment SYSTEM "file:///usr/share/emane/dtd/deployment.dtd"> <deployment >
+<platform id="1"> <nem id="1"/></platform>
+<platform id="2"> <nem id="2"/> </platform>
+<platform id="3"> <nem id="3"/> </platform>
+<platform id="4"> <nem id="4"/> </platform>
+<platform id="5"> <nem id="5"/> </platform>
+<platform id="6"> <nem id="6"/> </platform>
+<platform id="7"> <nem id="7"/> </platform>
+<platform id="8"> <nem id="8"/> </platform>
+<platform id="9"> <nem id="9"/> </platform>
+</deployment>

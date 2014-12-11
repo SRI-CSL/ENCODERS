@@ -1,0 +1,34 @@
+<Haggle persistent="no">
+	<Attr name="ManagerConfiguration">*</Attr>
+	<SecurityManager security_level="LOW"/>
+	<DebugManager>
+		<DebugTrace enable="true"/>
+	</DebugManager>
+	<NodeManager>
+		<Node matching_threshold="0" max_dataobjects_in_match="10"/>
+		<NodeDescriptionRetry retries="3" retry_wait="10.0"/>
+	</NodeManager>
+	<ProtocolManager>
+		<TCPServer port="9697" backlog="30"/>
+	</ProtocolManager>
+	<DataManager set_createtime_on_bloomfilter_update="true">
+		<Aging period="3600" max_age="86400"/>
+		<Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+		<CacheStrategy name="CacheStrategyUtility">
+            <CacheStrategyUtility knapsack_optimizer="CacheKnapsackOptimizerGreedy" global_optimizer="CacheGlobalOptimizerFixedWeights" utility_function="CacheUtilityNeighborhood" max_capacity_kb="1024" watermark_capacity_kb="512" compute_period_ms="200" purge_poll_period_ms="2000" purge_on_insert="true" publish_stats_dataobject="true" keep_in_bloomfilter="true" >
+                <CacheKnapsackOptimizerGreedy />
+                <CacheGlobalOptimizerFixedWeights min_utility_threshold="0.34">
+                    <Factor name="CacheUtilityNeighborhood" weight="1" />
+                </CacheGlobalOptimizerFixedWeights>
+                <CacheUtilityNeighborhood discrete_probablisitc="false" neighbor_fudge="1" />
+            </CacheStrategyUtility>
+        </CacheStrategy>
+             <DataStore>
+                        <SQLDataStore use_in_memory_database="true" journal_mode="off" count_node_descriptions="false"/>
+             </DataStore>
+	</DataManager>
+	<ForwardingManager query_on_new_dataobject="true" periodic_dataobject_query_interval="0">
+	  <Forwarder protocol="noForward">
+	  </Forwarder>
+	</ForwardingManager>
+</Haggle>

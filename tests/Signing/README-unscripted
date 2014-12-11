@@ -1,0 +1,85 @@
+Digital Signature Tests
+=======================
+
+The following examples have been tested on CORE with Linux containers
+with static networks of up to 30 nodes.
+
+Config files suitable for this test:
+
+resources/config-signing.xml (for one or two connected nodes)
+resources/config-flood-direct-signing.xml (to exercise network coding with interest-driven routing)
+resources/config-flood-direct-signing-fca.xml (to exercise it with first-class applications)
+
+Here we cover only the basic tests. Tests exercising signing 
+in the context of fragmentation and network coding can be found in the 
+CodingAndFragmentation/README-unscripted
+
+The relavant except from the configuration file is:
+
+	<SecurityManager security_level="LOW"/>
+
+which disables signatures completely, or 
+
+	<SecurityManager security_level="HIGH"/>
+
+which enables end-to-end signatures as well as signatures on node descriptions.
+
+For preparation it is useful to create a testfile, e.g. using
+
+dd if=/dev/zero -of=/tmp/testfile bs=1024 count=100
+
+Basic Signing Test
+------------------
+
+Publish a data object (without attached file):
+
+haggletest pub abc
+
+On another node execute
+
+haggletest sub abc
+
+and the original data object should be returned
+with a signature and a signee (the publisher's node id).
+
+Note that Haggle verifies all signatures upon receipt
+and discards data objects without signatures or with
+unverifiable signatures.
+
+To test signatures on data objects with attached files
+you may publish the test file
+
+haggletest pub file /tmp/testfile abc
+
+and execute 
+
+haggletest sub abc
+
+on another node. If the data object is received with a signatures and
+a signee, Haggled has additionaly verified the integrity of the
+attached file and its binding to the data object attributes.
+
+End-To-End Signatures-Only Test
+-------------------------------
+
+To disable signatures on node descriptions, but still enable
+end-to-end signatures to ensure application-level integrity and
+non-repudiation, you may use the following configuration for the
+security manager in the config file:
+
+<SecurityManager security_level="HIGH" sign_node_descriptions="false"/>
+
+The basic signing tests should give the same results with this
+setting.
+
+Test without Signatures
+-----------------------
+
+With the configuration
+
+<SecurityManager security_level="LOW"/>
+
+all security features are disabled. In particular, no certificates or
+no signatures are ever added to data objects.  Hence, the signatures
+and signee fields are missing if we run the basic tests, but the
+data objects are nevertheles delivered to the application.

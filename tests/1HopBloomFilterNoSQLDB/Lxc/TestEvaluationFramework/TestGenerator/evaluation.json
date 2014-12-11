@@ -1,0 +1,77 @@
+[
+{
+    "test_name"          : "005-eval-grid-%%pretty%%",
+    "test_output_path"   : "../Testsuite/005-eval-grid-%%pretty%%",
+    "result_output_path" : "/tmp/005-eval-grid-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "haggle_options"     : "-m",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : "250"
+        }
+    },
+    "config"             : 
+    { "^repeat" : [ 
+        {
+            "path" : "./ExampleConfigs/config-1hop-1match-nosql.xml",
+            "pretty_name" : "1hop"
+        },
+        {
+            "path" : "./ExampleConfigs/config-default-nosql.xml",
+            "pretty_name" : "default"
+        }
+    ]
+    },
+    "num_nodes"          : 25,
+    "duration"           : 220,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "cpu_limit"          : "none",
+    "area_height"        : 500,
+    "area_width"         : 500,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 100,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/1KB", 1 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 5,
+            "cols"    : 5
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+               {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "num_pub"  : 250,
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 25,
+                    "time"     : 0,
+                    "max_match" : 250,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "key" : "value" }
+                }
+            ]
+        }
+    }
+}
+]

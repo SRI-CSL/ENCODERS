@@ -1,0 +1,474 @@
+[
+{
+    "pretty_settings"    : {
+        "comment"         : "Airborne scenario.",
+            "verbosity"       : 1,
+            "max_len"         : 100,
+            "enable_app"      : "true",
+            "enable_macphy"   : "true"
+    },
+    "test_name"          : "airborne-%%pretty%%",
+    "test_output_path"   : "Testsuite/airborne-%%pretty%%",
+    "result_output_path" : "TestOutput/airborne-%%pretty%%",
+    "config"             : {
+            "path"           : "config.xml.template",
+            "pretty_name"    : "DEFAULT",
+            "replace_dict"   :
+                {
+	            "%%max_cap%%" : "200000",
+		    "%%water_cap%%" : "190000",
+		    "%%neighbor_fudge%%" : 2,
+                    "%%debug_type%%" : "STAT",
+		    "%%fca%%" : "false",
+                    "%%bf_capacity%%" : "8000",
+                    "%%dedupe%%" : "false",
+		    "%%fnmax%%" : 1,
+		    "%%neighborhood%%" : 1,
+		    "%%popularity%%"   : 0,
+		    "%%max_forwarding_delay%%" : 2000,
+		    "%%max_forwarding_delay_base%%" : 20,
+		    "%%nd_min_send_delay_base%%" : 1000,
+		    "%%nd_min_send_delay_linear%%" : 100,
+		    "%%nd_min_send_delay_square%%" : 10,
+		    "%%bcast_min_send_delay_base%%" : 100,
+		    "%%bcast_min_send_delay_linear%%" : 10,
+		    "%%bcast_min_send_delay_square%%" : 1,
+		    "%%bcast_use_control_protocol%%" : "false",
+		    "%%bcast_connectionWaitMillis%%" : 1000,
+		    "%%bcast_maxSendTimeouts%%" : 2,
+		    "%%bcast_maxProtocolErrors%%" : 2,
+            "%%sendpriority_enable%%": "true",
+		    "%%nc_enable_forwarding%%" : "true",
+		    "%%nc_node_desc_update_on_reconstruction%%" : "true",
+		    "%%nc_max_age_block%%" : "3600",
+		    "%%nc_max_age_decoder%%" : "3600",
+		    "%%nc_min_encoder_delay_base%%" : "100",
+              	    "%%nc_min_encoder_delay_linear%%" : "10",
+		    "%%nc_min_encoder_delay_square%%" : "1",
+		    "%%nc_resend_delay%%" : "0",
+		    "%%nc_resend_reconstructed_delay%%" : "10.0",
+		    "%%nc_delay_delete_networkcodedblocks%%" : "3600",
+		    "%%nc_delay_delete_reconstructed_networkcodedblocks%%" : "3600",
+		    "%%nc_min_network_coding_file_size%%" : "32769",
+		    "%%nc_block_size%%" : "32768"
+	}},
+    "num_nodes"          : 9,
+    "duration"           : 1200,
+    "warmup"             : 40,
+    "seed"               : {"^repeat" : [ 41, 61, 62, 73 ] } ,
+    "area_height"        : 450,
+    "area_width"         : 450,
+    "neighbor_monitor" : {
+        "comment"        : "COMMENT: keep track of local neighborhood using arp and ping.",
+        "enable_neighbor_monitor" : "true",
+        "neighbor_monitor_max_latency_ms" : 40,
+        "neighbor_monitor_period_s" : 1
+    },
+    "macphys_cfgs"       : [ {
+        "nodes": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "name" : "emane_ieee80211abg",
+        "pretty_name" : "80211-11mbps",
+        "parameters": {
+            "standard_mode"      : 3,
+            "max_distance_m"     : 1000,
+            "unicast_rate_mode"  : 4,
+            "multicast_rate_mode"  : 4,
+	        "system_noise_figure" : "4",
+            "antenna_gain_dbi"   : -5,
+            "transmit_power_dbx" : 0,
+            "antenna_type"       : "omnidirectional",
+            "pathloss_mode"      : "freespace",
+            "bandwidth_khz"      : 22000
+        }
+    } ],
+    "cpu_limit"          : 30,
+    "files"              : [
+        [ "/tmp/7.5kb",       1    ],
+        [ "/tmp/75kb",       10   ],
+        [ "/tmp/1Mbit",      125   ],
+        [ "/tmp/2Mbit",    250   ],
+        [ "/tmp/7.68Mbit",    960   ]
+    ],
+    "mobility_cfg"       : {
+       "name" : "overlay",
+        "pretty_name" : "3squads",
+        "parameters": {
+            "mobilities" : [
+                {
+                    "nodes" : [1, 2],
+                    "name" : "nomadic",
+                    "parameters" : {
+                        "add_to_parent_seed" : 1,
+                        "v_min"             : 1.3,
+                        "v_max"             : 1.5,
+                        "p_max"             : 2,
+                        "avg_group_size"    : 10,
+                        "max_center_dist_m" : 75,
+                        "std_group_size"    : 0,
+                        "ref_max_pause_s"   : 2
+                    }
+                },
+                {
+                    "nodes" : [3,4],
+                    "name" : "nomadic",
+                    "parameters" : {
+                        "add_to_parent_seed" : 2,
+                        "v_min"             : 1.3,
+                        "v_max"             : 1.5,
+                        "p_max"             : 2,
+                        "avg_group_size"    : 10,
+                        "max_center_dist_m" : 75,
+                        "std_group_size"    : 0,
+                        "ref_max_pause_s"   : 2
+                    }
+                },
+                {
+                    "nodes" : [5,6],
+                    "name" : "nomadic",
+                    "parameters" : {
+                        "add_to_parent_seed" : 3,
+                        "v_min"             : 1.3,
+                        "v_max"             : 1.5,
+                        "p_max"             : 2,
+                        "avg_group_size"    : 10,
+                        "max_center_dist_m" : 75,
+                        "std_group_size"    : 0,
+                        "ref_max_pause_s"   : 2
+                    }
+                }
+            ]
+        }
+    },
+    "application_cfg"    : {
+        "name" : "distribution_overlay",
+        "pretty_name" : "stat-app",
+        "parameters" : {
+            "pub_distributions" : [
+                {
+                    "nodes" : [1, 2, 3, 4],
+                    "delay_s"    : 1,
+                    "duration_s" : 1200,
+                    "max_pubs" : 999999,
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 4 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "fighter", "fighter"], ["awacs", "awacs"], [ "ContentType", "TotalOrder" ], [ "ContentOrigin", "${NODE}" ], ["priority", "3"] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 10,
+                            "elements" : [ "/tmp/7.5kb" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 9,
+                            "high" : 11
+                        }
+                    }
+                },
+                {
+                    "nodes" : [1, 3],
+                    "delay_s"    : 1,
+                    "duration_s" : 1200,
+                    "max_pubs" : 999999,
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 6 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "awacs", "awacs"], [ "ship", "ship"], [ "ground", "ground"], [ "ContentType", "TotalOrder" ], [ "ContentOrigin", "${NODE}" ], ["priority", "2"] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 10,
+                            "elements" : [ "/tmp/1Mbit" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 4.5,
+                            "high" : 5.5
+                        }
+                    }
+                },
+                {
+                    "nodes" : [1, 2, 3, 4],
+                    "delay_s"    : 1,
+                    "duration_s" : 1200,
+                    "max_pubs" : 999999,
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 6 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "awacs", "awacs"], [ "ship", "ship"], [ "ground", "ground"], [ "ContentOrigin", "${NODE}" ], ["priority", "1"] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 10,
+                            "elements" : [ "/tmp/7.68Mbit" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 590,
+                            "high" : 610
+                        }
+                    }
+                },
+                {
+                    "nodes" : [5,6],
+                    "delay_s"    : 1,
+                    "duration_s" : 1200,
+                    "max_pubs" : 999999,
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 6 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "fighter", "fighter"], [ "ship", "ship"], [ "awacs", "awacs"], [ "ContentType", "TotalOrder" ], [ "ContentOrigin", "${NODE}" ], ["priority", "3"] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 10,
+                            "elements" : [ "/tmp/75kb" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 1.9,
+                            "high" : 2.1
+                        }
+                    }
+                },
+                {
+                    "nodes" : [8],
+                    "delay_s"    : 1,
+                    "duration_s" : 1200,
+                    "max_pubs" : 999999,
+                    "pub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 6 ]
+                        }
+                    },
+                    "pub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "awacs", "awacs"], [ "ContentType", "TotalOrder" ], [ "ContentOrigin", "${NODE}" ], ["priority", "3"] ]
+                        }
+                    },
+                    "pub_file_distribution" : {
+                       "type" : "uniform_discrete",
+                       "parameters" : {
+                            "seed" : 10,
+                            "elements" : [ "/tmp/7.5kb" ]
+                        }
+                    },
+                     "inter_pub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 1.9,
+                            "high" : 2.1
+                        }
+                    }
+                }
+              ],
+            "sub_distributions" : [
+                {
+                    "nodes" : [1,2,3,4],
+                    "delay_s"    : 1,
+                    "duration_s" : 1200,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "fighter", "fighter" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 1200,
+                            "high"  : 1200
+                        }
+                    }
+                },
+                {
+                    "nodes" : [5,6],
+                    "delay_s"    : 1,
+                    "duration_s" : 1200,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "awacs", "awacs" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 1200,
+                            "high"  : 1200
+                        }
+                    }
+                },
+                {
+                    "nodes" : [9],
+                    "delay_s"    : 1,
+                    "duration_s" : 1200,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "nanosat", "nanosat" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 1200,
+                            "high"  : 1200
+                        }
+                    }
+                },
+                {
+                    "nodes" : [7],
+                    "delay_s"    : 1,
+                    "duration_s" : 1200,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "ship", "ship" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 1200,
+                            "high"  : 1200
+                        }
+                    }
+                },
+                {
+                    "nodes" : [8],
+                    "delay_s"    : 1,
+                    "duration_s" : 1200,
+                    "max_subs" : 99999,
+                    "sub_num_attributes_distribution": {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ 1 ]
+                        }
+                    },
+                    "sub_attributes_distribution" : {
+                        "type" : "uniform_discrete",
+                        "parameters" : {
+                            "elements" : [ [ "ground", "ground" ] ]
+                        }
+                    },
+                    "inter_sub_delay_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"  : 0,
+                            "high" : 0
+                        }
+                    },
+                    "sub_duration_s_distribution" : {
+                        "type" : "uniform",
+                        "parameters" : {
+                            "low"   : 1200,
+                            "high"  : 1200
+                        }
+                    }
+                }
+
+	   ]
+        }
+    }
+}
+]

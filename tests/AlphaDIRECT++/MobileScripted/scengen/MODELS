@@ -1,0 +1,39 @@
+For compilation and excution of the program, see README for details. This
+document here describes how to add new models and how to modify existing
+model implementations.
+
+1. To Add a New Model
+
+Suppose you have new mobility model named "MyModel". There are 6 steps to
+be done to add it to the scenario generator.
+
+a. Create files mymodel.cc and mymodel.h with the implementation of the model;
+b. Modify the Makefile so that the source files are included in compilation;
+c. Add an entry to "enum ModelType" in model.h; 
+d. Add an entry in the file "model-spec" to specify the default parameters;
+e. Add an entry in ModelSpec::createModelByName() in modelspec.cc;
+f. Add the line #include "mymodel.h" in modelspec.cc.
+
+
+2. To Modify an Existing Model
+
+For example, suppose the implementation of the Random Waypoint Model needs 
+to be modified, the following steps could be done:
+
+a. Modify the Waypoint section in model-spec if needed;
+b. Modify Waypoint::init(...) if the amount or type of the parameters are
+   changed in step a;
+c. Modify Waypoint::makeMove(...) if needed.
+
+Not all the steps above are needed in all situations.
+
+
+3. Implemented Mobility Models
+
+The names of the models implemented and their default parameters can be
+found in the file "model-spec".
+
+
+4. Contacts
+
+Please refer to the README file for the contacts of the author.

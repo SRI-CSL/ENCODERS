@@ -1,0 +1,105 @@
+Tests for UDP Broadcast and Unicast
+===================================
+
+NOTE THAT THIS FEATURE IS EXPERIMENTAL !
+
+This test is intended to run on CORE with
+Linux containers or phones.
+
+Suitable config files for this test:
+
+resources/config-udptcp.xml (basic test without routing)
+resources/config-flood-direct-udptcp.xml (interest-driven routing)
+resources/config-flood-direct-udptcp-fca.xml (excercising first-class applications)
+resources/config-flood-direct-proactive-udptcp.xml (exercising proactive replication of content)
+
+As shown in the excert below, all these configurations use three protocols:
+- UDP broadcast for node descriptions (including interest and Bloom filters)
+- UDP unicast for small data objects (up to 4416 bytes corresponding to 3 x UDP packet size, plus typically one for the XML header)
+- TCP for all other data objects
+
+Manual ARP insertion into the local ARP cache is enabled in the
+connectivity manager and the protocol and hence triggered by neighbor
+discovery due to incoming beacons and snooping on incoming data
+objects.
+
+	<ConnectivityManager use_arp_manual_insertion="true" />
+	<ProtocolManager>
+	<ProtocolClassifier name="ProtocolClassifierPriority">
+		<ProtocolClassifierPriority>
+			<ProtocolClassifier name="ProtocolClassifierNodeDescription" priority="3">
+				<ProtocolClassifierNodeDescription outputTag="nd" />	
+			</ProtocolClassifier>
+			<ProtocolClassifier name="ProtocolClassifierSizeRange" priority="2">
+				<ProtocolClassifierSizeRange minBytes="0" maxBytes="4416" outputTag="lw" />
+			</ProtocolClassifier>
+			<ProtocolClassifier name="ProtocolClassifierAllMatch" priority="1">
+				<ProtocolClassifierAllMatch outputTag="hw" />	
+			</ProtocolClassifier>
+		</ProtocolClassifierPriority>
+	</ProtocolClassifier>
+	<Protocol name="ProtocolUDPBroadcast" inputTag="nd">
+		<ProtocolUDPBroadcast waitTimeBeforeDoneMillis="60000" use_arp_manual_insertion="true" />
+	</Protocol>
+	<Protocol name="ProtocolUDPUnicast" inputTag="lw">
+		<ProtocolUDPUnicast waitTimeBeforeDoneMillis="60000" connectionWaitMillis="1000" maxSendTimeouts="10" />
+	</Protocol>
+	<Protocol name="ProtocolTCP" inputTag="hw">
+		<ProtocolTCP backlog="30" />
+	</Protocol>
+	</ProtocolManager>
+
+The default path for the arphelper is /etc/arphelper and please make sure that is it installed
+with  suid previleges (execute "sudo chmod +s /etc/arphelper").
+
+To avoid early purging from the ARP cache (and unnecessary overhead due to reinsertion) 
+you may increase /proc/sys/net/ipv4/neigh/default/gc_stale_time (default is 60s),  e.g. using
+
+echo "3600" >/proc/sys/net/ipv4/neigh/default/gc_stale_time
+
+UDP Broadcast Test
+------------------
+
+Since node descriptions are only disseminated by UDP broadcasting with
+the above configurations, the simple fact that the nodes discover
+their neighbors indicates that broadcasting is working.
+
+If running on Linux, the 'n' (nodes) command of the debugging console
+can be used to verify that all node descriptions from other nodes have
+been received. The 'p' (protocols) command of the debugging console
+can be used to verify that ProtocolUDPBroadcast instances are active.
+
+UDP Unicast Test
+----------------
+
+Publishing and subscribing to small data objects without an attached
+file will exercise this functionality, e.g. 
+
+haggletest -b 10 pub abc
+
+After subscribing on another node using
+
+haggletest sub abc
+
+all 10 data objects should be received.
+
+If running on Linux, the 'p' (protocols) command of the debugging
+console can be used to verify that ProtocolUDPUnicast instances are
+dynamically instantiated.
+
+TCP Test
+--------
+
+Publishing and subscribing to large data objects with an attached
+file will exercise this functionality, e.g. 
+
+dd if=/dev/zero of=/tmp/testfile bs=1024 count=100
+haggletest -b 10 pub file /tmp/testfile abc
+
+haggletest sub abc
+
+If running on Linux, the 'p' (protocols) command of the debugging
+console can be used to verify that ProtocolUDPUnicast instances are
+dynamically instantiated.
+
+

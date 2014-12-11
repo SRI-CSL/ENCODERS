@@ -1,0 +1,139 @@
+This is a test to verify SOCIAL_OTHER_NEIGHBORHOOD is working correctly.
+
+Explanation
+===========
+
+The idea behind social neighborhood is that nodes will belong to distinct social
+groups, even if they are mixed together. In typical caching, no regard is given
+to the social group of the content. Thus, if 2 groups are mixed together, and
+one of the social groups gets very chatty (i.e. publishing many data objects),
+it will tend to remove all cached data objects belonging to the other social
+group.
+
+In other words, if group A publishes a lot of content, and group B nodes are
+being polite and ferrying content, then due to traditional LRFU caching, group
+B's content will most likely be purged. Thus group B penalizes itself by
+assisting group A in data object transmission.
+
+In military terms, imagine Marines, Army, Navy at the same base. In a military
+ad hoc network, all nodes should work together to forward content. But when the
+groups seperate, each social group (Marines/Army/Navy) would prefer to have
+content relevant to their needs, not stale content from other social groups.
+This utility function helps to resolve this issue.
+
+To help solve this problem, we have extended functionality of neighborhood
+caching to recognize a node's social group, as the first step towards a more
+complete social caching hierarchy management.
+
+The return value is based upon how many neighbor groups have a copy of the
+content. The exact formula is:
+
+  m = the number of members of a given group that have the content
+  M = the maximum number of members per group to credit for having the content
+
+  return = avg(value) over all neighboring social groups, where
+    value = 1, if m >= M, otherwise
+    value = 1 - (1 / (2^m))
+
+For example, imagine 4 social groups (a,b,c,d) where group b has 1 copy of the
+content, and group c has 2 copies of the content. Then we have values:
+
+  A: 1 - (1 / 2^0) = 1 - (1 / 1) = 0
+  B: 1 - (1 / 2^1) = 1 - (1 / 2) = 1/2
+  C: 1 - (1 / 2^2) = 1 - (1 / 4) = 3/4
+  D: 1 - (1 / 2^0) = 1 - (1 / 1) = 0
+
+The average of 0, 1/2, 3/4, and 0 is 5/16, so the value is 5/16
+
+If 3 of the groups (a, b, c) had a single copy, the value would be
+
+  A: 1/2
+  B: 1/2
+  C: 1/2
+  D: 0
+
+The average of 1/2, 1/2, 1/2, and 0 is 6/16. Thus, diversity amongst social
+groups gives a higher value than a single group having many copies.
+
+By setting M to 1, value will either be 1 or 0, for each social group.
+In the above example (0,1,2,0) with an M of 1, gives (0+1+1+0)/4 = 1/2.
+The (1,1,1,0) example gives (1+1+1+0)/4 = 3/4 (still higher for same amount ofcontent).
+
+
+Test Scenario
+=============
+
+In the test scenario, 6 nodes, each belonging to a different group, are within
+1 hop of each other.
+
+Unlike SOCIAL_NEIGHBORHOOD, which uses apps to define social groups via
+attributes, SOCIAL_OTHER_NEIGHBORHOOD uses a configuration based social identity
+where each node is configured with its social group name.
+
+Each node is additionally configured with the following parameters:
+
+  only_physical_neighbors="true"
+
+Only consider neighbors within 1 hop. In this case, this means all nodes.
+
+  exp_num_neighbor_group="4"
+
+Consider there to be a minimum of 4 distinct social groups, even if fewer than
+that number are observed. Unobserved groups are considered to have 0 copies of
+any given piece of content.
+
+  less_is_more="false"
+
+Do not invert the return value.
+
+  exclude_my_group="true"
+
+Do not include the local node's social group when performing the utility
+calculation.
+
+  max_group_count="1"
+
+M = 1.
+
+
+Test Steps
+==========
+
+1. Each node publishes a single unique piece of content.
+
+  Node 1 will subscribe to nothing
+  Node 2 will subscribe to the content of nodes 1-2
+  Node 3 will subscribe to the content of nodes 1-3
+  Node 4 will subscribe to the content of nodes 1-4
+  Node 5 will subscribe to the content of nodes 1-5
+  Node 6 will subscribe to the content of nodes 1-6
+
+2. At the end of the test:
+
+  Node 1 has content from itself only.
+  Node 2 has content from 2 'social groups', including its own social group.
+  Node 3 has content from 3 'social groups', including its own social group.
+  Node 4 has content from 4 'social groups', including its own social group.
+  Node 5 has content from 5 'social groups', including its own social group.
+  Node 6 has content from 6 'social groups', including its own social group.
+
+3. Since node 6 has all of the content, we examine its logs to determine its
+   valuation of each piece of content. If the system is working properly, then:
+
+  The content from node 1 will be present on 6 nodes. Since ndoe 6 will exclude
+  its own social group from the calculation, the content on node 1 should have a
+  value of (1 + 1 + 1 + 1 + 1) / 5 = 1.0
+
+  The content from node 2 should be present on 5 nodes, and have a value of 0.8.
+  The content from node 3 should be present on 4 nodes, and have a value of 0.6.
+  The content from node 4 should be present on 2 nodes, and have a value of 0.2.
+  The content from node 6 should be present only locally, and have a value of 0.0.
+
+If all of these values match the values recorded in node 6's log, then the test
+case passes.
+
+
+To execute the test:
+Make sure the testrunner is set up (see docs/README-testrunner-setup) and the testrunner scripts
+for your platform are in your $PATH, then use the commands "generate_test_list.sh ." and "run.sh ."
+

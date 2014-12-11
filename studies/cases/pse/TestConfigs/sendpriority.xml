@@ -1,0 +1,3 @@
+<SendPriorityManager enable="true" run_self_tests="false" partial_order_class="PartialOrderPriorityAttribute" parallel_factor="1">
+	<PartialOrderPriorityAttribute priority_attribute_name="priority" />
+</SendPriorityManager>

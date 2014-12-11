@@ -1,0 +1,423 @@
+comments {
+uav
+}
+
+node n1 {
+    type router
+    model PC
+    network-config {
+	hostname squad1
+	!
+	interface eth1
+	 ipv6 address 2001:1::21/128
+	 ip address 10.1.1.21/16
+	!
+	interface eth0
+	 ipv6 address 2001:0::20/128
+	 ip address 10.0.0.20/16
+	!
+	        hostname squad1
+	        !
+	        interface eth0
+	          ip address 10.0.1.1/16
+	          ipv6 address a:1::1/64
+	        !
+    }
+    canvas c0
+    iconcoords {484.3383856448631 519.5925544307323}
+    labelcoords {484.3383856448631  543.5925544307323}
+    custom-image platoon-dismount-small.jpg
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n29}
+    interface-peer {eth1 n30}
+}
+
+node n2 {
+    type router
+    model PC
+    network-config {
+	        hostname n2
+	        !
+	        interface eth0
+	          ip address 10.0.1.2/16
+	          ipv6 address a:2::1/64
+	        !
+	interface eth0
+	 ipv6 address 2001:0::21/128
+	 ip address 10.0.0.21/16
+	!
+    }
+    canvas c0
+    iconcoords {484.4075166059432 520.939357378363}
+    labelcoords {484.4075166059432  544.939357378363}
+    hidden 1
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n29}
+}
+
+node n3 {
+    type router
+    model PC
+    network-config {
+	        hostname n3
+	        !
+	        interface eth0
+	          ip address 10.0.1.3/16
+	          ipv6 address a:3::1/64
+	        !
+	interface eth0
+	 ipv6 address 2001:0::22/128
+	 ip address 10.0.0.22/16
+	!
+    }
+    canvas c0
+    iconcoords {484.50005209133496 522.2229394383518}
+    labelcoords {484.50005209133496  546.2229394383518}
+    hidden 1
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n29}
+}
+
+
+node n10 {
+    type router
+    model PC
+    network-config {
+	hostname squad2
+	!
+	interface eth1
+	 ipv6 address 2001:1::22/128
+	 ip address 10.1.1.22/16
+	!
+	interface eth0
+	 ipv6 address 2001:0::29/128
+	 ip address 10.0.0.29/16
+	!
+	        hostname squad2
+	        !
+	        interface eth0
+	          ip address 10.0.1.10/16
+	          ipv6 address a:10::1/64
+	        !
+    }
+    canvas c0
+    iconcoords {611.5651144345545 521.3587507040668}
+    labelcoords {611.5651144345545  545.3587507040668}
+    custom-image platoon-dismount-small.jpg
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n29}
+    interface-peer {eth1 n30}
+}
+
+node n11 {
+    type router
+    model PC
+    network-config {
+	        hostname n11
+	        !
+	        interface eth0
+	          ip address 10.0.1.11/16
+	          ipv6 address a:11::1/64
+	        !
+	interface eth0
+	 ipv6 address 2001:0::30/128
+	 ip address 10.0.0.30/16
+	!
+    }
+    canvas c0
+    iconcoords {611.4816110572652 522.4412809477975}
+    labelcoords {611.4816110572652  546.4412809477975}
+    hidden 1
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n29}
+}
+
+node n12 {
+    type router
+    model PC
+    network-config {
+	        hostname n12
+	        !
+	        interface eth0
+	          ip address 10.0.1.12/16
+	          ipv6 address a:12::1/64
+	        !
+	interface eth0
+	 ipv6 address 2001:0::31/128
+	 ip address 10.0.0.31/16
+	!
+    }
+    canvas c0
+    iconcoords {611.3799968948531 523.5190853949094}
+    labelcoords {611.3799968948531  547.5190853949094}
+    hidden 1
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n29}
+}
+
+
+node n19 {
+    type router
+    model PC
+    network-config {
+	hostname squad3
+	!
+	interface eth1
+	 ipv6 address 2001:1::23/128
+	 ip address 10.1.1.23/16
+	!
+	interface eth0
+	 ipv6 address 2001:0::38/128
+	 ip address 10.0.0.38/16
+	!
+	        hostname squad3
+	        !
+	        interface eth0
+	          ip address 10.0.1.19/16
+	          ipv6 address a:19::1/64
+	        !
+    }
+    canvas c0
+    iconcoords {548.0 517.0}
+    labelcoords {548.0  541.0}
+    custom-image platoon-dismount-small.jpg
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n29}
+    interface-peer {eth1 n30}
+}
+
+node n20 {
+    type router
+    model PC
+    network-config {
+	        hostname n20
+	        !
+	        interface eth0
+	          ip address 10.0.1.20/16
+	          ipv6 address a:20::1/64
+	        !
+	interface eth0
+	 ipv6 address 2001:0::39/128
+	 ip address 10.0.0.39/16
+	!
+    }
+    canvas c0
+    iconcoords {548.0 517.0}
+    labelcoords {548.0  541.0}
+    hidden 1
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n29}
+}
+
+node n21 {
+    type router
+    model PC
+    network-config {
+	        hostname n21
+	        !
+	        interface eth0
+	          ip address 10.0.1.21/16
+	          ipv6 address a:21::1/64
+	        !
+	interface eth0
+	 ipv6 address 2001:0::40/128
+	 ip address 10.0.0.40/16
+	!
+    }
+    canvas c0
+    iconcoords {548.0 517.0}
+    labelcoords {548.0  541.0}
+    hidden 1
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n29}
+}
+
+
+node n28 {
+    type router
+    model PC
+    network-config {
+	        hostname uav
+	        !
+	        interface eth0
+	          ip address 10.0.1.28/16
+	          ipv6 address a:28::1/64
+	        !
+	interface eth0
+	 ipv6 address 2001:0::47/128
+	 ip address 10.1.0.47/16
+	!
+	interface eth1
+	 ipv6 address 2001:1::20/128
+	 ip address 10.1.1.20/16
+	!
+    }
+    canvas c0
+    iconcoords {718.0 532.0}
+    labelcoords {718.0 556.0}
+    custom-image UAV.jpg
+    services {DefaultRoute HaggleService}
+    interface-peer {eth0 n29}
+    interface-peer {eth1 n30}
+}
+
+node n29 {
+    type wlan
+    network-config {
+	hostname wlan29
+	!
+	interface wireless
+	 ipv6 address 2001:0::0/128
+	 ip address 10.0.0.0/16
+	!
+	scriptfile
+	/home/james/cbmen-encoders/tests/blueforce-uav-tracking/IED_patrol.scen
+	!
+	mobmodel
+	coreapi
+	basic_range
+	!
+    }
+    custom-config {
+	custom-config-id basic_range
+	custom-command {3 3 9 9 9}
+	config {
+	14
+	54000000
+	0
+	20000
+	0
+	}
+    }
+    canvas c0
+    iconcoords {23.0 80.0}
+    labelcoords {23.0 104.0}
+    interface-peer {e0 n1}
+    interface-peer {e1 n2}
+    interface-peer {e2 n3}
+    interface-peer {e9 n10}
+    interface-peer {e10 n11}
+    interface-peer {e11 n12}
+    interface-peer {e18 n19}
+    interface-peer {e19 n20}
+    interface-peer {e20 n21}
+    interface-peer {e27 n28}
+}
+
+node n30 {
+    type wlan
+    network-config {
+	hostname wlan30
+	!
+	interface wireless
+	 ipv6 address 2001:1::0/128
+	 ip address 10.1.1.0/16
+	!
+	mobmodel
+	coreapi
+	basic_range
+	!
+    }
+    custom-config {
+	custom-config-id basic_range
+	custom-command {3 3 9 9 9}
+	config {
+	176.47058823529412
+	54000000
+	0
+	20000
+	0
+	}
+    }
+    canvas c0
+    iconcoords {65.0 290.0}
+    labelcoords {65.0 322.0}
+    interface-peer {e0 n28}
+    interface-peer {e1 n1}
+    interface-peer {e2 n10}
+    interface-peer {e3 n19}
+}
+
+link l1 {
+    nodes {n29 n1}
+}
+
+link l2 {
+    nodes {n29 n2}
+}
+
+link l3 {
+    nodes {n29 n3}
+}
+
+
+link l10 {
+    nodes {n29 n10}
+}
+
+link l11 {
+    nodes {n29 n11}
+}
+
+link l12 {
+    nodes {n29 n12}
+}
+
+
+link l19 {
+    nodes {n29 n19}
+}
+
+link l20 {
+    nodes {n29 n20}
+}
+
+link l21 {
+    nodes {n29 n21}
+}
+
+
+link l28 {
+    nodes {n29 n28}
+}
+
+link l29 {
+    nodes {n30 n28}
+}
+
+link l30 {
+    nodes {n30 n1}
+}
+
+link l31 {
+    nodes {n30 n10}
+}
+
+link l32 {
+    nodes {n30 n19}
+}
+
+canvas c0 {
+    name {Canvas0}
+    refpt {0 0 47.58 -122.13 2.0}
+    scale {321}
+    wallpaper-style {upperleft}
+    wallpaper {update-paper-bg.jpg}
+    size {755 615}
+}
+
+option global {
+    interface_names no
+    ip_addresses no
+    ipv6_addresses no
+    node_labels yes
+    link_labels yes
+    ipsec_configs yes
+    exec_errors yes
+    show_api no
+    background_images no
+    annotations yes
+    grid no
+    traffic_start 0
+}
+

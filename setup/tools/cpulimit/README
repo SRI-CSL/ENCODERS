@@ -1,0 +1,181 @@
+README for LimitCPU
+==========================
+
+LimitCPU is a program to throttle the CPU cycles used by other applications.
+LimitCPU will monitor a process and make sure its CPU usage stays at or
+below a given percentage. This can be used to make sure your system
+has plenty of CPU cycles available for other tasks. It can also be used
+to keep laptops cool in the face of CPU-hungry processes and for limiting
+virtual machines.
+
+LimitCPU is the direct child of CPUlimit, a creation of Angelo Marletta,
+which can be found at http://cpulimit.sourceforge.net.
+
+
+
+
+Copying, License and Distribution
+===================================
+
+LimitCPU is licensed under the GNU General Public License (version 2).
+A copy of the license should be included with this program in a
+file named LICENSE.
+
+Copyright 2005, Angelo Marletta <marlonx80@hotmail.com>
+Copyright 2011-2014, Jesse Smith <jessefrgsmith@yahoo.ca>
+Copyright 2014, Hasnain Lakhani <m.hasnain.lakhani@gmail.com>
+
+
+
+
+
+Where to get LimitCPU
+==========================
+
+The LimitCPU program can be aquired from http://limitcpu.sourceforge.net
+
+
+
+
+How to compile and install
+===========================
+
+Once you have downloaded a copy of LimitCPU building should be fairly
+straight forward. First we unpack the source code
+
+tar zxf cpulimit-2.1.tar.gz
+
+Then we run the makefile.
+
+cd cpulimit-2.1
+make
+
+This should produce the executable file "cpulimit". If you would like
+to install the program to make it available system-wide (as limitcpu), run
+
+make install
+
+
+Later should you wish to remove the program from your system, run
+the following command from the limitcpu directory
+
+make deinstall
+
+
+
+Note on compiling for non-Linux operating systems:
+LimitCPU can be compiled on FreeBSD and OS X (though at this time
+LimitCPU has not been tested and may not work properly on OS X).
+To compile LimitCPU on these platforms, instead of running "make"
+to build the executable, instead run either
+
+make freebsd
+or
+make osx
+
+in order to build on FreeBSD or OS X respectively.
+
+
+
+
+
+Common usage
+==========================
+
+The LimitCPU program is generally used to throttle the CPU usage of
+one process. This can be done with the following command where
+12345 is the process ID number of a running program and 25 is the
+maximum percentage of the CPU we are willing to give that program
+
+limitxpu -p 12345 -l 25
+
+The above example will cause LimitCPU to keep an eye on the process
+with ID number 12345 until the program exits. Should we wish to
+run LimitCPU in the background we can use
+
+limitcpu -p 12345 -l 25 -b
+
+We can also limit running processes based on their name instead of
+their process ID, as in this example:
+
+limitcpu --exe /usr/bin/bigexe --limit 50
+
+The above example will keep an eye on "bigexe" and, if the application
+quits and another program called "bigexe" is run, LimitCPU will
+monitor the new process too. Should we wish to only track the first
+program and then exit, we can use 
+
+limitcpu --exe /usr/bin/bigexe --limit 50 -z
+
+The "-z" flag tells LimitCPU to stop running once its target is
+no longer running itself.
+
+The following example is useful for scripts where we want
+to launch a program and then immediately throttle it
+without knowing its process ID. The "$!" symbol refers to
+the last program run and the -b flag tells cpulimit to
+run in the background, returning control to the shell.
+
+/usr/bin/someapp &
+limitcpu -p $! -l 25 -b
+
+
+Note: As of version 1.7 LimitCPU will attempt to guess the
+number of CPUs available on the machine and limit usage
+accordingly. For example, machines with dual-cores will
+be able to run processes with 1-200% limits. In case the
+automatic detection does not work, users can over-ride the
+number of CPUs LimitCPU thinks are available using the
+-c command line flag. For example
+
+limitcpu -c 2 -p 12345 -l 150
+
+
+Commands can be launched by LimitCPU by appending the command
+to the end of of LimitCPU's argument list. For example, the
+following command will launch Firefox and limit it to 10% CPU
+usage:
+
+limitcpu -l 10 firefox
+
+Sometimes we wish to launch other programs and pass them parameters.
+To avoid confusing cpulimit as to which parameters are for it and
+which ones are for the child process, we can use the -- flag. For
+example, the following command launches Firefox in Private Browsing
+mode. To make sure the "-p" in Firefox's "-private" option does not
+confuse cpulimit, we use the -- flag.
+
+limitcpu -l 25 -- firefox -private
+
+In some special cases it may be desirable to kill a program
+instead of simple throttling its CPU usage. In these cases
+the -k flag can be used. For example, if we want to run a
+program called "yellow" and kill it when it goes over 50%
+CPU usage run the following:
+
+limitcpu -l 50 -k yellow
+
+The -k flag will terminate a process going over its limit,
+but what if we want to bring back the killed process to
+let it run again? For that purpose we have the -r flag. The
+-r flag causes a killed process to be restored.
+
+limitcpu -l 50 -k -r yellow
+
+The restore flag (-r) only works when the process to launch
+has been launched by cpulimit. For this reason it is necessary
+to specify the target program at the end of the command line
+as shown above.
+
+
+
+
+
+
+Bugs and Feedback
+=============================
+
+Should you have comments, questions, or bugs to report, please send
+an e-mail to jessefrgsmith@yahoo.ca with the word "LimitCPU" in the
+subject line.
+

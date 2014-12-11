@@ -1,0 +1,153 @@
+The Simplest Option
+-------------------
+
+By far the simplest and most reliable way to get a .imn file that will work with
+CORE 4.6 is to make it by hand with the CORE GUI. If, for some reason, this is
+undesirable, the following guidelines should help you edit an existing file to
+work with the Android testrunner.
+
+
+Caveat
+------
+
+Translating CORE imn files manually is not a well-understood process. Even if
+you make the changes listed below, it's not guaranteed that the resulting file
+will work properly. You may find that your mobility model does not work, or that
+network connectivity is not actually established. In such a case, we reccommend
+rebuilding the configuration file from scratch in the CORE GUI, using RJ45 nodes
+instead of PC nodes, and mapping n<X> to usb<X-1>.
+
+
+Porting .imn files for the Android Testrunner
+---------------------------------------------
+
+The biggest difference between .imn files for the LXC testrunner and the Android
+testrunner is that the network endpoints are USB ports, not Linux containers.
+Here is an example node entry for an LXC node:
+
+node n1 {
+    type router
+    model PC
+    network-config {
+  hostname n1
+  !
+  interface eth0
+   ip address 10.0.1.20/32
+   ipv6 address 2001:1::20/128
+  !
+    }
+    canvas c1
+    iconcoords {0.0 0.0}
+    labelcoords {0.0 0.0}
+    interface-peer {eth0 n31}
+    services {DefaultRoute HaggleService}
+}
+
+Here is a corresponding entry for an Android node:
+
+node n1 {
+    type rj45
+    network-config {
+  hostname usb0
+  !
+  model
+  !
+    }
+    canvas c1
+    iconcoords {0.0 0.0}
+    labelcoords {0.0 0.0}
+    interface-peer {0 n31}
+}
+
+The key differences are:
+  * The change of type from "router" to "rj45"
+  * The removal of the "model" attribute
+  * The change of "hostname" from "n1" to "usb0". The decrement here is
+    important! Node n<X> should be associated with hostname usb<X-1>.
+  * The removal of the IP address info from network-config
+  * The change in interface-peer from {eth0 n31} to simply {0 n31}
+
+
+Changing .imn Files from CORE 4.3 to 4.6
+----------------------------------------
+
+The most important thing that has changed in CORE 4.6 is the way mobility models
+are specified in the .imn file. The wlan section CORE 4.3 imn file looks like:
+
+node n31 {
+    type wlan
+    network-config {
+  hostname wlan1
+  !
+  interface wireless
+   ip address 10.0.1.0/32
+   ipv6 2001:1::0/128
+  !
+  scriptfile
+  %%scen_path%%
+  !
+  mobmodel
+  coreapi
+  emane_ieee80211abg
+  !
+    }
+    custom-config {
+  custom-config-id emane_ieee80211abg
+  custom-command {
+  ...
+  }
+    }
+    canvas c1
+    iconcoords {0.0 0.0}
+    labelcoords {0.0 0.0}
+    interface-peer {e0 n1}
+    ...
+}
+
+Note that the script file for the mobility scenario is defined in the
+network-config section. Contrast with the same section from a CORE 4.6 file:
+
+node n31 {
+    type wlan
+    network-config {
+  hostname wlan1
+  !
+  interface wireless
+   ip address 10.0.1.0/32
+   ipv6 address 2001:1::0/128
+  !
+  mobmodel
+  coreapi
+  emane_ieee80211abg
+  ns2script
+  !
+    }
+    custom-config {
+  custom-config-id emane_ieee80211abg
+  custom-command {1 11 3 1 1 2 11 10 11 2 10 10 10 10 10 10 9 9 9 10 10 11 4 11 4 4 11 11 10 2 9 9}
+  config {...}
+    }
+    custom-config {
+  custom-config-id ns2script
+  custom-command {10 3 11 10 10 10 10 10}
+  config {
+  file=%%scen_path%%
+  refresh_ms=50
+  loop=1
+  autostart=5.0
+  map=
+  script_start=
+  script_pause=
+  script_stop=
+  }
+    }
+    canvas c1
+    iconcoords {0.0 0.0}
+    labelcoords {0.0 0.0}
+    interface-peer {e0 n1}
+    ...
+}
+
+Note the addition of an "ns2script" custom-config section, as well as the
+addition of "ns2script" to the list of imported modules in the network-config
+section.

@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+
+use strict vars;
+use strict subs;
+
+# take as a command line argument a trace file and post process it for
+# display by the visualizer ad-hockey
+
+my ($INFILE, $OUTFILE);
+
+if ($#ARGV == 0) {
+    $INFILE = $ARGV[0];
+    $OUTFILE = "$ARGV[0].viz";
+} elsif ($#ARGV == 1) { 
+    $INFILE = $ARGV[0];
+    $OUTFILE = $ARGV[1];
+} else {
+    print "usage: viz-trace <input-trace-file> [<output-trace-file>]\n";
+    exit -1;
+}
+
+open INFILE, "<$INFILE" or die;
+open OUTFILE, ">$OUTFILE" or die;
+
+
+while (<INFILE>) {
+    if (/^[srf] /) {
+	printf OUTFILE "$_";
+    }
+}
+
+close OUTFILE; close INFILE;

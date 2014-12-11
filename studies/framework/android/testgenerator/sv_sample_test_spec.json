@@ -1,0 +1,94 @@
+[
+{
+    "pretty_settings"    : {
+            "verbosity"       : 1,
+            "max_len"         : 100,
+            "enable_mobility" : "true",
+            "enable_app"      : "true",
+            "enable_macphy"   : "true"
+    },
+    "test_name"          : "sv-%%pretty%%",
+    "test_output_path"   : "../Testsuite/sv-%%pretty%%",
+    "result_output_path" : "/tmp/sv-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "config"             : {
+        "^repeat" : [ 
+            {
+                "path"           : "./ExampleConfigs/config-sv.xml.template",
+                "pretty_name"    : "nc",
+                "replace_dict"   : 
+                    {
+                        "%%nc_status%%"   : "true",
+                        "%%frag_status%%" : "false"
+                    }
+            },
+            {
+                "path"           : "./ExampleConfigs/config-sv.xml.template",
+                "pretty_name"    : "frag",
+                "replace_dict"   : 
+                    {
+                        "%%nc_status%%"   : "false",
+                        "%%frag_status%%" : "true"
+                    }
+            },
+            {
+                "path"           : "./ExampleConfigs/config-sv.xml.template",
+                "pretty_name"    : "atomic",
+                "replace_dict"   : 
+                    {
+                        "%%nc_status%%"   : "false",
+                        "%%frag_status%%" : "false"
+                    }
+            }
+        ] },
+    "num_nodes"          : 6,
+    "duration"           : 400,
+    "warmup"             : 30,
+    "seed"               : 1,
+    "area_width"         : 800,
+    "area_height"        : 600,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3, 4, 5, 6],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/1MB", 1024 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "sv_static1",
+        "parameters" : {
+            "mobility_delay_s" : 30,
+            "pub_velocity" : 50,
+            "sub_velocity" : 10
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 5,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 6,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "duration" : 10,
+                    "attributes" : { "key" : "value" }
+                }
+            ]
+        }
+    }
+}
+]

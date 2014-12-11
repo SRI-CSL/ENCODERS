@@ -1,0 +1,234 @@
+[global]
+area = rect(700,500)
+start_time = 0
+stop_time = 90
+
+[guest]
+
+num_nodes = 6
+
+center_model = FixedWP
+center_model.wp1 = (50,50,20,0)
+center_model.wp2 = (550,50,20,0)
+center_model.wp3 = (550,350,20,0)
+center_model.wp4 = (50,350,20,0)
+center_model.ACC_T = 1 
+center_model.ACC_A = 10
+
+member_model = Brownian
+member_area = rect(100, 100)
+member_model.T = 2
+member_model.V = 10
+
+[g 1-1]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 1-2]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 175, 0
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 1-3]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 350, 0
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 1-4]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 520, 0
+
+member_model.T = 2
+member_model.V = 5
+
+
+##
+
+[g 2-1]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 0, 125
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 2-2]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 175, 125
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 2-3]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 350, 125
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 2-4]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 520, 125
+
+member_model.T = 2
+member_model.V = 5
+
+
+##
+
+[g 3-1]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 0, 250
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 3-2]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 175, 250
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 3-3]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 350, 250
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 3-4]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 520, 250
+
+member_model.T = 2
+member_model.V = 5
+
+
+##
+
+[g 4-1]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 0, 375
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 4-2]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 175, 375
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 4-3]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 350, 375
+
+member_model.T = 2
+member_model.V = 5
+
+
+[g 4-4]
+
+num_nodes = 3
+
+member_model = Brownian
+member_area = rect(175, 125)
+
+offset = 520, 375
+
+member_model.T = 2
+member_model.V = 5
+
+

@@ -1,0 +1,132 @@
+4/17/13 sbwood
+
+Here are some notes from a recent install.
+
+We used the following install for Ubuntu 12.04 and 12.10:
+
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install openssh-server
+sudo apt-get install screen
+sudo apt-get install traceroute
+sudo apt-get install curl
+sudo apt-get install subversion
+sudo apt-get install git
+sudo apt-get install mercurial
+sudo apt-get install vim-nox
+sudo apt-get install build-essential
+sudo apt-get install texinfo
+sudo apt-get install gawk
+sudo apt-get install automake
+sudo apt-get install autoconf
+sudo apt-get install libtool
+sudo apt-get install python-dev
+sudo apt-get install libev-dev
+sudo apt-get install bridge-utils
+sudo apt-get install libtk-img
+sudo apt-get install libxml2-dev
+sudo apt-get install libdbus-1-dev
+sudo apt-get install sqlite
+sudo apt-get install libsqlite3-dev
+sudo apt-get install wireshark
+sudo apt-get install ebtables
+sudo apt-get install python-libvirt
+sudo apt-get install libnl1
+sudo apt-get install qtcreator 
+sudo apt-get install qt4-qtconfig
+sudo apt-get install libqt4-core
+sudo apt-get install libqt4-gui
+sudo apt-get install ia32-libs
+sudo apt-get install ant
+sudo apt-get install lynx
+sudo apt-get install libssl-dev libxml-lixbml-perl libxml-simple-perl
+
+In one command:
+sudo apt-get install openssh-server screen traceroute curl subversion git mercurial vim-nox build-essential texinfo gawk automake autoconf libtool python-dev libev-dev bridge-utils libtk-img libxml2-dev libdbus-1-dev sqlite libsqlite3-dev wireshark ebtables python-libvirt libnl1 qtcreator qt4-qtconfig libqt4-core libqt4-gui ia32-libs ant lynx libssl-dev libxml-libxml-perl libxml-simple-perl cpulimit
+
+wget "http://security.ubuntu.com/ubuntu/pool/main/t/tk8.5/tk8.5_8.5.11-1_amd64.deb"
+sudo dpkg -i tk8.5_8.5.11-1_amd64.deb
+
+## NOTE: For android tests, core 4.6 and EMANE 0.8.1 must be installed. For lxc
+# Install core4.3 from the setup "tools" directory and emane below
+
+# if the following cannot be found, then please use the latest version
+# of emane found:  http://downloads.pf.itd.nrl.navy.mil/emane/0
+cd tools
+tar zxvf emane-0.7.3-release-1.ubuntu-11_10.amd64.tgz 
+cd emane-0.7.3-release-1/deb/ubuntu-11_10/amd6
+sudo dpkg -i *.deb
+
+# On ubuntu 12.04, use http://downloads.pf.itd.nrl.navy.mil/emane/archive/0.7.4-r1/emane-0.7.4-release-1.ubuntu-12_04.amd64.tgz
+
+# some packages may complain about installation, this is OK:
+sudo apt-get install -f
+
+# if the following cannot be found, then please use the latest version
+# of quagga found: http://downloads.pf.itd.nrl.navy.mil/ospf-manet/quagga-0.99.20mr2.1/q
+cd tools
+sudo dpkg -i quagga-mr_0.99.20mr2.1_amd64.deb
+
+# install java:
+
+# on Ubuntu 12.04 and greater you may need to install:
+sudo apt-get install python-software-properties
+
+sudo add-apt-repository ppa:ferramroberto/java
+# if this complains (cannot find repo), then update your 
+# /etc/apt/sources.list.d/ferramroberto-java-quantal.list to contain the lines
+# deb http://ppa.launchpad.net/ferramroberto/java/ubuntu oneiric main
+# deb-src http://ppa.launchpad.net/ferramroberto/java/ubuntu oneiric main
+sudo apt-get update
+sudo apt-get install sun-java6-jdk sun-java6-plugin 
+
+# update your JAVA_HOME in ~/.bashrc to contain the following:
+export JAVA_HOME=/usr/lib/jvm/java-6-sun-1.6.0.26/
+
+# update your sudo list to disable secure_path and timeouts, also add your
+# user to sudo
+# sudo visudo 
+# Defaults env_reset
+# Defaults !secure_path
+# Defaults timestamp_timeout=-1
+# sunstech ALL=(ALL) ALL
+
+# update your ~/.bashrc to properly pass env. variables w/ sudo
+export LD_LIBRARY_PATH="/usr/local/lib/"
+alias sudo="sudo env LD_LIBRARY_PATH=$LD_LIBRARY_PATH PATH=$PATH"
+
+# add the following to /etc/environment
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games"
+LD_LIBRARY_PATH="/usr/local/lib"
+
+# download android NDK and SDK
+
+wget "http://dl.google.com/android/ndk/android-ndk-r7b-linux-x86.tar.bz2"
+
+wget "http://dl.google.com/android/android-sdk_r16-linux.tgz"
+
+# unzip these to their proper directories 
+
+# update your ~/.bashrc paths to include these directories:
+export NDK_PATH="/home/sunstech/android-ndk-r7b/"
+export ANDROID_NDK="$NDK_PATH"
+export PATH="$PATH:/home/sunstech/android-sdk-linux/tools/:/home/sunstech/android-ndk-r7b/:/home/sunstech/android-sdk-linux/platform-tools"
+
+# install bonn motion, make sure "bm" is in
+# your PATH 
+
+# if using broadcast, make sure "arphelper" is in the path (/etc/arphelper is
+# safest).
+
+# make sure haggletest is up to date and in the path
+
+# Install limitcpu
+cd tools/cpulimit
+make
+sudo make install
+
+# Install matplotlib for the log analysis plotting
+sudo apt-get install libfreetype6-dev libpng-dev python-lxml python-pip
+sudo pip install matplotlib
+
+# Follow the android test runner setup in docs/README-android-testrunner

@@ -1,0 +1,19 @@
+This test verifies correct contact time for mobility.   It uses 2 nodes, one stationary, and one moving in a circle.   Due to sunstech testing, the estimated contact time will be approximately 19 seconds, and an estimated bandwidth of 700KB/sec transfer rate.
+
+Node n1 publishes data objects of size 100k, every second, for 138 seconds.
+Node n2 publishes data objects of size 102k, every second, for 138 seconds.
+
+Neither node n1, nor n2 will subscribe to any content.
+During the time in contact, each node will be updated by the other node, of expected contact time.    Initially, the contact time measured will be 0ms.   If a node is a neighbor, with 0ms contact time, it will not have disconnected, and be considered a static node.   As node n2 moves in a circle, it will have a connect time and disconnect time.   During this contact time, both nodes are free to replicate to the other.
+
+To verify correct operation, we have the following pass conditions:
+1.   There is, at least, an initial 0ms connection time and 0B/sec bandwidth.
+2.   All results, with the exception of one possible intermediate result, will be +-30% of expected values (19000 ms duration, and 700KB/sec).
+3.   At most, one non zero, non expected result is allowed.    Since the contact time is dynamic, the initial disconnect may not be within expected tolerance.
+4.    At least 5 DO's from n1 must be replicated to n2, and, at least 5 DO's from n2 must be replicated to n1.
+
+Due to the variability of results of the platform, we have set a 30% range for time, bandwidth, and, at least 5 data objects to be replicated from/to each node.
+
+To execute the test:
+Make sure the testrunner is set up (see docs/README-testrunner-setup) and the testrunner scripts
+for your platform are in your $PATH, then use the commands "generate_test_list.sh ." and "run.sh ."

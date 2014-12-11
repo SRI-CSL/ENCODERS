@@ -1,0 +1,31 @@
+<CacheStrategy name="CacheStrategyUtility">
+	<CacheStrategyUtility knapsack_optimizer="CacheKnapsackOptimizerGreedy" global_optimizer="CacheGlobalOptimizerFixedWeights"
+      utility_function="CacheUtilityAggregateMin" max_capacity_kb="200000" watermark_capacity_kb="190000"
+      compute_period_ms="600" purge_poll_period_ms="45000" purge_on_insert="false"
+      publish_stats_dataobject="false" keep_in_bloomfilter="false" bloomfilter_remove_delay_ms="300000"
+      handle_zero_size="true" manage_only_remote_files="false">
+	    <CacheKnapsackOptimizerGreedy />
+	   <CacheGlobalOptimizerFixedWeights min_utility_threshold="0.1">
+		<Factor name="CacheUtilityAggregateMin" weight="1" />
+		<Factor name="CacheUtilityPurgerRelTTL" weight="1" />
+		<Factor name="CacheUtilityReplacementPriority" weight="1" />
+		<Factor name="CacheUtilityAttribute" weight="1" />
+	    </CacheGlobalOptimizerFixedWeights>
+	    <CacheUtilityAggregateMin>
+			<Factor name="CacheUtilityPurgerRelTTL">
+			    <CacheUtilityPurgerRelTTL purge_type="purge_after_seconds" tag_field="ContentType" tag_field_value="DelByRelTTL" />
+			</Factor>
+			<Factor name="CacheUtilityReplacementPriority">
+			    <CacheUtilityReplacementPriority>
+				<CacheUtilityReplacement name="CacheUtilityReplacementTotalOrder" priority="1">
+				    <CacheUtilityReplacementTotalOrder metric_field="ContentCreationTime" id_field="ContentOrigin"
+		 tag_field="ContentType" tag_field_value="TotalOrder" />
+				</CacheUtilityReplacement>
+			    </CacheUtilityReplacementPriority>
+			</Factor>
+			<Factor name="CacheUtilityAttribute">
+			  <CacheUtilityAttribute attribute_name="utility" />
+			</Factor>
+	    </CacheUtilityAggregateMin>
+	</CacheStrategyUtility>
+</CacheStrategy>

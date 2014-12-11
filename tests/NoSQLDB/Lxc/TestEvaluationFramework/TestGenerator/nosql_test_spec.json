@@ -1,0 +1,273 @@
+[
+{
+    "test_name"          : "001-unittests-%%pretty%%",
+    "test_output_path"   : "../Testsuite/001-unittests-%%pretty%%",
+    "result_output_path" : "/tmp/001-unittests-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "haggle_options"     : "-m",
+    "custom_validate"    :  {
+        "path" : "./unittest_validate.sh"
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-noforward-mem-unittests.xml",
+            "pretty_name" : "unittests"
+        },
+    "num_nodes"          : 1,
+    "duration"           : 70,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 200,
+    "area_width"         : 200,
+    "macphys_cfgs"       : [{
+        "nodes": [1],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 1
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "none",
+        "parameters" : {
+            "script" : [
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "002-canary-mem-%%pretty%%",
+    "test_output_path"   : "../Testsuite/002-canary-%%pretty%%",
+    "result_output_path" : "/tmp/002-canary-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "haggle_options"     : "-m",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 1
+        }
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-noforward-mem.xml",
+            "pretty_name" : "noforward"
+        },
+    "num_nodes"          : 2,
+    "duration"           : 70,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 2,
+                    "time"     : 0,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "duration" : 7,
+                    "attributes" : { "key" : "value" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "003-canary-mem-basic-%%pretty%%",
+    "test_output_path"   : "../Testsuite/003-canary-mem-basic-%%pretty%%",
+    "result_output_path" : "/tmp/003-canary-mem-basic%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "haggle_options"     : "-m",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 1
+        }
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-noforward-mem-basic.xml",
+            "pretty_name" : "noforward"
+        },
+    "num_nodes"          : 2,
+    "duration"           : 70,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 2,
+                    "time"     : 0,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "duration" : 7,
+                    "attributes" : { "key" : "value" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "004-canary-mem-cache-%%pretty%%",
+    "test_output_path"   : "../Testsuite/004-canary-%%pretty%%",
+    "result_output_path" : "/tmp/004-canary-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "haggle_options"     : "-m",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 1
+        }
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-noforward-caching-mem.xml",
+            "pretty_name" : "noforward"
+        },
+    "num_nodes"          : 2,
+    "duration"           : 80,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value", "purge_after_seconds" : "1", "ContentType" : "DelByRelTTL" }
+                }, 
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value", "ContentOrigin" : "n1", "ContentType" : "TotalOrder", "ContentCreationTime" : "1" }
+                }, 
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value", "ContentOrigin" : "n1", "ContentType" : "TotalOrder", "ContentCreationTime" : "3" }
+                }, 
+                {
+                    "node_num" : 1,
+                    "time"     : 4,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value", "ContentOrigin" : "n1", "ContentType" : "TotalOrder", "ContentCreationTime" : "2" }
+                }, 
+                {
+                    "node_num" : 2,
+                    "time"     : 7,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "duration" : 4,
+                    "attributes" : { "key" : "value" }
+                }
+            ]
+        }
+    }
+}
+]

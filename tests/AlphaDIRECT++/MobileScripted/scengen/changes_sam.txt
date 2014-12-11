@@ -1,0 +1,13 @@
+12/6/12 - Sam Wood
+
+I've update scengen (MobileScripted/scengen) so that you can now specify
+the seed in "scen-spec" through the global ("seed = X") attribute.
+This will let us generate scen files in a repeatable way (as opposed to
+scengen generating a new one each time you call it, using the current
+time as a seed). 
+
+Also, I added a flag ("print_dest_comments = 1") that will print out the velocity
+and pause time for each movement in a comment (i.e. ## velocity: X, pause time: Y).
+This way we can compute the average/std pause time and velocities easily from the
+scen file.
+

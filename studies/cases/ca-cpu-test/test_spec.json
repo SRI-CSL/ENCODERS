@@ -1,0 +1,151 @@
+[
+{
+    "pretty_settings"    : {
+        "comment"         : "COMMENT: These parameters control the pretty print (%%pretty%%), this is useful in conjunction with ^repeat to distinguish test cases. Note that test case names may become toolong, in which case you should disable some of below parameters.",
+            "verbosity"       : 1,
+            "max_len"         : 100,
+            "enable_mobility" : "true",
+            "enable_app"      : "true",
+            "enable_macphy"   : "true"
+    },
+    "test_name"          : "ca-cpu-test-%%pretty%%",
+    "test_output_path"   : "Testsuite/haggle-%%pretty%%",
+    "result_output_path" : "TestOutput/haggle-%%pretty%%",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 1
+        }
+    },
+    "config"             : {
+        "comment" : "COMMENT: The `^repeat` command is a meta-command that will duplicate the test case with all of the permutations specified in the sublist.",
+        "^repeat" : [
+
+                {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "ca-frag",
+                    "replace_dict"   :
+                        {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 24577,
+                            "%%block_size%%"      : 24576,
+                            "%%loss_rate_threshold%%" : 2.0,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5
+                        }
+                },
+
+               {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "ca-coding",
+                    "replace_dict"   :
+                        {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 24577,
+                            "%%block_size%%"      : 24576,
+                            "%%loss_rate_threshold%%" : 0.0,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5
+                        }
+                }               
+        ] },
+    "num_nodes"          : 2,
+    "duration"           : 600,
+    "warmup"             : 10,
+    "seed"               : 19,
+    "area_height"        : 800,
+    "area_width"         : {"^repeat" : [800]},
+    "macphys_cfgs"    : {"^repeat" : [
+    [ 			
+			{
+                "nodes": [1, 2] ,
+                "name" : "emane_ieee80211abg",
+                "pretty_name" : "80211-24mbps",
+                "parameters": {
+                    "standard_mode"      : 3,
+                    "max_distance_m"     : 1000,
+                    "unicast_rate_mode"  : 9,
+                    "multicast_rate_mode"  : 9,
+                    "system_noise_figure" : "4",
+                    "antenna_gain_dbi"   : -5,
+                    "transmit_power_dbx" : 0,
+                    "antenna_type"       : "omnidirectional",
+                    "pathloss_mode"      : "freespace",
+                    "bandwidth_khz"      : 22000
+                }
+            }
+            
+    ]
+    ]},
+    "cpu_limit"          : 30,
+    "files"              : [ 
+        [ "/tmp/datafile", 1024 ]
+    ],
+    "mobility_cfg"       : {
+        "^repeat" : [
+                {
+                "name" : "grid",
+                "parameters" : {
+                    "rows"    : 2,
+                    "cols"    : 1,
+                    "max_spacing_m" : 5
+                    }
+                }
+
+        ]
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "pretty_app",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/datafile",
+                    "attributes" : { "key1" : "value1" },
+                    "num_pub"  : 100,
+                    "pause"    : 5 
+                },
+		{
+                    "node_num" : 2,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/datafile",
+                    "attributes" : { "key2" : "value2" },
+                    "num_pub"  : 100,
+                    "pause"    : 5 
+                },
+
+		{
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "key2" : "value2" }
+                },
+                {
+                    "node_num" : 2,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "key1" : "value1" }
+                }
+
+            ]
+        }
+    },
+    "neighbor_monitor" : {
+        "comment"        : "COMMENT: keep track of local neighborhood using arp and ping.",
+        "enable_neighbor_monitor" : "true",
+        "neighbor_monitor_max_latency_ms" : 40,
+        "neighbor_monitor_period_s" : 1
+    }
+}
+]
+

@@ -1,0 +1,24 @@
+transmission scenario:
+
+
+All Fighters -> Fighters/AWACS, 7.5kb tracks every 10 seconds, high priority, total order
+
+2 Fighters -> AWACS/Surface/Ground, 1Mbit radar image every 5 seconds - medium priority, total order
+
+Fighters -> AWACS/Surface/Ground, Every 10 minutes 7.68Mb video - low priority
+
+AWACS->Fighters/AWACs/Surface, 75kb tracks every 2 seconds, total order
+
+Ground->AWACs, 7.5kb tracks every 2 seconds, total order
+
+
+
+NODES:
+
+1,2,3,4 = fighter pairs
+
+5,6 = awacs
+
+7 = ship
+8 = ground
+9 = nanosat

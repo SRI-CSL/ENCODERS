@@ -1,0 +1,129 @@
+#!/bin/bash
+TFILE="$(mktemp)"
+NOW="$(date '+%s')"
+NODE="$1"
+APPS_OUTPUT="$2"
+FAILLOG="$3"
+rm -f ${TFILE}
+
+
+
+# 0 is for GPS, 1 is for squad 1 updates, 2 is for squad 2 update, 3 is for opord, 4 is frago
+sub_cmds[0]='( [ "$(haggletest -j ContentOrigin -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.0.houtput -c  -s 3500  app0 sub plt=plt 2> /tmp/test_output.1365546813061.'"$NODE"'.0.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.0.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.0.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.0.houtput -c  -s 3500  app0 sub plt=plt\" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.0.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.0.errmsg)!" >> ${FAILLOG}) )&'
+#sub_cmds[1]='( [ "$(haggletest -j ContentOrigin -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.2.houtput -c  -s 3300  app2 sub squad=one 2> /tmp/test_output.1365546813061.'"$NODE"'.2.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.2.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.2.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.2.houtput -c  -s 3300  app2 sub squad=one\" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.2.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.2.errmsg)!" >> ${FAILLOG}) )&'
+#sub_cmds[2]='( [ "$(haggletest -j ContentOrigin -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.4.houtput -c  -s 3300  app4 sub squad=two 2> /tmp/test_output.1365546813061.'"$NODE"'.4.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.4.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.4.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.4.houtput -c  -s 3300  app4 sub squad=two\" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.4.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.4.errmsg)!" >> ${FAILLOG}) )&'
+#sub_cmds[3]='( [ "$(haggletest -j ContentOrigin -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.6.houtput -c  -s 3300  app6 sub opord=opord 2> /tmp/test_output.1365546813061.'"$NODE"'.6.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.6.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.6.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.6.houtput -c  -s 3300  app6 sub opord=opord\" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.6.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.6.errmsg)!" >> ${FAILLOG}) )&'
+#sub_cmds[4]='( [ "$(haggletest -j ContentOrigin -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.8.houtput -c  -s 3300  app8 sub frago=frago 2> /tmp/test_output.1365546813061.'"$NODE"'.4.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.8.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.8.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.8.houtput -c  -s 3300  app8 sub frago=frago\" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.8.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.8.errmsg)!" >> ${FAILLOG}) )&'
+    (i=0; while [ $i -lt 1 ]; do eval ${sub_cmds[$i]}; i=$((i+1)); done)
+
+#add minor random jitter
+rnd=`echo "$RANDOM/10000.0 " | bc -l`
+echo "rnd:$rnd"
+sleep $rnd
+pub_cmd[0]='( sleep 30 ; [ "$(haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.pub0.houtput -p 10 -l app1 pub plt=plt ContentType=gps ContentOrigin='"$NODE"' ContentType2=DelByRelTTL purge_after_seconds=15 2> /tmp/test_output.1365546813061.'"$NODE"'.pub.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.pub.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.pub.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.pub.houtput -p 5 -l app1 pub plt=plt ContentType=gps ContentOrigin='"$NODE"' ContentType2=DelByRelTTL purge_after_seconds=20 \" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub.errmsg)!" >> ${FAILLOG}) ) &'
+pub_cmd[1]='( [ "$(haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.pub2.houtput -p 120 -l app3 -k pub  file /tmp/physmon.1K medic=medic ContentType=PHYSMON ContentOrigin='"$NODE"' ContentType2=DelByRelTTL purge_after_seconds=120 2> /tmp/test_output.1365546813061.'"$NODE"'.pub2.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.pub2.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.pub2.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.pub2.houtput -p 120 -l app3 pub  file /tmp/physmon.1K medic=medic ContentType=PHYSMON ContentOrigin='"$NODE"' ContentType2=DelByRelTTL purge_after_seconds=120 \" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub2.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub2.errmsg)!" >> ${FAILLOG}) ) &'
+pub_cmd[2]='( sleep 40 ; [ "$(haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.pub4.houtput -p 120 -l -k app5 pub  file /tmp/physmon.3K medic=medic ContentType=PHYSMON ContentOrigin='"$NODE"' ContentType2=DelByRelTTL purge_after_seconds=120 2> /tmp/test_output.1365546813061.'"$NODE"'.pub4.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.pub4.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.pub4.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.pub4.houtput -p 120 -l app5 pub  file /tmp/physmon.3K medic=medic ContentType=PHYSMON ContentOrigin='"$NODE"' ContentType2=DelByRelTTL purge_after_seconds=120 \" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub4.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub4.errmsg)!" >> ${FAILLOG}) ) &'
+pub_cmd[3]='( sleep 80 ; [ "$(haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.pub6.houtput -p 120 -l -k app7 pub  file /tmp/physmon.5K medic=medic ContentType=PHYSMON ContentOrigin='"$NODE"' ContentType2=DelByRelTTL purge_after_seconds=120 2> /tmp/test_output.1365546813061.'"$NODE"'.pub6.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.pub6.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.pub6.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.pub6.houtput -p 120 -l app7 pub  file /tmp/physmon.5K medic=medic ContentType=PHYSMON ContentOrigin='"$NODE"' ContentType2=DelByRelTTL purge_after_seconds=120 \" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub6.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub6.errmsg)!" >> ${FAILLOG}) ) &'
+#change i=0 to enable GPS!  JLM FIXME
+(i=0; while [ $i -lt 1 ]; do eval ${pub_cmd[$i]}; i=$((i+1)); done)
+
+#squad members, 10,20,30 are medics
+if [ "${NODE}" == "n0" ]; then
+    echo "bogus node"
+elif [ "${NODE}" == "n1" ]; then
+    sleep 1270
+    i=0; while [ $i -lt 10 ]; do
+     pub_cmd[$i]='( [ "$(haggletest -j ContentType -f /tmp/test_output.1365546813061.'"$NODE"'.s1-'"$i"'.houtput -p 1 -k app88'"$i"' pub  file /tmp/s1incident.'"$i"'.jpg important="0.6" plt=plt ContentType=incident1 ContentOrigin='"$NODE"'  2> /tmp/test_output.1365546813061.'"$NODE"'.s1-'"$i"'.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.s1-'"$i"'.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.s1-'"$i"'.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.s1-'"$i"'.houtput -p 1 -k app88'"$i"' pub file /tmp/s1incident.'"$i"'.jpg plt=plt important="0.6" ContentType=incident1 ContentOrigin='"$NODE"'   \" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.s1-'"$i"'.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.s1-'"$i"'.errmsg)!" >> ${FAILLOG}) ) &'
+      eval ${pub_cmd[$i]}
+      sleep 6
+      i=$((i+1))
+    done
+#    (i=0; while [ $i -lt 10 ]; do sleep 6; eval ${pub_cmd[$i]}; i=$((i+1)); done)
+
+   sleep 2070
+   tail -n +1 /tmp/test_output.1365546813061.${NODE}.*{houtput,appout} >> ${TFILE}
+   /sbin/ifconfig eth0 >> ${TFILE}
+   /sbin/ifconfig eth1 >> ${TFILE}
+   rm -f /tmp/test_output.1365546813061.${NODE}.*
+
+#elif [ "${NODE}" == "n10" ]; then
+    #specific pub, subs
+#    sub_cmds[0]='( [ "$(haggletest -j ContentOrigin -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.10.houtput -c -s 3300  app10 sub medic=medic 2> /tmp/test_output.1365546813061.'"$NODE"'.10.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.10.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.10.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.10.houtput -c  -s 3300  app10 sub medic=medic\" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.10.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.10.errmsg)!" >> ${FAILLOG}) )&'
+#    (i=0; while [ $i -lt 1 ]; do eval ${sub_cmds[$i]}; i=$((i+1)); done)
+#   sleep 3200
+#   tail -n +1 /tmp/test_output.1365546813061.${NODE}.*{houtput,appout} >> ${TFILE}
+#   /sbin/ifconfig eth0 >> ${TFILE}
+#   rm -f /tmp/test_output.1365546813061.${NODE}.*
+
+#squad 2
+elif [ "${NODE}" == "n11" ]; then
+    #specific pub, subs
+    sleep 1461
+    i=0; while [ $i -lt 6 ]; do
+      pub_cmd[$i]='( [ "$(haggletest -j ContentType -f /tmp/test_output.1365546813061.'"$NODE"'.s2-'"$i"'.houtput -p 1 -k app9'"$i"' pub  file /tmp/s2incident.'"$i"'.jpg important="0.6" plt=plt ContentType=incident2 ContentOrigin='"$NODE"'  2> /tmp/test_output.1365546813061.'"$NODE"'.s2-'"$i"'.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.s2-'"$i"'.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.s2-'"$i"'.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.s2-'"$i"'.houtput -p 1 app9'"$i"' pub file /tmp/s2incident.'"$i"'.jpg important="0.6" plt=plt ContentType=incident2 ContentOrigin='"$NODE"'   \" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.s2-'"$i"'.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.s2-'"$i"'.errmsg)!" >> ${FAILLOG}) ) &'
+    eval ${pub_cmd[$i]}
+      i=$((i+1))
+    done
+   sleep 1940
+   tail -n +1 /tmp/test_output.1365546813061.${NODE}.*{houtput,appout} >> ${TFILE}
+   /sbin/ifconfig eth0 >> ${TFILE}
+   /sbin/ifconfig eth1 >> ${TFILE}
+   rm -f /tmp/test_output.1365546813061.${NODE}.*
+
+#elif [ "${NODE}" == "n20" ]; then
+#    sub_cmds[0]='( [ "$(haggletest -j ContentOrigin -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.11.houtput -c  -s 3500  app11 sub medic=medic 2> /tmp/test_output.1365546813061.'"$NODE"'.11.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.11.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.11.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.11.houtput -c  -s 3500  app11 sub medic=medic\" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.11.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.11.errmsg)!" >> ${FAILLOG}) )&'
+#    (i=0; while [ $i -lt 1 ]; do eval ${sub_cmds[$i]}; i=$((i+1)); done)
+#   sleep 3500
+#   tail -n +1 /tmp/test_output.1365546813061.${NODE}.*{houtput,appout} >> ${TFILE}
+#   /sbin/ifconfig eth0 >> ${TFILE}
+#   rm -f /tmp/test_output.1365546813061.${NODE}.*
+
+    #specific pub, subs
+#squad3
+elif [ "${NODE}" == "n21" ]; then
+   sleep 3400
+   tail -n +1 /tmp/test_output.1365546813061.${NODE}.*{houtput,appout} >> ${TFILE}
+   /sbin/ifconfig eth0 >> ${TFILE}
+   /sbin/ifconfig eth1 >> ${TFILE}
+   rm -f /tmp/test_output.1365546813061.${NODE}.*
+    #specific pub, subs
+#elif [ "${NODE}" == "n30" ]; then
+#    sub_cmds[0]='( [ "$(haggletest -j ContentOrign -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.12.houtput -c  -s 3500  app12 sub medic=medic 2> /tmp/test_output.1365546813061.'"$NODE"'.12.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.12.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.12.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -d -a -f /tmp/test_output.1365546813061.'"$NODE"'.12.houtput -c  -s 3500  app12 sub medic=medic\" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.12.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.12.errmsg)!" >> ${FAILLOG}) )&'
+#    (i=0; while [ $i -lt 1 ]; do eval ${sub_cmds[$i]}; i=$((i+1)); done)
+#   sleep 3300 
+#   tail -n +1 /tmp/test_output.1365546813061.${NODE}.*{houtput,appout} >> ${TFILE}
+#   /sbin/ifconfig eth0 >> ${TFILE}
+#   rm -f /tmp/test_output.1365546813061.${NODE}.*
+#uav
+elif [ "${NODE}" == "n31" ]; then
+    i=0; while [ $i -lt 6 ]; do
+      pub_cmd[$i]='( [ "$(haggletest -j ContentType -f /tmp/test_output.1365546813061.'"$NODE"'.pub7'"$i"'.houtput -p 1 -k app15'"$i"' pub file /tmp/opord.'"$i"'.jpg important="0.4" plt=plt ContentType=opord ContentOrigin='"$NODE"' 2> /tmp/test_output.1365546813061.'"$NODE"'.pub7'"$i"'.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.pub7'"$i"'.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.pub7'"$i"'.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.pub7'"$i"''"$i"'.houtput -k -p 1 app15'"$i"' pub file /tmp/opord.'"$i"'.jpg plt=plt important="0.4" ContentType=opord ContentOrigin='"$NODE"' \" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub7'"$i"''"$i"'.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub7'"$i"'.errmsg)!" >> ${FAILLOG}) ) &'
+      eval ${pub_cmd[$i]}
+      i=$((i+1))
+    done
+    sleep 2100
+    i=0; while [ $i -lt 16 ]; do
+      pub_cmd[$i]='( [ "$(haggletest -j ContentType -f /tmp/test_output.1365546813061.'"$NODE"'.pub8'"$i"'.houtput -p 1 -k app16'"$i"' pub file /tmp/frago.'"$i"'.jpg important="0.8" plt=plt ContentType=frago ContentOrigin='"$NODE"' 2> /tmp/test_output.1365546813061.'"$NODE"'.pub8'"$i"'.errmsg > /dev/null; echo $? > /tmp/test_output.1365546813061.'"$NODE"'.pub8'"$i"'.errcode; cat /tmp/test_output.1365546813061.'"$NODE"'.pub8'"$i"'.errcode)" != "0" ] && (echo "'"${NODE}"': $(date) \"haggletest -f /tmp/test_output.1365546813061.'"$NODE"'.pub8'"$i"'.houtput -k -p 1 app16'"$i"' pub file /tmp/frago.'"$i"'.jpg important="0.8" plt=plt ContentType=frago ContentOrigin='"$NODE"' \" failed, code: $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub8'"$i"'.errcode) $(cat /tmp/test_output.1365546813061.'"$NODE"'.pub8'"$i"'.errmsg)!" >> ${FAILLOG}) ) &'
+      eval ${pub_cmd[$i]}
+      i=$((i+1))
+    done
+    sleep 1300 
+   tail -n +1 /tmp/test_output.1365546813061.${NODE}.*{houtput,appout} >> ${TFILE}
+   /sbin/ifconfig eth0 >> ${TFILE}
+   /sbin/ifconfig eth1 >> ${TFILE}
+   rm -f /tmp/test_output.1365546813061.${NODE}.*
+else
+   #echo "node $NODE does not exist" >> /tmp/no_nodes
+   #exit 0
+   sleep 3400 
+   tail -n +1 /tmp/test_output.1365546813061.${NODE}.*{houtput,appout} >> ${TFILE}
+   /sbin/ifconfig eth0 >> ${TFILE}
+   rm -f /tmp/test_output.1365546813061.${NODE}.*
+fi
+
+cat ${TFILE} >> $2
+exit 0
+
+
+
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE antennaprofile SYSTEM "file:///usr/share/emane/dtd/universalphyantennaprofile.dtd">
+<antennaprofile>
+  <antennapattern>
+    <elevation min="-90" max="-45">
+      <bearing min="0" max="359">
+        <gain value="27"/>
+      </bearing>
+    </elevation>
+    <elevation min="45" max="90">
+      <bearing min="0" max="359">
+        <gain value="27"/>
+      </bearing>
+    </elevation>
+    <elevation min="-45" max="45">
+      <bearing min="0" max="359">
+        <gain value="23.9"/>
+      </bearing>
+    </elevation>
+  </antennapattern>
+</antennaprofile>

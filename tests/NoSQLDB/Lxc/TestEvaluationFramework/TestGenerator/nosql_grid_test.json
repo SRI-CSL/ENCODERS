@@ -1,0 +1,71 @@
+[
+{
+    "test_name"          : "005-3x3-grid-mem-cache-%%pretty%%",
+    "test_output_path"   : "../Testsuite/005-3x3-grid-mem-cache-%%pretty%%",
+    "result_output_path" : "/tmp/005-3x3-grid-mem-cache-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "haggle_options"     : "%%opt%%",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 800
+        }
+    },
+    "config"             : { "^repeat" : [ 
+         { "^assign" :
+            {
+                "path" : "./ExampleConfigs/config-flood-direct-nosql.xml",
+                "pretty_name" : "nosql"
+            },
+            "%%opt%%" : "-m"
+        },
+        { "^assign" :
+            {
+                "path" : "./ExampleConfigs/config-flood-direct.xml",
+                "pretty_name" : "sql"
+            },
+            "%%opt%%" : ""
+        }
+        ] },
+    "num_nodes"          : 16,
+    "duration"           : 290,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 100,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 4,
+            "cols"    : 4
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "time"     : 1,
+                    "type"     : "random-pubsub-pair",
+                    "number"   : 800,
+                    "file"     : "/tmp/10KB"
+                }
+            ]
+        }
+    }
+}
+]

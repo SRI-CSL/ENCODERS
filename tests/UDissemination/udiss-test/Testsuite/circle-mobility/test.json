@@ -1,0 +1,172 @@
+{
+    "application_cfg": {
+        "name": "distribution_overlay",
+        "parameters": {
+            "pub_distributions": [
+                {
+                    "delay_s": 1,
+                    "duration_s": 150,
+                    "inter_pub_delay_s_distribution": {
+                        "parameters": {
+                            "high": 1,
+                            "low": 1
+                        },
+                        "type": "uniform"
+                    },
+                    "max_pubs": 999999,
+                    "nodes": [
+                        1,
+                        2
+                    ],
+                    "pub_attributes_distribution": {
+                        "parameters": {
+                            "elements": [
+                                [
+                                    "k",
+                                    "v"
+                                ],
+                                [
+                                    "priority",
+                                    "3"
+                                ]
+                            ]
+                        },
+                        "type": "uniform_discrete"
+                    },
+                    "pub_file_distribution": {
+                        "parameters": {
+                            "elements": [
+                                "/tmp/100k"
+                            ],
+                            "seed": 10
+                        },
+                        "type": "uniform_discrete"
+                    },
+                    "pub_num_attributes_distribution": {
+                        "parameters": {
+                            "elements": [
+                                2
+                            ]
+                        },
+                        "type": "uniform_discrete"
+                    }
+                }
+            ],
+            "sub_distributions": [
+                {
+                    "delay_s": 1,
+                    "duration_s": 10,
+                    "inter_sub_delay_s_distribution": {
+                        "parameters": {
+                            "high": 0,
+                            "low": 0
+                        },
+                        "type": "uniform"
+                    },
+                    "max_subs": 99999,
+                    "nodes": [
+                        2
+                    ],
+                    "sub_attributes_distribution": {
+                        "parameters": {
+                            "elements": [
+                                [
+                                    "j",
+                                    "u"
+                                ]
+                            ]
+                        },
+                        "type": "uniform_discrete"
+                    },
+                    "sub_duration_s_distribution": {
+                        "parameters": {
+                            "high": 200,
+                            "low": 200
+                        },
+                        "type": "uniform"
+                    },
+                    "sub_num_attributes_distribution": {
+                        "parameters": {
+                            "elements": [
+                                1
+                            ]
+                        },
+                        "type": "uniform_discrete"
+                    }
+                }
+            ]
+        },
+        "pretty_name": "eval-app"
+    },
+    "area_height": 800,
+    "area_width": 800,
+    "config": {
+        "path": "../../studies/udiss-test/ExampleConfigs/config.xml"
+    },
+    "custom_validate": {
+        "path": "./custom_validate2.sh"
+    },
+    "duration": 180,
+    "files": [
+        [
+            "/tmp/100k",
+            100
+        ]
+    ],
+    "macphys_cfgs": [
+        {
+            "name": "basic_range",
+            "nodes": [
+                1,
+                2
+            ],
+            "parameters": {
+                "bandwidth_bps": 11000000,
+                "latency_us": 1000,
+                "pkt_error_rate": 0.0,
+                "range_radius_m": 250
+            }
+        }
+    ],
+    "mobility_cfg": {
+        "name": "overlay",
+        "parameters": {
+            "mobilities": [
+                {
+                    "name": "grid",
+                    "nodes": [
+                        1
+                    ],
+                    "offset_x": 0,
+                    "offset_y": 0,
+                    "parameters": {
+                        "cols": 1,
+                        "max_spacing_m": 700,
+                        "rows": 1
+                    }
+                },
+                {
+                    "name": "circle",
+                    "nodes": [
+                        2
+                    ],
+                    "offset_x": 50,
+                    "offset_y": 50,
+                    "parameters": {
+                        "area_height": 250,
+                        "area_width": 250,
+                        "circle_density": 24,
+                        "velocity": 15
+                    }
+                }
+            ]
+        }
+    },
+    "num_nodes": 2,
+    "result_output_path": "../../../udiss-test/TestOutput/circle-mobility",
+    "seed": 1,
+    "test_name": "circle-mobility",
+    "test_output_path": "../../studies/udiss-test/Testsuite/circle-mobility",
+    "test_template": "../../TestEvaluationFramework/TestGenerator/TestTemplate/",
+    "warmup": 10
+}

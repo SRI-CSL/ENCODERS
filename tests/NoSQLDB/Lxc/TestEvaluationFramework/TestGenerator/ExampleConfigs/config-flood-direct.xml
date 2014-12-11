@@ -1,0 +1,34 @@
+<Haggle persistent="no">
+	<Attr name="ManagerConfiguration">*</Attr>
+	<SecurityManager security_level="LOW"/>
+        <ApplicationManager reset_bloomfilter_at_registration="false">
+        </ApplicationManager>
+	<DebugManager>
+		<DebugTrace enable="true" type="STAT"/>
+	</DebugManager>
+	<NodeManager>
+		<Node matching_threshold="0" max_dataobjects_in_match="2000" 
+                      node_description_attribute="none" node_description_attribute_weight="0" />
+	</NodeManager>
+	<ProtocolManager>
+		<TCPServer port="9697" backlog="30"/>
+	</ProtocolManager>
+	<DataManager set_createtime_on_bloomfilter_update="true" periodic_bloomfilter_update_interval="60">
+		<Aging period="3600" max_age="86400"/>
+		<Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+                <DataStore>
+                        <SQLDataStore use_in_memory_database="true" journal_mode="off" in_memory_node_descriptions="true" />
+                </DataStore>
+	</DataManager>
+	<ForwardingManager max_nodes_to_find_for_new_dataobjects="30" max_forwarding_delay="2000"
+			   node_description_retries="0" dataobject_retries="1" dataobject_retries_shortcircuit="2" 
+			   query_on_new_dataobject="true" periodic_dataobject_query_interval="0" 
+			   enable_target_generation="false" push_node_descriptions_on_contact="true"
+			   load_reduction_min_queue_size="500" load_reduction_max_queue_size="1000">
+	  <ForwardingClassifier name="ForwardingClassifierNodeDescription">
+	    <ForwardingClassifierNodeDescription class_name="flood" />
+	  </ForwardingClassifier>
+	  <Forwarder protocol="Flood" contentTag="flood" />
+	  <Forwarder protocol="AlphaDirect" />
+	</ForwardingManager>
+</Haggle>

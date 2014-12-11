@@ -1,0 +1,1763 @@
+[
+{
+    "test_name"          : "001-N2-fixed-cache-create-time-event-r1",
+    "test_output_path"   : "Testsuite/001-N2-fixed-cache-create-time-event-r1",
+    "result_output_path" : "TestOutput/001-N2-fixed-cache-create-time-event-r1",
+    "custom_validate"    :
+        { "path" : "validation/custom_util_validate.sh",
+            "replace_dict" : {
+            "%%expected_delivered%%" : 10
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/001-N2-fixed-cache-create-time-event-r1.xml.n1",
+                "n2" : "TestConfigs/001-N2-fixed-cache-create-time-event-r1.xml.n2"
+            }
+        },
+    "num_nodes"          : 2,
+    "duration"           : 80,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/71KB", 71 ],
+        [ "/tmp/72KB", 72 ],
+        [ "/tmp/73KB", 73 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 4,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 6,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 7,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 8,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 9,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 10,
+                    "type"     : "pub",
+                    "file"     : "/tmp/73KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 25,
+                    "stop_after" : 10,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 30,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "002-N2-fixed-cache-create-time-period-r1",
+    "test_output_path"   : "Testsuite/002-N2-fixed-cache-create-time-period-r1",
+    "result_output_path" : "TestOutput/002-N2-fixed-cache-create-time-period-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 11
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/002-N2-fixed-cache-create-time-period-r1.xml.n1",
+                "n2" : "TestConfigs/002-N2-fixed-cache-create-time-period-r1.xml.n2"
+            }
+        },
+    "num_nodes"          : 2,
+    "duration"           : 80,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/71KB", 71 ],
+        [ "/tmp/72KB", 72 ],
+        [ "/tmp/73KB", 73 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 4,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 6,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 7,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 8,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 9,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 10,
+                    "type"     : "pub",
+                    "file"     : "/tmp/73KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 25,
+                    "stop_after" : 10,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 30,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "003-N2-fixed-cache-create-time-both-r1",
+    "test_output_path"   : "Testsuite/003-N2-fixed-cache-create-time-both-r1",
+    "result_output_path" : "TestOutput/003-N2-fixed-cache-create-time-both-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 10
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/003-N2-fixed-cache-create-time-both-r1.xml.n1",
+                "n2" : "TestConfigs/003-N2-fixed-cache-create-time-both-r1.xml.n2"
+            }
+        },
+    "num_nodes"          : 2,
+    "duration"           : 80,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/71KB", 71 ],
+        [ "/tmp/72KB", 72 ],
+        [ "/tmp/73KB", 73 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 4,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 6,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 7,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 8,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 9,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 10,
+                    "type"     : "pub",
+                    "file"     : "/tmp/73KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 25,
+                    "stop_after" : 10,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 30,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "004-N5-fixed-cache-LRFU-count-r1",
+    "test_output_path"   : "Testsuite/004-N5-fixed-cache-LRFU-count-r1",
+    "result_output_path" : "TestOutput/004-N5-fixed-cache-LRFU-count-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate_lrfu.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 13
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/004-N5-fixed-cache-LRFU-count-r1.xml.n1",
+                "n2" : "TestConfigs/004-N5-fixed-cache-LRFU-count-r1.xml.n2",
+                "n3" : "TestConfigs/004-N5-fixed-cache-LRFU-count-r1.xml.n3",
+                "n4" : "TestConfigs/004-N5-fixed-cache-LRFU-count-r1.xml.n4"
+            }
+        },
+    "num_nodes"          : 4,
+    "duration"           : 100,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 300,
+    "area_width"         : 1500,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3, 4],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/71KB", 71 ],
+        [ "/tmp/72KB", 72 ],
+        [ "/tmp/73KB", 73 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "scen",
+        "parameters" : {
+            "scen_file" : "./utility_lru.scen"
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "first" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 4,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 6,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 7,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 8,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 9,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 10,
+                    "type"     : "pub",
+                    "file"     : "/tmp/73KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 3,
+                    "type"       : "sub",
+                    "duration"   : 2,
+                    "stop_after" : 1,
+                    "attributes" : { "first" : "true" }
+                },
+             	{
+                    "node_num"   : 2,
+                    "time"       : 4,
+                    "type"       : "sub",
+                    "duration"   : 30,
+                    "stop_after" : 9,
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 48,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                },
+             	{
+                    "node_num"   : 3,
+                    "time"       : 3,
+                    "type"       : "sub",
+                    "duration"   : 30,
+                    "stop_after" : 1,
+                    "attributes" : { "first" : "true" }
+                },
+             	{
+                    "node_num"   : 4,
+                    "time"       : 5,
+                    "type"       : "sub",
+                    "duration"   : 30,
+                    "stop_after" : 1,
+                    "attributes" : { "first" : "true" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "005-N5-fixed-cache-LRU-k-time-aging-r1",
+    "test_output_path"   : "Testsuite/005-N5-fixed-cache-LRU-k-time-aging-r1",
+    "result_output_path" : "TestOutput/005-N5-fixed-cache-LRU-k-time-aging-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate_lruk.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 17
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/005-N5-fixed-cache-LRU-k-time-aging-r1.xml.n1",
+                "n2" : "TestConfigs/005-N5-fixed-cache-LRU-k-time-aging-r1.xml.n2",
+                "n3" : "TestConfigs/005-N5-fixed-cache-LRU-k-time-aging-r1.xml.n3",
+                "n4" : "TestConfigs/005-N5-fixed-cache-LRU-k-time-aging-r1.xml.n4"
+            }
+        },
+    "num_nodes"          : 4,
+    "duration"           : 100,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 300,
+    "area_width"         : 1500,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3, 4],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/71KB", 71 ],
+        [ "/tmp/72KB", 72 ],
+        [ "/tmp/73KB", 73 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "scen",
+        "parameters" : {
+            "scen_file" : "./utility_lru.scen"
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "n1" : "true", "first" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/73KB",
+                    "attributes" : { "n1" : "true", "second" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/73KB",
+                    "attributes" : { "n1" : "true", "second" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 4,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 6,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 7,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 18,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 19,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 20,
+                    "type"     : "pub",
+                    "file"     : "/tmp/73KB",
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 20,
+                    "stop_after" : 10,
+                    "attributes" : { "n1" : "true" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 48,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                },
+             	{
+                    "node_num"   : 3,
+                    "time"       : 7,
+                    "type"       : "sub",
+                    "duration"   : 10,
+                    "stop_after" : 3,
+                    "attributes" : { "first" : "true", "second" : "true" }
+                },
+             	{
+                    "node_num"   : 4,
+                    "time"       : 8,
+                    "type"       : "sub",
+                    "duration"   : 10,
+                    "stop_after" : 3,
+                    "attributes" : { "first" : "true", "second" : "true" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "006-N2-fixed-cache-purgers-r1",
+    "test_output_path"   : "Testsuite/006-N2-fixed-cache-purgers-r1",
+    "result_output_path" : "TestOutput/006-N2-fixed-cache-purgers-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate_purger.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 16
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/006-N2-fixed-cache-purgers-r1.xml.n1",
+                "n2" : "TestConfigs/006-N2-fixed-cache-purgers-r1.xml.n2",
+                "n3" : "TestConfigs/006-N2-fixed-cache-purgers-r1.xml.n1"
+            }
+        },
+    "num_nodes"          : 3,
+    "duration"           : 80,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 24000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/71KB", 71 ],
+        [ "/tmp/72KB", 72 ],
+        [ "/tmp/73KB", 73 ],
+        [ "/tmp/74KB", 74 ],
+        [ "/tmp/75KB", 75 ],
+        [ "/tmp/76KB", 76 ],
+        [ "/tmp/77KB", 77 ],
+        [ "/tmp/78KB", 78 ],
+        [ "/tmp/79KB", 79 ],
+        [ "/tmp/80KB", 80 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 3
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+            	{
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "attributes" : { "key" : "value", "ContentType" : "DelByRelTTL", "purge_after_seconds" : "1" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/80KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/79KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/78KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 4,
+                    "type"     : "pub",
+                    "file"     : "/tmp/77KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/76KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 6,
+                    "type"     : "pub",
+                    "file"     : "/tmp/75KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 7,
+                    "type"     : "pub",
+                    "file"     : "/tmp/74KB",
+                    "attributes" : { "key" : "value", "ContentType" : "DelByRelTTL", "purge_after_seconds" : "120" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 8,
+                    "type"     : "pub",
+                    "file"     : "/tmp/73KB",
+                    "attributes" : { "key" : "value", "ContentType" : "DelByAbsTTL", "purge_by_timestamp" : "1900000000" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 9,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value", "ContentType" : "DelByRelTTL", "purge_after_seconds" : "4" }
+                },
+              	{
+                    "node_num" : 1,
+                    "time"     : 11,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "key" : "value", "ContentType" : "DelByAbsTTL", "purge_by_timestamp" : "0" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 20,
+                    "stop_after" : 11,
+                    "attributes" : { "key" : "value" }
+                },
+               {
+                    "node_num"   : 3,
+                    "time"       : 28,
+                    "type"       : "sub",
+                    "duration"   : 4,
+                    "stop_after" : 11,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 32,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "007-N2-fixed-cache-replacement-r1",
+    "test_output_path"   : "Testsuite/007-N2-fixed-cache-replacement-r1",
+    "result_output_path" : "TestOutput/007-N2-fixed-cache-replacement-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate_replacement.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 6
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/007-N2-fixed-cache-replacement-r1.xml.n1",
+                "n2" : "TestConfigs/007-N2-fixed-cache-replacement-r1.xml.n2",
+                "n3" : "TestConfigs/007-N2-fixed-cache-replacement-r1.xml.n1"
+            }
+        },
+    "num_nodes"          : 3,
+    "duration"           : 80,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/79KB", 79 ],
+        [ "/tmp/80KB", 80 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 3
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+            	{
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "ContentCreateTime" : "100", "ContentOrigin" : "n1" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/80KB",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "ContentCreateTime" : "101", "ContentOrigin" : "n1" }
+                },
+            	{
+                    "node_num" : 1,
+                    "time"     : 4,
+                    "type"     : "pub",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "ContentCreateTime" : "90", "ContentOrigin" : "n1" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/79KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 20,
+                    "stop_after" : 4,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 3,
+                    "time"       : 26,
+                    "type"       : "sub",
+                    "duration"   : 5,
+                    "stop_after" : 4,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 32,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "008-N2-simple-bf-delay-delete-r1",
+    "test_output_path"   : "Testsuite/008-N2-simple-bf-delay-delete-r1",
+    "result_output_path" : "TestOutput/008-N2-simple-bf-delay-delete-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 4
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/008-N2-simple-bf-delay-delete-r1.xml.n1",
+                "n2" : "TestConfigs/008-N2-simple-bf-delay-delete-r1.xml.n2"
+            }
+        },
+    "num_nodes"          : 2,
+    "duration"           : 80,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/71KB", 71 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+            	{
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "attributes" : { "key" : "value" }
+                },
+            	{
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "key1" : "bogus1", "key" : "value", "ContentType" : "DelByRelTTL", "purge_after_seconds" : "2" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 3,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 11,
+                    "type"       : "sub",
+                    "duration"   : 4,
+                    "attributes" : { "key1" : "bogus1"}
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 12,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "009-N3-simple-neighborhood-r1",
+    "test_output_path"   : "Testsuite/009-N3-simple-neighborhood-r1",
+    "result_output_path" : "TestOutput/009-N3-simple-neighborhood-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate_neighborhood.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 4
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/009-N2-simple-neighborhood-r1.xml.n1",
+                "n2" : "TestConfigs/009-N2-simple-neighborhood-r1.xml.n2",
+                "n3" : "TestConfigs/009-N2-simple-neighborhood-r1.xml.n1"
+            }
+        },
+    "num_nodes"          : 3,
+    "duration"           : 80,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/71KB", 71 ],
+        [ "/tmp/72KB", 72 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 3
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+            	{
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "key" : "value" }
+                },
+            	{
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value", "key1" : "value1" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 1,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 3,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 1,
+                    "attributes" : { "key1" : "value1" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 4,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "010-N2-fixed-cache-replacement-priority-r1",
+    "test_output_path"   : "Testsuite/010-N2-fixed-cache-replacement-priority-r1",
+    "result_output_path" : "TestOutput/010-N2-fixed-cache-replacement-priority-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate_replacement_priority.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 11
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/010-N2-fixed-cache-replacement-priority-r1.xml.n1",
+                "n2" : "TestConfigs/010-N2-fixed-cache-replacement-priority-r1.xml.n2",
+                "n3" : "TestConfigs/010-N2-fixed-cache-replacement-priority-r1.xml.n1"
+            }
+        },
+    "num_nodes"          : 3,
+    "duration"           : 85,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/77KB", 77 ],
+        [ "/tmp/78KB", 78 ],
+        [ "/tmp/79KB", 79 ],
+        [ "/tmp/80KB", 80 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 3
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+            	{
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/77KB",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "ContentCreateTime" : "100", "ContentOrigin" : "n1" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/78KB",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "ContentCreateTime" : "101", "ContentOrigin" : "n2" }
+                },
+            	{
+                    "node_num" : 1,
+                    "time"     : 4,
+                    "type"     : "pub",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "ContentCreateTime" : "100", "ContentOrigin" : "n2" }
+                },
+            	{
+                    "node_num" : 1,
+                    "time"     : 5,
+                    "type"     : "pub",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "MissionTimestamp" : "2", "ContentOrigin" : "n1" }
+                },
+            	{
+                    "node_num" : 1,
+                    "time"     : 6,
+                    "type"     : "pub",
+                    "file"     : "/tmp/79KB",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "MissionTimestamp" : "3", "ContentOrigin" : "n1" }
+                },
+            	{
+                    "node_num" : 1,
+                    "time"     : 7,
+                    "type"     : "pub",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "MissionTimestamp" : "3", "ContentCreateTime" : "200", "ContentOrigin" : "n1" }
+                },
+            	{
+                    "node_num" : 1,
+                    "time"     : 8,
+                    "type"     : "pub",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "MissionTimestamp" : "3", "ContentCreateTime" : "100", "ContentOrigin" : "n1" }
+                },
+            	{
+                    "node_num" : 1,
+                    "time"     : 9,
+                    "type"     : "pub",
+                    "file"     : "/tmp/80KB",
+                    "attributes" : { "key" : "value", "ContentType" : "TotalOrder", "MissionTimestamp" : "4", "ContentCreateTime" : "50", "ContentOrigin" : "n1" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 20,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 3,
+                    "time"       : 26,
+                    "type"       : "sub",
+                    "duration"   : 5,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 33,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "011-N3-simple-attribute-r1",
+    "test_output_path"   : "Testsuite/011-N3-simple-attribute-r1",
+    "result_output_path" : "TestOutput/011-N3-simple-attribute-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate_attribute.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 6
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/011-N2-simple-attribute-r1.xml.n1",
+                "n2" : "TestConfigs/011-N2-simple-attribute-r1.xml.n2",
+                "n3" : "TestConfigs/011-N2-simple-attribute-r1.xml.n1"
+            }
+        },
+    "num_nodes"          : 3,
+    "duration"           : 85,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/71KB", 71 ],
+        [ "/tmp/72KB", 72 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 3
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+            	{
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "key" : "value", "utility" : "1" }
+                },
+            	{
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "key" : "value", "utility" : "0.5" }
+                },
+         	{
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value", "utility" : "0.6" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 0,
+                    "type"       : "sub",
+                    "duration"   : 10,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 3,
+                    "time"       : 8,
+                    "type"       : "sub",
+                    "duration"   : 10,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 8,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "012-N2-discrete-sizes-r1",
+    "test_output_path"   : "Testsuite/012-N2-discrete-sizes-r1",
+    "result_output_path" : "TestOutput/012-N2-discrete-sizes-r1",
+    "custom_validate"    :
+        { "path" : "validation/custom_util_validate_discrete_size.sh",
+            "replace_dict" : {
+            "%%expected_delivered%%" : 11
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/012-N2-discrete-sizes-r1.xml.n1",
+                "n2" : "TestConfigs/012-N2-discrete-sizes-r1.xml.n2"
+            }
+        },
+    "num_nodes"          : 2,
+    "duration"           : 80,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/71KB", 71 ],
+        [ "/tmp/72KB", 72 ],
+        [ "/tmp/73KB", 73 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/71KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 4,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 6,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 7,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 8,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 9,
+                    "type"     : "pub",
+                    "file"     : "/tmp/72KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 10,
+                    "type"     : "pub",
+                    "file"     : "/tmp/73KB",
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 25,
+                    "stop_after" : 10,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 30,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "013-N2-hop-count-r1",
+    "test_output_path"   : "Testsuite/013-N2-hop-count-r1",
+    "result_output_path" : "TestOutput/013-N2-hop-count-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate_hopcount.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 2
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/013-N2-hop-count-r1.xml.n1",
+                "n2" : "TestConfigs/013-N2-hop-count-r1.xml.n2",
+                "n3" : "TestConfigs/013-N2-hop-count-r1.xml.n3"
+            }
+        },
+    "num_nodes"          : 3,
+    "duration"           : 85,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/80KB", 80 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 3
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+            	{
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/80KB",
+                    "attributes" : { "key" : "value", "hopcount_metadata" : "ttl", "hopcount_max" : "1" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 20,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 3,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 20,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"     : 2,
+                    "time"         : 33,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "014-N2-hop-count-geometric-r1",
+    "test_output_path"   : "Testsuite/014-N2-hop-count-geometric-r1",
+    "result_output_path" : "TestOutput/014-N2-hop-count-geometric-r1",
+    "custom_validate"    :  {
+        "path" : "validation/custom_util_validate_hopcount_geometric.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 5
+        }
+    },
+    "config"             :
+        {
+            "path" : "TestConfigs/config-noforward.xml",
+            "pretty_name" : "noforward",
+            "per_node_configs" : {
+                "n1" : "TestConfigs/014-N2-hop-count-geometric-r1.xml.n1",
+                "n2" : "TestConfigs/014-N2-hop-count-geometric-r1.xml.n2",
+                "n3" : "TestConfigs/014-N2-hop-count-geometric-r1.xml.n3",
+                "n4" : "TestConfigs/014-N2-hop-count-geometric-r1.xml.n4",
+                "n5" : "TestConfigs/014-N2-hop-count-geometric-r1.xml.n5"
+            }
+        },
+    "num_nodes"          : 5,
+    "duration"           : 85,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 800,
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2, 3, 4, 5],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "cpu_limit"          : 10.0,
+    "files"              : [
+        [ "/tmp/80KB", 80 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 5
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "parameters" : {
+            "script" : [
+            	{
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/80KB",
+                    "attributes" : { "key" : "value", "hopcount_metadata" : "ttl", "hopcount_max" : "10" }
+                },
+                {
+                    "node_num"   : 2,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 20,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 3,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 20,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 4,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 20,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"   : 5,
+                    "time"       : 1,
+                    "type"       : "sub",
+                    "duration"   : 20,
+                    "attributes" : { "key" : "value" }
+                },
+                {
+                    "node_num"     : 5,
+                    "time"         : 33,
+                    "type"         : "sub",
+                    "stop_after"   : 1,
+                    "print_output" : "true",
+                    "attributes"   : { "CacheStrategyUtility" : "stats" }
+                }
+            ]
+        }
+    }
+}
+
+]

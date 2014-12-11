@@ -1,0 +1,7 @@
+Testsuite/000-unittests-N1D70s1-200x200-unittests
+Testsuite/001-canary-1hop-N3D70s1-400x400-noforward
+Testsuite/002-1hop-consume-N3D70s1-400x400-no-consume-2
+Testsuite/002-1hop-consume-N3D70s1-400x400-yes-consume-1
+Testsuite/003-1hop-multi-consume-N4D85s1-800x400-no-consume-2
+Testsuite/003-1hop-multi-consume-N4D85s1-800x400-yes-consume-1
+Testsuite/004-1hop-grid-N9D100s1-300x300-1hop

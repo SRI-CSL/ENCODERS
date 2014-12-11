@@ -1,0 +1,163 @@
+node n1 {
+    type rj45
+    network-config {
+	hostname usb0
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {138.0 224.0}
+    labelcoords {138.0 256.0}
+    interface-peer {0 n7}
+}
+
+node n2 {
+    type rj45
+    network-config {
+	hostname usb1
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {267.0 236.0}
+    labelcoords {267.0 268.0}
+    interface-peer {0 n7}
+}
+
+node n3 {
+    type rj45
+    network-config {
+	hostname usb2
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {397.0 211.0}
+    labelcoords {397.0 243.0}
+    interface-peer {0 n7}
+}
+
+node n4 {
+    type rj45
+    network-config {
+	hostname usb3
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {259.0 139.0}
+    labelcoords {259.0 171.0}
+    interface-peer {0 n7}
+}
+
+node n5 {
+    type rj45
+    network-config {
+	hostname usb4
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {209.0 327.0}
+    labelcoords {209.0 359.0}
+    interface-peer {0 n7}
+}
+
+node n6 {
+    type rj45
+    network-config {
+	hostname usb5
+	!
+	model
+	!
+    }
+    canvas c1
+    iconcoords {377.0 308.0}
+    labelcoords {377.0 340.0}
+    interface-peer {0 n7}
+}
+
+node n7 {
+    type wlan
+    network-config {
+	hostname wlan7
+	!
+	interface wireless
+	 ip address 10.0.0.0/32
+	 ipv6 address 2001:0::0/128
+	!
+	mobmodel
+	coreapi
+	basic_range
+	!
+    }
+    custom-config {
+	custom-config-id basic_range
+	custom-command {3 3 9 9 9}
+	config {
+	275
+	54000000
+	0
+	20000
+	0
+	}
+    }
+    canvas c1
+    iconcoords {64.0 62.0}
+    labelcoords {64.0 94.0}
+    interface-peer {e0 n1}
+    interface-peer {e1 n2}
+    interface-peer {e2 n3}
+    interface-peer {e3 n4}
+    interface-peer {e4 n5}
+    interface-peer {e5 n6}
+}
+
+link l1 {
+    nodes {n7 n1}
+}
+
+link l2 {
+    nodes {n7 n2}
+}
+
+link l3 {
+    nodes {n7 n3}
+}
+
+link l4 {
+    nodes {n7 n4}
+}
+
+link l5 {
+    nodes {n7 n5}
+}
+
+link l6 {
+    nodes {n7 n6}
+}
+
+canvas c1 {
+    name {Canvas1}
+}
+
+option global {
+    interface_names no
+    ip_addresses yes
+    ipv6_addresses yes
+    node_labels yes
+    link_labels yes
+    ipsec_configs yes
+    exec_errors yes
+    show_api no
+    background_images no
+    annotations yes
+    grid yes
+    traffic_start 0
+}
+

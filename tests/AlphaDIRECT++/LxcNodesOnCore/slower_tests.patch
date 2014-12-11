@@ -1,0 +1,293 @@
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/App/basic3node.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/App/basic3node.sh
+index c146756..9232c47 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/App/basic3node.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/App/basic3node.sh
+@@ -1,6 +1,6 @@
+ #!/bin/bash
+ 
+-sleep 7
++sleep 90
+ 
+ if [ $1 == "n1" ]; then
+     haggletest -b 3 pub test
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/CoreService/haggle.py b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/CoreService/haggle.py
+index caa58dd..409af54 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/CoreService/haggle.py
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/CoreService/haggle.py
+@@ -70,9 +70,10 @@ class HaggleService(CoreService):
+             cfg += "/sbin/ifconfig eth0 broadcast 10.0.1.255\n"
+             cfg += "/sbin/route add default eth0\n"
+         cfg += "cp %s ~/.Haggle/config.xml\n" % (CFGFILE,) 
++        cfg += "chown -R %s:%s ~/.Haggle\n" % (USER, USER)
+         cfg += "/bin/su - %s -c \"/usr/local/bin/haggle -dd -f &\"\n" % (USER,)
+         cfg += "/bin/su - %s -c \"%s %s %s &\"\n" % (USER, TESTAPP, node.name, OUTPUTFILE)
+-        cfg += "/bin/su - %s -c \"sleep 20 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
++        cfg += "/bin/su - %s -c \"sleep 165 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+ 	# make sure haggle is killed for good
+         cfg += "/bin/su - %s -c \"sleep 2 && kill $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         return cfg
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/echo_duration.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/echo_duration.sh
+index 0f7b683..35b6eee 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/echo_duration.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/001-Basic3NodeScenario/echo_duration.sh
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+ 
+-echo "30"
++echo "180"
+ 
+ exit 0
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/App/basic3node_1flow.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/App/basic3node_1flow.sh
+index c146756..9232c47 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/App/basic3node_1flow.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/App/basic3node_1flow.sh
+@@ -1,6 +1,6 @@
+ #!/bin/bash
+ 
+-sleep 7
++sleep 90
+ 
+ if [ $1 == "n1" ]; then
+     haggletest -b 3 pub test
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/CoreService/haggle.py b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/CoreService/haggle.py
+index 398501d..07c5c3b 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/CoreService/haggle.py
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/CoreService/haggle.py
+@@ -55,10 +55,11 @@ class HaggleService(CoreService):
+             break
+         cfg += "/sbin/ifconfig eth0 broadcast 10.0.0.255\n"
+         cfg += "/sbin/route add default eth0\n"
+-        cfg += "cp %s ~/.Haggle/config.xml\n" % (CFGFILE,) 
++        cfg += "cp %s ~/.Haggle/config.xml\n" % (CFGFILE,)
++        cfg += "chown -R %s:%s ~/.Haggle\n" % (USER, USER)
+         cfg += "/bin/su - %s -c \"/usr/local/bin/haggle -dd -f &\"\n" % (USER,)
+         cfg += "/bin/su - %s -c \"%s %s %s &\"\n" % (USER, TESTAPP, node.name, OUTPUTFILE)
+-        cfg += "/bin/su - %s -c \"sleep 20 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
++        cfg += "/bin/su - %s -c \"sleep 165 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         # make sure haggle is killed for good
+         cfg += "/bin/su - %s -c \"sleep 2 && kill $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         return cfg
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/echo_duration.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/echo_duration.sh
+index 0f7b683..35b6eee 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/echo_duration.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/002-Basic3NodeScenario_1flow/echo_duration.sh
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+ 
+-echo "30"
++echo "180"
+ 
+ exit 0
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/App/basic3node_1eth.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/App/basic3node_1eth.sh
+index 727d1de..c2f5387 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/App/basic3node_1eth.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/App/basic3node_1eth.sh
+@@ -3,7 +3,7 @@
+ T1="/tmp/t1"
+ T3="/tmp/t2"
+ 
+-sleep 7
++sleep 90
+ 
+ rm -f ${T1}
+ rm -f ${T3}
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/CoreService/haggle.py b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/CoreService/haggle.py
+index 398501d..079da34 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/CoreService/haggle.py
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/CoreService/haggle.py
+@@ -56,9 +56,10 @@ class HaggleService(CoreService):
+         cfg += "/sbin/ifconfig eth0 broadcast 10.0.0.255\n"
+         cfg += "/sbin/route add default eth0\n"
+         cfg += "cp %s ~/.Haggle/config.xml\n" % (CFGFILE,) 
++        cfg += "chown -R %s:%s ~/.Haggle\n" % (USER, USER)
+         cfg += "/bin/su - %s -c \"/usr/local/bin/haggle -dd -f &\"\n" % (USER,)
+         cfg += "/bin/su - %s -c \"%s %s %s &\"\n" % (USER, TESTAPP, node.name, OUTPUTFILE)
+-        cfg += "/bin/su - %s -c \"sleep 20 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
++        cfg += "/bin/su - %s -c \"sleep 165 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         # make sure haggle is killed for good
+         cfg += "/bin/su - %s -c \"sleep 2 && kill $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         return cfg
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/echo_duration.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/echo_duration.sh
+index 0f7b683..35b6eee 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/echo_duration.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/003-Basic3NodeScenario_1eth/echo_duration.sh
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+ 
+-echo "30"
++echo "180"
+ 
+ exit 0
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/App/demo_static1.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/App/demo_static1.sh
+index b0f30a7..4d6c767 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/App/demo_static1.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/App/demo_static1.sh
+@@ -3,7 +3,7 @@
+ TFILE="/tmp/$1_temp_file"
+ rm -f ${TFILE}
+ 
+-sleep 10
++sleep 90
+ 
+ if [ $1 == "n1" ]; then
+     haggletest -s 7 -f ${TFILE} sub test 
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/CoreService/haggle.py b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/CoreService/haggle.py
+index d581957..e728713 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/CoreService/haggle.py
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/CoreService/haggle.py
+@@ -56,9 +56,10 @@ class HaggleService(CoreService):
+         cfg += "/sbin/ifconfig eth0 broadcast 10.0.0.255\n"
+         cfg += "/sbin/route add default eth0\n"
+         cfg += "cp %s ~/.Haggle/config.xml\n" % (CFGFILE,) 
++        cfg += "chown -R %s:%s ~/.Haggle\n" % (USER, USER)
+         cfg += "/bin/su - %s -c \"/usr/local/bin/haggle -dd -f &\"\n" % (USER,)
+         cfg += "/bin/su - %s -c \"%s %s %s &\"\n" % (USER, TESTAPP, node.name, OUTPUTFILE)
+-        cfg += "/bin/su - %s -c \"sleep 20 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
++        cfg += "/bin/su - %s -c \"sleep 165 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         # make sure haggle is killed for good
+         cfg += "/bin/su - %s -c \"sleep 2 && kill $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         return cfg
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/echo_duration.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/echo_duration.sh
+index 0f7b683..35b6eee 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/echo_duration.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/004-demo-static1/echo_duration.sh
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+ 
+-echo "30"
++echo "180"
+ 
+ exit 0
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/App/demo_static2.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/App/demo_static2.sh
+index 32ab3a3..f1465d4 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/App/demo_static2.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/App/demo_static2.sh
+@@ -3,7 +3,7 @@
+ TFILE="/tmp/$1_temp_file"
+ rm -f ${TFILE}
+ 
+-sleep 10
++sleep 90
+ 
+ if [ $1 == "n1" ]; then
+     haggletest -b 3 pub RoutingType=Direct test1
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/CoreService/haggle.py b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/CoreService/haggle.py
+index d581957..e728713 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/CoreService/haggle.py
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/CoreService/haggle.py
+@@ -56,9 +56,10 @@ class HaggleService(CoreService):
+         cfg += "/sbin/ifconfig eth0 broadcast 10.0.0.255\n"
+         cfg += "/sbin/route add default eth0\n"
+         cfg += "cp %s ~/.Haggle/config.xml\n" % (CFGFILE,) 
++        cfg += "chown -R %s:%s ~/.Haggle\n" % (USER, USER)
+         cfg += "/bin/su - %s -c \"/usr/local/bin/haggle -dd -f &\"\n" % (USER,)
+         cfg += "/bin/su - %s -c \"%s %s %s &\"\n" % (USER, TESTAPP, node.name, OUTPUTFILE)
+-        cfg += "/bin/su - %s -c \"sleep 20 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
++        cfg += "/bin/su - %s -c \"sleep 165 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         # make sure haggle is killed for good
+         cfg += "/bin/su - %s -c \"sleep 2 && kill $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         return cfg
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/echo_duration.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/echo_duration.sh
+index 0f7b683..35b6eee 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/echo_duration.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/005-demo-static2/echo_duration.sh
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+ 
+-echo "30"
++echo "180"
+ 
+ exit 0
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/App/static_flood.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/App/static_flood.sh
+index 6f96bcd..d715f5a 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/App/static_flood.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/App/static_flood.sh
+@@ -2,7 +2,7 @@
+ 
+ TFILE="/tmp/tempfile1"
+ 
+-sleep 7
++sleep 90
+ 
+ rm -f ${TFILE}
+ 
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/CoreService/haggle.py b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/CoreService/haggle.py
+index 398501d..079da34 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/CoreService/haggle.py
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/CoreService/haggle.py
+@@ -56,9 +56,10 @@ class HaggleService(CoreService):
+         cfg += "/sbin/ifconfig eth0 broadcast 10.0.0.255\n"
+         cfg += "/sbin/route add default eth0\n"
+         cfg += "cp %s ~/.Haggle/config.xml\n" % (CFGFILE,) 
++        cfg += "chown -R %s:%s ~/.Haggle\n" % (USER, USER)
+         cfg += "/bin/su - %s -c \"/usr/local/bin/haggle -dd -f &\"\n" % (USER,)
+         cfg += "/bin/su - %s -c \"%s %s %s &\"\n" % (USER, TESTAPP, node.name, OUTPUTFILE)
+-        cfg += "/bin/su - %s -c \"sleep 20 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
++        cfg += "/bin/su - %s -c \"sleep 165 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         # make sure haggle is killed for good
+         cfg += "/bin/su - %s -c \"sleep 2 && kill $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         return cfg
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/echo_duration.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/echo_duration.sh
+index 0f7b683..35b6eee 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/echo_duration.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/006-static-flood/echo_duration.sh
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+ 
+-echo "30"
++echo "180"
+ 
+ exit 0
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/App/static_flood_push.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/App/static_flood_push.sh
+index c9effee..b1dcb85 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/App/static_flood_push.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/App/static_flood_push.sh
+@@ -2,7 +2,7 @@
+ 
+ TFILE="/tmp/tempfile1"
+ 
+-sleep 7
++sleep 90
+ 
+ rm -f ${TFILE}
+ 
+@@ -13,7 +13,7 @@ if [ $1 == "n1" ]; then
+     haggletest -b 2 pub RoutingType=Flood1 test1
+     exit 0
+ elif [ $1 == "n4" ]; then
+-    haggletest -s 25 -f ${TFILE} sub test1 test2
++    haggletest -s 180 -f ${TFILE} sub test1 test2
+ fi
+ 
+ COUNT=$(grep "Received" ${TFILE} | wc -l)
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/CoreService/haggle.py b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/CoreService/haggle.py
+index 7da5c8a..594b5d9 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/CoreService/haggle.py
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/CoreService/haggle.py
+@@ -56,12 +56,13 @@ class HaggleService(CoreService):
+         cfg += "/sbin/ifconfig eth0 broadcast 10.0.0.255\n"
+         cfg += "/sbin/route add default eth0\n"
+         cfg += "cp %s ~/.Haggle/config.xml\n" % (CFGFILE,) 
++        cfg += "chown -R %s:%s ~/.Haggle\n" % (USER, USER)
+         if "n3" == node.name: 
+-            cfg += "/bin/su - %s -c \"sleep 10 && /usr/local/bin/haggle -dd -f &\"\n" % (USER,)
++            cfg += "/bin/su - %s -c \"sleep 100 && /usr/local/bin/haggle -dd -f &\"\n" % (USER,)
+ 	else:
+             cfg += "/bin/su - %s -c \"/usr/local/bin/haggle -dd -f &\"\n" % (USER,)
+         cfg += "/bin/su - %s -c \"%s %s %s &\"\n" % (USER, TESTAPP, node.name, OUTPUTFILE)
+-        cfg += "/bin/su - %s -c \"sleep 30 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
++        cfg += "/bin/su - %s -c \"sleep 280 && kill -INT $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         # make sure haggle is killed for good
+         cfg += "/bin/su - %s -c \"sleep 2 && kill $(cat ~/.Haggle/haggle.pid)\"\n" % (USER,)
+         return cfg
+diff --git a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/echo_duration.sh b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/echo_duration.sh
+index b70311b..d75376e 100755
+--- a/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/echo_duration.sh
++++ b/tests/AlphaDIRECT++/LxcNodesOnCore/Testsuite/007-static-flood-contact-push/echo_duration.sh
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+ 
+-echo "45"
++echo "300"
+ 
+ exit 0

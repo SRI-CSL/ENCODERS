@@ -1,0 +1,85 @@
+This is a test to verify SOCIAL NEIGHBORHOOD is working correctly.
+
+The idea behind social neighborhood is that nodes will belong to various social
+groups, even if they are mixed together. In typical caching, no regard is given
+to the social group of the content. Thus, if 2 groups are mixed together, and
+one of the social groups gets very chatty (i.e. publishing many data objects),
+it will tend to remove all cached data objects belonging to  the other social
+group.
+
+In other words, if group A publishes a lot of content and group B nodes are
+being polite and ferrying content, then due to traditional LRFU caching, group B
+specific content will, most likely, be purged. Thus, group B penalizes itself by
+assisting group A in data object transmission.
+
+In military terms, imagine Marines, Army, Navy at the same base. In a military
+ad hoc network, all nodes should work to forward content. But when the groups
+seperate, each social group (Marines/Army/Navy) would prefer to have content
+relevant to their needs, not stale content from other social groups. This
+utility function helps to resolve this issue.
+
+To help solve this problem, we have extended functionality of neighborhood
+caching to recognize a node's social group, as the first step towards a more
+complete social caching hierarchy management.
+
+Sample configuration:
+<Factor name="CacheUtilityNeighborhoodSocial">
+      <CacheUtilityNeighborhoodSocial discrete_probablistic="false" neighbor_fudge="4"
+           default_value="0" social_identifier="squad" only_physical_neighbors="false" />
+</Factor>
+
+The return value of CacheUtilityNeighborhoodSocial is computed below:
+
+ReturnValue[0,1] = 1-(# nodes in same social group that have this content)/(# nodes in same social group + neighbor_fudge).
+
+The following options are explained below:
+discrete_probablistic:
+  If true, returns only a value of 0 or 1. The probability of returning a '1'
+  is based on the ReturnValue formulated above, e.g. if ReturnValue = .33, then
+  there is a 67% chance of the discrete value being a '0', and a 33% chance of
+  the discrete value being a '1'.
+
+  If false, the value returned is the same as ReturnValue formulated above.
+
+neighbor_fudge:
+  This allows a minor control, to avoid a cascasding purge from different nodes.
+  As an example, if neighbor_fudge=0, and all nodes in this social group have
+  a data object, the ReturnValue becomes '0'. Based upon compute_period_ms,
+  many/all nodes may make this calculation and purge the data object from their
+  cache. By having a fudge factor, we increase the chance most/all nodes in
+  the compute_period_ms interval wont purge the same data object at the same
+  time.
+
+default_value:
+  This is a new option added, to handle how a non social group member should
+  return a value. Previously, for partial order replacement and timed deletes,
+  the default value was '1', which is useful in a MIN() function (e.g. If
+  your DO did not have a timed delete or PO replacement, it should be left
+  alone). But, in a SUM() function, this works against us. To control this, we
+  added a 'default_value' option, which is the value to return if the DO does
+  NOT belong to your social group. In general, it is best to set it to a
+  '0' if you are using the social neighborhood utility in a SUM() function, and
+  best to set it to a '1' if you wish to use it in a MIN() function to delete
+  certain social groups (like ToS/CoS [Type of Service/Class of Service]).
+
+social_identifier:
+  This is the identifier to match the node to the data object. In our example,
+  we use 'squad'. Thus, if one node subscribes to 'squad=A' and  another
+  subscribes to 'squad=B', they are in two different social groups (A, B). The
+  content will be evaluated if it matches the same social group (e.g. DO has
+  attribute squad=A, and so does the receiving node). If there is no social
+  group, or a failed match, it will return 'default_value'.
+
+only_physical_neighbors:
+	This option, if true, only looks at neighbors in the 1 hop neighborhood. If
+  false, it will look at all nodes it has with unexpired information (i.e. in
+  the NodeStore).
+
+The verification of this code compares 2 tests, one configured for neighborhood
+social (which should pass), and another setup only for neighborhood (which
+should fail).
+
+To execute the test:
+Make sure the testrunner is set up (see docs/README-testrunner-setup) and the testrunner scripts
+for your platform are in your $PATH, then use the commands "generate_test_list.sh ." and "run.sh ."
+

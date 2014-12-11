@@ -1,0 +1,68 @@
+[global]
+area = rect(700,500)
+start_time = 0
+stop_time = 90
+
+[helicopter1]
+
+num_nodes = 1
+
+member_model = FixedWP
+member_model.wp1 = (150, 400, 40, 0)
+member_model.wp2 = (500, 50, 40, 0)
+
+member_model.ACC_T = 0.5
+member_model.ACC_A = 10
+
+
+[helicopter2]
+
+num_nodes = 1
+
+member_model = FixedWP
+member_model.wp1 = (550, 400, 40, 0)
+member_model.wp2 = (200, 50, 40, 0)
+
+member_model.ACC_T = 0.5
+member_model.ACC_A = 10
+
+
+[team1]
+
+num_nodes = 20
+member_area = rect (220, 300)
+offset = 50, 20
+
+member_model = Waypoint
+member_model.T_min = 0
+member_model.T_max = 2
+member_model.V_min = 5
+member_model.V_max = 15
+
+
+[team2]
+
+num_nodes = 20
+member_area = rect (220, 300)
+offset = 430, 20
+
+member_model = Waypoint
+member_model.T_min = 0
+member_model.T_max = 2
+member_model.V_min = 5
+member_model.V_max = 15
+
+
+[team3]
+
+num_nodes = 12
+member_area = rect (250, 120)
+offset = 250, 350
+
+member_model = Waypoint
+member_model.T_min = 0
+member_model.T_max = 2
+member_model.V_min = 5
+member_model.V_max = 15
+
+

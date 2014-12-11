@@ -1,0 +1,324 @@
+[
+{
+    "test_name"          : "000-unittests-%%pretty%%",
+    "test_output_path"   : "../Testsuite/000-unittests-%%pretty%%",
+    "result_output_path" : "/tmp/000-unittests-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "custom_validate"    :  {
+        "path" : "./unittest_validate.sh"
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-sendpriority-unittest.xml",
+            "pretty_name" : "unittests"
+        },
+    "num_nodes"          : 1,
+    "duration"           : 70,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 200,
+    "area_width"         : 200,
+    "cpu_limit"          : "none",
+    "macphys_cfgs"       : [{
+        "nodes": [1],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 1
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "none",
+        "parameters" : {
+            "script" : [
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "001-canary-sendpriority-%%pretty%%",
+    "test_output_path"   : "../Testsuite/001-canary-sendpriority-%%pretty%%",
+    "result_output_path" : "/tmp/001-canary-sendpriority-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 1
+        }
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-sendpriority.xml",
+            "pretty_name" : "noforward"
+        },
+    "num_nodes"          : 2,
+    "duration"           : 70,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "cpu_limit"          : "none",
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/10KB", 10 ] 
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/10KB",
+                    "attributes" : { "key" : "value" }
+                }, 
+                {
+                    "node_num" : 2,
+                    "time"     : 0,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "duration" : 7,
+                    "attributes" : { "key" : "value" }
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "002-sendpriority-attr-%%pretty%%",
+    "test_output_path"   : "../Testsuite/002-sendpriority-attr-%%pretty%%",
+    "result_output_path" : "/tmp/002-sendpriority-attr-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "custom_validate"    :  {
+        "path" : "./priority_validate.sh"
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-sendpriority-attr.xml",
+            "pretty_name" : "noforward"
+        },
+    "num_nodes"          : 2,
+    "duration"           : 130,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "cpu_limit"          : "none",
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/2MB", 2000 ],
+        [ "/tmp/1MB", 1000 ],
+        [ "/tmp/1KB", 1 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/2MB",
+                    "attributes" : { "priority" : "2", "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 1.5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "priority" : "1", "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 1.5,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "priority" : "1", "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1KB",
+                    "attributes" : { "priority" : "5", "key" : "value" }
+                }, 
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1KB",
+                    "attributes" : { "priority" : "5", "key" : "value" }
+                }, 
+                {
+                    "node_num" : 1,
+                    "time"     : 2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1KB",
+                    "attributes" : { "priority" : "5", "key" : "value" }
+                }, 
+                {
+                    "node_num" : 2,
+                    "time"     : 0,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "duration" : 70,
+                    "attributes" : { "key" : "value"}
+                }
+            ]
+        }
+    }
+},
+{
+    "test_name"          : "003-sendpriority-complex-%%pretty%%",
+    "test_output_path"   : "../Testsuite/003-sendpriority-complex-%%pretty%%",
+    "result_output_path" : "/tmp/003-sendpriority-complex-%%pretty%%",
+    "test_template"      : "./TestTemplate/",
+    "custom_validate"    :  {
+        "path" : "./complex_validate.sh"
+    },
+    "config"             : 
+        {
+            "path" : "./ExampleConfigs/config-sendpriority-complex.xml",
+            "pretty_name" : "noforward"
+        },
+    "num_nodes"          : 2,
+    "duration"           : 130,
+    "warmup"             : 10,
+    "seed"               : 1,
+    "area_height"        : 400,
+    "area_width"         : 400,
+    "cpu_limit"          : "none",
+    "macphys_cfgs"       : [{
+        "nodes": [1, 2],
+        "name" : "basic_range",
+        "parameters" :  {
+            "bandwidth_bps"      : 11000000,
+            "range_radius_m"     : 250,
+            "latency_us"         : 1000,
+            "pkt_error_rate"     : 0.0
+        }
+    }],
+    "files"              : [ 
+        [ "/tmp/3MB", 3000 ],
+        [ "/tmp/1MB", 1000 ],
+        [ "/tmp/1.1MB", 1001 ],
+        [ "/tmp/1KB", 1 ],
+        [ "/tmp/2KB", 2 ],
+        [ "/tmp/3KB", 3 ]
+    ],
+    "mobility_cfg"       : {
+        "name" : "grid",
+        "parameters" : {
+            "rows"    : 1,
+            "cols"    : 2
+        }
+    },
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "1pub1sub",
+        "parameters" : {
+            "script" : [
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/3MB",
+                    "attributes" : {  "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 1.1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "priority" : "1", "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 1.15,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1.1MB",
+                    "attributes" : { "priority" : "2", "key" : "value" }
+                },
+                {
+                    "node_num" : 1,
+                    "time"     : 1.2,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1KB",
+                    "attributes" : { "bolo" : "", "priority" : "1", "key" : "value" }
+                }, 
+                {
+                    "node_num" : 1,
+                    "time"     : 1.25,
+                    "type"     : "pub",
+                    "file"     : "/tmp/2KB",
+                    "attributes" : { "bolo" : "", "key" : "value" }
+                }, 
+                {
+                    "node_num" : 1,
+                    "time"     : 1.3,
+                    "type"     : "pub",
+                    "file"     : "/tmp/3KB",
+                    "attributes" : { "bolo" : "", "priority" : "2", "key" : "value" }
+                }, 
+                {
+                    "node_num" : 2,
+                    "time"     : 0,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "duration" : 70,
+                    "attributes" : { "key" : "value"}
+                }
+            ]
+        }
+    }
+}
+
+]

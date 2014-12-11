@@ -1,0 +1,63 @@
+Altitude: 706336m
+
+       /|
+      /t|
+     /  |
+  h /   |
+   /    | a
+  /     |
+ /      |
+/       |
+---------
+  5000
+
+Highest Altitude
+----------------
+h = sqrt(706336^2 + 5000^2) = 706353
+
+sin(t) = 5000 / 706353 = 0.007078614
+cos(t) = 706336 / 706353 = 0.999975933
+tan(t) = 5000 / 706336 = 0.007078784
+
+t = asin(0.007078614) = 0.4056
+t = acos(0.999975933) = 0.3975
+t = atan(0.007078784) = 0.4056
+
+overall angular coverage = 0.8112 degrees
+
+ground coverage at 694991m altitude:
+tan(0.4056) = X / 694991
+X = tan(0.4056) * 694991 = 4920m
+
+
+Lowest Altitude
+---------------
+h = sqrt(694991^2 + 5000^2) = 696008
+
+sin(t) = 5000 / 696008 = .007183825
+cos(t) = 694991 / 696008 = .99853881
+tan(t) = 5000 / 694991 = .007194338
+
+t = asin(0.007183825) = 0.4116
+t = acos(0.99853881 ) = 3.098
+t = atan(0.007194338) = 0.4122
+
+overall angular coverage = 0.8244 degrees
+
+ground coverage at 706336m altitude:
+tan(0.4122 deg) = X / 706336m
+X = tan(0.4122 deg) * 706336m = 5082m
+
+
+
+1 degree antenna
+----------------
+
+Ground coverage at 694991m altitude:
+tan(1 deg) = X / 694991m
+X = tan(1 deg) * 694991m = 12131m
+
+Ground coverage at 706336m altiude:
+tan(1 deg) = X / 706336m
+X = tan(1 deg) * 706336m = 12329m
+

@@ -1,0 +1,42 @@
+This verification test will ensure the replication test should work correctly.
+
+The idea of this replication is to seed high value content to other social groups.    As an example, this is bad:
+Imagine a room with 2 groups (4 each).    Group A has content XYZ amongst all 4 members.   Group B has no content XYZ.
+If we ignore social groups, and look at the network at large, we have a network of 8 nodes, with 4 copies of content XYZ.
+By this scenario, it doesnt make sense to replicate content XYZ.
+
+Now, if you look at it from a purely social group level, Group A has content XYZ, and group B does not have any copies.
+Most likely, the two groups are collaborating and the content in question, XYZ, is probably beneficial to both (e.g. power point slides, or a word document).   Thus, after the meeting, someone from group A wishes to review the document XYZ, they have it pre-cached from earlier.
+
+With our replication, we will share this content to the other group.    It was originally designed to replicate content between squads, to increase the probability all squads will have same content without asking for it.    This will greatly decrease access time, as it was pre-cached in the local social group (as opposed to subscribing, then waiting for contact again with the prior social group, to request the content).
+
+
+Test setup:
+
+1.  We have 4 social groups (groupA, groupB, groupC, groupD), and each group has different members (1, 2, 2, 1 nodes, respectively).   The graphic 'setup.png' illustrates the nodes, which social group they belong, and their connectivity.
+
+2.  No social group will subscribe to any content.  We will only replicate to OTHER social groups in a 1-hop distance.   This will differentiate between
+flooding in 1 hop distance (sans same social group). 
+
+3.  Each group will publish valuable content:
+Group A will publish 4 DO's of content.
+Group B will publish 3 DO's of content (node 2 will publish 2 DO's ; node 3 will publish 1 DO)
+Group C will publish 3 DO's of content (node 4 will publish 2 DO's; node 5 will publish 1 DO)
+Group D will publish 1 DO of content.
+
+4.  The replication attribute pipeline will be weighted by local content (e.g. only local content will be replicated), plus social-other.
+This will weight priority to groups without content.
+
+5.  Each social group, will have received (via replication), at least, a single copy of each content.  THus:
+Group A will have 4 local DO's, plus 3 DO's from group B for 7 DO's.
+Group B, node 2 will have 2 local DO's, plus 4 DO's from group A, 2 DO's from group C, and 1 DO from group D, for 9 DO's.
+Group B, node 3 will have 1 local DO's, plust 4 DO's from group A, 2 DO's from group C, for 7 DO's.
+Group C, node 4 will have 2 local DO's, plus 2 DO's from node 3 (group B), for 5 DO's.
+Group C, node 5 will have 1 local DO's, but will not receive any DO's (node 4, in the same group, will exclude copies), for 1 DO's.
+Group D, node 6 will have 1 local DO, plus 2 DO's from node 3 (group B), for 3 DO's.
+
+
+To execute the test:
+Make sure the testrunner is set up (see docs/README-testrunner-setup) and the testrunner scripts
+for your platform are in your $PATH, then use the commands "generate_test_list.sh ." and "run.sh ."
+

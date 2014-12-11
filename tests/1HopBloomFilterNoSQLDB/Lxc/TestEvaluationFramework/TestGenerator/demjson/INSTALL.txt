@@ -1,0 +1,35 @@
+== Basic installation
+
+This software is published in the Python Package Index (PYPI),
+at <http://pypi.python.org/>, which may make it easy to install.
+If your system has either "pip" or "easy_install", then you may
+try one of the following commands to install this module:
+
+   pip install demjson
+   pip-python install demjson
+   easy_install demjson
+
+Otherwise, you can install it by downloading the distrubtion and
+unpacking it in some temporary directory.  Then inside that
+directory, type:
+
+    python setup.py install
+
+Optionally, for a minimal installation, you can also just copy the
+"demjson.py" file into your own project's directory.
+
+
+== jsonlint command
+
+You can optionally install the script jsonlint by copying it to
+any directory on your PATH, such as into /usr/local/bin under
+Unix/Linux.  Make sure the script is set as being executable.
+
+
+== Running self tests
+
+Self tests are included which conform to the Python unittest
+framework.  To run these tests, do
+
+    cd test
+    PYTHONPATH=.. python test_demjson.py

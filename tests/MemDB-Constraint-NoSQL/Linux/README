@@ -1,0 +1,23 @@
+This README discusses using the scripts with the self test for memory/database compression.
+To get all 3 runs, you will have to run haggle 3 times, changing the configuration file each time.
+
+1.   Choose which configuration to copy to ~/.Haggle/config.xml
+a. config-sql.xml - sqlite version
+b. config-nosql.xml - in memory version (refer to 2b)
+c. config-nosql-compact.xml - in memory version, using compaction (refer to 2b)
+
+2.  Run Haggle
+a.  Make sure no existing haggle.log exists, as haggle will now append to the log, instead of creating a new log.
+b.  To use the no-sql memory option, make sure you use the '-m' option (e.g. haggle -dd -f -m).   This option triggers using the memory only storage method, while not using it, specified to use the sqlite database storage method.
+
+3.  Extract the data into an appropriate data file, run 'makeplot.sh <name>'.
+a.  For sql, use the name 'plot-sql.dat'
+b.  For memory (non sqlite), use the name 'plot-nocompact.dat'
+c.  For memory with compaction (non sqlite), use the name 'plot-compact.dat'
+d.  The script assumes the haggle.log is in the current directory.   Cd to the correct directory, or reference the script ( e.g, from ~/.Haggle/, run ~/cbmen-encoders/studies/mem-constraint-no-sql-results/makeplot.sh <x.dat>).    
+
+4.   Run the script 'gnuplot mem-changes.plot'.   Make sure the 3 files from step 3 are present in the correct directory.
+This will produce a postscript graph of the 3 plots, named 'show-mem-usage.eps'.
+
+5.  The test takes about 800 seconds per test.    This is to avoid a queue problem, where we take a measurement with a non empty queue, giving an incorrect expected memory value.
+

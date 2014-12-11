@@ -1,0 +1,172 @@
+Last modified: 10/14/12.
+
+This document describes the automated tests for AlphaDIRECT++, which we refer
+to as DIRECT below.
+
+NOTE: Some of these tests rely upon "sleep" timers which can vary from
+machine to machine, thus if a test failure occurs on a new system them
+one should verify the timings before concluding that a regression has occurred.
+
+Basic DIRECT tests:
+====
+These are basic correctness tests, mainly used for regression testing.
+
+001-Basic3NodeScenario/
+----
+
+This test has 3 nodes (n1, n2, n3) and 2 wireless LANs (wlan1, wlan2).
+The topology is as follows:
+
+n1 -- wlan1 -- n2 -- wlan2 -- n3 
+
+n1 publishes 3 files, and n3 subscribes. 
+
+This test demonstrates DIRECT routing over a single relay with 2 interfaces.
+
+002-Basic3NodeScenario_1flow/
+----
+
+This test has 3 nodes (n1, n2, n3) and 1 wireless LAN (wlan1, wlan2).
+The topology is as follows:
+
+n1 -- wlan1 -- n2 --wlan1 -- n3
+
+n1 publishes 3 files, and n3 subscribes.
+
+This test demonstrates DIRECT routing over a single relay with 1 interface.
+
+003-Basic3NodeScenario_1eth/
+----
+
+This test has 3 nodes (n1, n2, n3) and 1 wireless LAN (wlan1, wlan2).
+The topology is as follows:
+
+n1 -- wlan1 -- n2 --wlan1 -- n3
+
+n1 publishes 3 files with attribute test1 and subscribes to test3.
+n3 publishes 3 files with attribute test3 and subscribes to test1.
+
+This test demonstrates DIRECT routing over a single relay with 1 interface,
+where 2 flows of content travel through the relay.
+
+Selected Static Tests for Powerpoint Presentation
+=====
+These are static scenarios that were presented for a powerpoint presentation
+in September 2012. They aim to show advantages of DIRECT, such as routing
+path diversity.
+
+005-demo-static2/
+----
+
+This test has 9 nodes (n1..n9) and 1 wireless lan (wlan1).
+The topology is as follows:
+
+n1           n5      n6        n7
+   \       /   \   /   \     /
+n2  - wlan1    wlan1   wlan1 - n8
+   /       \     |    /      \
+n3          --- n4 ---         n9
+
+n1, n2, and n3 subscribe to "test", and n7, n8, n9 publish 3 data objects each,
+with attribute "test".
+
+Performance results of DIRECT in this test in comparison to Prophet, show that
+DIRECT has a higher amount of path diversity, by utilizing nodes n5 and n6
+although they are not on the shortest path between the publisher and 
+subscriber.
+
+004-demo-static1/
+----
+
+This test has 6 nodes (n1..n6) and 1 wireless lan (wlan1).
+The topology is as follows:
+
+   n1 -- wlan1 -- n3 -- wlan1 -- n5
+   |              |              |
+ wlan1          wlan1          wlan1
+   |              |              |
+   n2 -- wlan1 -- n4 -- wlan1 -- n6
+
+n1 publishes 3 files with attribute test, and n5 subscribes to test.
+
+As with the previous test, performance results of DIRECT in comparison to
+Prophet show that DIRECT has a higher amount of path diversity, by utilizing
+nodes n2, n4 and n6 although they are not on the shortest path between the
+publisher and subscriber.
+
+Proactive Replication Tests
+====
+These tests demonstrate proactive replication, through the Flood forwarder.
+
+006-static-flood/
+----
+
+This test has 4 nodes (n1..n4) and 1 wireless lan (wlan1). 
+The topology is as follows:
+
+n1 -- wlan1 -- n2 --wlan1 -- n3 -- wlan1 -- n4
+
+n1 publishes 1 data object  with a specific attribute to trigger direct
+(RoutingType=Direct) and also attribute "test".
+n1 publishes 3 data objects with a specific attribute to trigger flooding 
+(RoutingType=Flood) and also attribute "test". 
+
+After publishing these data objects, n1 shuts down haggle.
+
+Later (after n1 shuts down), n4 subscribes to "test."
+
+n4 should then receive the 3 data objects that were flooded, but not the
+data object that was sent using direct.
+
+This test is a scenario where direct cannot deliver the content, but flooding
+can deliver the content.
+
+007-static-flood-contact-push/
+----
+
+This test has 4 nodes (n1..n4) and 1 wireless lan (wlan1). 
+The topology is as follows:
+
+n1 -- wlan1 -- n2 -- wlan1 -- n3 -- wlan1 -- n4
+
+n1 publishes 1 data object  with a specific attribute to trigger direct
+(RoutingType=Direct) and also attribute "test".
+n1 publishes 3 data objects with a specific attribute to trigger flooding 
+(RoutingType=Flood) and also attribute "test". 
+
+After publishing these data objects, n1 shuts down haggle.
+
+Later (after n1 shuts down), n4 subscribes to "test."
+
+n4 should then receive the 3 data objects that were flooded, but not the
+data object that was sent using direct.
+
+This test is a scenario where direct cannot deliver the content, but flooding
+can deliver the content.
+
+007-static-flood-contact-push/
+----
+
+This test has 4 nodes (n1..n4) and 1 wireless lan (wlan1). 
+Initially, at tie t1, the topology is as follows:
+
+n1 -- wlan1 -- n2 -- wlan1 -- n3             n4
+
+Later, at time t2, the topology becomes:
+
+n1 -- wlan1 -- n2 -- wlan1 -- n3 -- wlan1 -- n4
+
+At t1, n1 publishes 1 data object with a specific attribute to trigger 
+flooding without push on contact (RoutingType=Flood2) and attribute "test2".
+Also, n1 publishes 2 data objects with a specific attribute to trigger
+flooding _with_ push on contact (RoutingType=Flood1) and attribute "test1".
+
+At t1, n4 subscribes to both "test1" and "test2".
+
+At t2, node n3 becomes connected to n2 and n4, thus the flooded data object
+without push on contact should not be routed to n4, while the flooded
+data objects _with_ push on contact _should_ be routed to n4.  (n4 should
+receive 2 data objects with attribute test1).
+
+This test demonstrates the functionality of the "push on contact" feature
+of proactive replication.

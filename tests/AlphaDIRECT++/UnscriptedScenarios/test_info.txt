@@ -1,0 +1,19 @@
+Last modified: 10/14/12.
+
+This document describes the manual tests for AlphaDIRECT++, which we refer
+to as DIRECT below.
+
+dense/* : contains dense networks useful for stress tests.
+
+mobile1/* : contains a mobile microbenchmark that demonstrates how DIRECT
+and Prophet handle simple mobility. In particular, it is a pathological
+case for Prophet's encounter based approach. This was presented in the
+September 2012 presentation (briefing).
+
+mobile2/* : contains a microbenchmark where two nodes swap positions. This
+scenario is useful for microbenchmarking the different content dissemination
+strategies. This scenario was in the September 2012 powerpoint presentation.
+
+mobile3/* : contains message ferrying examples demonstrating the differences
+between proactive replication via flooding, and DIRECT. 
+

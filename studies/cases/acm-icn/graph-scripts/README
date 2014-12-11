@@ -1,0 +1,9 @@
+These scripts will generate the graphs for the acm-icn scenario.
+
+1. Rename your TestOutput directory to correspond to the filename you want for the resulting
+   graph (e.g. 140408-1304-phase2-basic-udissemination-milcom).
+
+2. cd into that directory.
+
+3. Run make_graphs.sh. It will rename the log directories, generate graphs, and give them the same
+   name as the current working directory, with a .eps extension.

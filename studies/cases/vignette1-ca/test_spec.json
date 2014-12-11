@@ -1,0 +1,745 @@
+[
+{
+    "pretty_settings"    : {
+        "comment"         : "COMMENT: These parameters control the pretty print (%%pretty%%), this is useful in conjunction with ^repeat to distinguish test cases. Note that test case names may become toolong, in which case you should disable some of below parameters.",
+            "verbosity"       : 1,
+            "max_len"         : 100,
+            "enable_mobility" : "true",
+            "enable_app"      : "true",
+            "enable_macphy"   : "true"
+    },
+    "test_name"          : "vignette1-%%pretty%%",
+    "test_output_path"   : "Testsuite/haggle-%%pretty%%",
+    "result_output_path" : "TestOutput/haggle-%%pretty%%",
+    "custom_validate"    :  {
+        "path" : "./custom_validate.sh",
+        "replace_dict" : {
+            "%%expected_delivered%%" : 1
+        }
+    },
+    "config"             : {
+        "comment" : "COMMENT: The `^repeat` command is a meta-command that will duplicate the test case with all of the permutations specified in the sublist.",
+        "^repeat" : [
+               {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "ca-0.8",
+                    "replace_dict"   :
+                        {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 0.8,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5
+                        }
+                },
+               {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "ca-0.6",
+                    "replace_dict"   :
+                        {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 0.6,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5
+                        }
+                },
+               {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "ca-0.4",
+                    "replace_dict"   :
+                        {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 0.4,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5
+                        }
+                },
+
+
+
+               {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "ca-0.2",
+                    "replace_dict"   :
+                        {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 0.2,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5
+                        }
+                },
+
+                {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "ca-frag",
+                    "replace_dict"   :
+                        {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 2.0,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5
+                        }
+                },
+
+               {
+                    "path"           : "./TestConfigs/ca.xml",
+                    "pretty_name"    : "ca-coding",
+                    "replace_dict"   :
+                        {
+                            "%%debug_type%%" : "STAT",
+                            "%%bf_capacity%%" : "8000",
+                            "%%frag_resend_delay%%" : 0.00,
+                            "%%min_block_size%%"  : 32769,
+                            "%%block_size%%"      : 32768,
+                            "%%loss_rate_threshold%%" : 0.0,
+                            "%%min_time_between_toggles%%" : 5.0,
+                            "%%periodic_loss_estimate_interval%%" : 5
+                        }
+                }                
+
+
+
+
+
+
+        ] },
+    "num_nodes"          : 30,
+    "duration"           : 720,
+    "warmup"             : 10,
+    "seed"               : {"^repeat" : [23]},
+    "area_height"        : 800,
+    "area_width"         : {"^repeat" : [800]},
+    "macphys_cfgs"    : {"^repeat" : [
+           [{
+                "nodes": [1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] ,
+                "name" : "emane_ieee80211abg",
+                "pretty_name" : "80211-24mbps",
+                "parameters": {
+                    "standard_mode"      : 3,
+                    "max_distance_m"     : 1000,
+                    "unicast_rate_mode"  : 9,
+                    "multicast_rate_mode"  : 9,
+                    "system_noise_figure" : "4",
+                    "antenna_gain_dbi"   : -5,
+                    "transmit_power_dbx" : 0,
+                    "antenna_type"       : "omnidirectional",
+                    "pathloss_mode"      : "freespace",
+                    "bandwidth_khz"      : 22000
+                }
+            }]
+    ]},
+    "cpu_limit"          : 30,
+    "files"              : [ 
+        [ "/tmp/512K", 512 ],
+    [ "/tmp/1MB", 1024]
+    ],
+    "mobility_cfg"       : {
+        "name" : "overlay",
+        "parameters": {
+            "mobilities" : [
+                {
+                    "nodes" : [1,2,3,4,5,6,7],
+                    "name" :  "vignette1",
+                    "offset_x" : 0,
+                    "offset_y" : 0,
+                    "parameters" : {
+                        "reference_point_file"    : "TestConfigs/sq11.nodes", 
+                        "max_dist_to_ref"    :  1
+                    }
+                },
+                {
+                    "nodes" : [8,9,10,11,12,13,14],
+                    "name" :  "vignette1",
+                    "offset_x" : 0,
+                    "offset_y" : 0,
+                    "parameters" : {
+                        "reference_point_file"    : "TestConfigs/sq12.nodes", 
+                        "max_dist_to_ref"    :  1
+                    }
+                },
+        {               
+            "nodes" : [15,16,17,18,19,20,21],
+            "name" : "vignette1",
+            "offset_x" : 0,
+            "offset_y" : 0,
+            "parameters" : {
+            "reference_point_file"    : "TestConfigs/sq21.nodes", 
+            "max_dist_to_ref"    : 1
+                    }
+                },
+        {               
+            "nodes" : [22,23,24,25,26,27,28],
+            "name" : "vignette1",
+            "offset_x" : 0,
+            "offset_y" : 0,
+            "parameters" : {
+            "reference_point_file"    : "TestConfigs/sq22.nodes", 
+            "max_dist_to_ref"    : 1
+                    }
+                },
+        {
+            "nodes" : [29],
+                "name" : "grid",
+            "offset_x" : 100,
+            "offset_y" : 100,
+                    "parameters" : {
+                        "area_width"    : 5,
+                        "area_height"    : 5,
+                        "rows"    : 1,
+                        "cols"    : 1,
+                        "max_spacing_m" : 5
+                    }
+        },
+        {
+            "nodes" : [30],
+                "name" : "grid",
+            "offset_x" : 500,
+            "offset_y" : 500,
+                    "parameters" : {
+                        "area_width"    : 5,
+                        "area_height"    : 5,
+                        "rows"    : 1,
+                        "cols"    : 1,
+                        "max_spacing_m" : 5
+                    }
+        }
+        ]
+        }
+    },
+
+    "application_cfg"    : {
+        "name" : "custom",
+        "pretty_name" : "pretty_app",
+        "parameters" : {
+            "script" : [
+
+                {
+                    "node_num" : 29,
+                    "time"     : 15,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "c1" : "c1" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 30,
+                    "time"     : 15,
+                    "type"     : "pub",
+                    "file"     : "/tmp/512K",
+                    "attributes" : { "c2" : "c2" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+
+
+
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq11" : "sq11" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 2,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq11" : "sq11" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 3,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq11" : "sq11" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 4,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq11" : "sq11" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 5,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq11" : "sq11" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 6,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq11" : "sq11" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 7,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq11" : "sq11" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+
+                {
+                    "node_num" : 8,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq12" : "sq12" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 9,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq12" : "sq12" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 10,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq12" : "sq12" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 11,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq12" : "sq12" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 12,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq12" : "sq12" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 13,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq12" : "sq12" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 14,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq12" : "sq12" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+
+
+
+                {
+                    "node_num" : 15,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq21" : "sq21" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 16,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq21" : "sq21" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 17,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq21" : "sq21" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 18,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq21" : "sq21" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 19,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq21" : "sq21" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 20,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq21" : "sq21" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 21,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq21" : "sq21" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+
+                {
+                    "node_num" : 22,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq22" : "sq22" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 23,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq22" : "sq22" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 24,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq22" : "sq22" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 25,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq22" : "sq22" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 26,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq22" : "sq22" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 27,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq22" : "sq22" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+                {
+                    "node_num" : 28,
+                    "time"     : 1,
+                    "type"     : "pub",
+                    "file"     : "/tmp/1MB",
+                    "attributes" : { "sq22" : "sq22" },
+                    "num_pub"  : 2,
+                    "pause"    : 360
+                },
+
+
+
+
+
+
+                {
+                    "node_num" : 1,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 2,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 3,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 4,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 5,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 6,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 7,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 8,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 9,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 10,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 11,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 12,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 13,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 14,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 15,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 16,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 17,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 18,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 19,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 20,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 21,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 22,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 23,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 24,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 25,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 26,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 27,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 28,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 29,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                },
+                {
+                    "node_num" : 30,
+                    "time"     : 1,
+                    "type"     : "sub",
+                    "print_output" : "true",
+                    "attributes" : { "c1" : "c1", "c2" : "c2", "sq11" : "sq11", "sq12" : "sq12" , "sq21" : "sq21" , "sq22" : "sq22" }
+                }
+            ]
+        }
+    },
+    "neighbor_monitor" : {
+        "comment"        : "COMMENT: keep track of local neighborhood using arp and ping.",
+        "enable_neighbor_monitor" : "true",
+        "neighbor_monitor_max_latency_ms" : 40,
+        "neighbor_monitor_period_s" : 1
+    },
+    "observer" : {
+        "comment" : "COMMENT: observe haggle status",
+	"enable_observer": "true",
+	"notification_interval": 15
+    }
+}
+]
+

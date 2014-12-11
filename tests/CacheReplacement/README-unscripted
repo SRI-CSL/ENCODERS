@@ -1,0 +1,142 @@
+Caching Replacement and Purging Strategies
+==========================================
+
+The following examples have been tested on CORE 
+with Linux containers and on the phones.
+
+Config files suitable for this test:
+
+resources/config-caching.xml (for one or two connected nodes)
+resources/config-flood-direct-caching.xml (to exercise interest-driven routing)
+resources/config-flood-direct-caching-fca.xml (to exercise first-class applications)
+resources/config-flood-direct-proactive-caching.xml (to exercise proactive dissemination)
+resources/config-flood-direct-proactive-caching-fca.xml (to exercise first-class applications)
+
+The examples rely on the following configuration for the caching strategy, which 
+defines order-based replacement and time-based purging on expiration:
+
+	<DataManager set_createtime_on_bloomfilter_update="true">
+		<Aging period="3600" max_age="86400"/>
+		<Bloomfilter default_error_rate="0.01" default_capacity="2000"/>
+		<CacheStrategy name="CacheStrategyReplacementPurger">
+			<CacheStrategyReplacementPurger purger="CachePurgerParallel" replacement="CacheReplacementPriority">
+				<CachePurgerParallel> 
+					<CachePurger name="CachePurgerAbsTTL">
+						<CachePurgerAbsTTL purge_type="purge_by_timestamp" tag_field="ContentType" tag_field_value="DelByAbsTTL" 
+						keep_in_bloomfilter="false" min_db_time_seconds="1" />
+					</CachePurger>
+					<CachePurger name="CachePurgerRelTTL"> 
+						<CachePurgerRelTTL purge_type="purge_after_seconds" tag_field="ContentType" tag_field_value="DelByRelTTL" 
+						keep_in_bloomfilter="false" min_db_time_seconds="1" />
+					</CachePurger>
+				</CachePurgerParallel>
+				<CacheReplacementPriority>
+					<CacheReplacement name="CacheReplacementTotalOrder" priority="1">
+						<CacheReplacementTotalOrder metric_field="ContentCreationTime" id_field="ContentOriginator" tag_field="ContentType" tag_field_value="TotalOrder" />
+					</CacheReplacement>
+				</CacheReplacementPriority>
+			</CacheStrategyReplacementPurger>
+		</CacheStrategy>
+	</DataManager>
+
+
+Basic Total Order Replacement Test
+----------------------------------
+
+Before running the demo, you must make sure that Haggle has a clean slate.
+
+Publish 10 data objects with increasing timestamps tagged as totally ordered content:
+
+haggletest -b 10 pub ContentType=TotalOrder abc
+
+Subsequently, subscribe on another node with
+
+haggletest sub abc
+
+and only the last (freshest) data objects should be returned.
+
+Keep the previous subscription acive, and publish 10 more 
+data objects at the first node:
+
+haggletest -b 10 pub ContentType=TotalOrder abc
+
+All 10 data objects should flow through to the subscriber,
+because each new data object is the freshest at time received.
+
+However, if you query again with -z to clear the application Bloomfilter
+and -c to clear the interest and resubscribe
+
+haggletest -z -c sub abc
+
+you should only receive the last (freshest) data object.
+
+Basic Content-Based Expiration Test
+-----------------------------------
+
+Before running the demo, you must make sure that Haggle has a clean slate.
+
+Publish 10 data objects with increasing timestamps tagged 
+with a relative expiration time (relative to time received) of 20 sec:
+
+haggletest -b 10 pub ContentType=DelByRelTTL purge_after_seconds=20 abc
+
+If you subscribe before expiration using
+
+haggletest sub abc
+
+all 10 datas objects should be delivered to the application.
+
+After waiting for 20sec you may try
+
+haggletest -z -c sub abc
+
+to verify that no data objects remain in the system.
+
+Replacement/Expiration Combination Test
+---------------------------------------
+
+Before running the demo, you must make sure that Haggle has a clean slate.
+
+Similar to the previous test, execute
+
+haggletest -b 10 pub ContentType=TotalOrder ContentType=DelByRelTTL purge_after_seconds=20 abc
+
+An immediately subsequent subscription
+
+haggletest sub abc
+
+should return only one data object.
+
+Again, after waiting for 20sec you may try
+
+haggletest -z -c sub abc
+
+to verify that no data objects remain in the system.
+
+Testing Data Objects with File Payload
+--------------------------------------
+
+Before running the demo, you must make sure that Haggle has a clean slate.
+
+In the previous tests, no files was associated with the
+published data objects. The corresponding tests with
+files are very similar.
+
+For example, you may want to create a 100K test 
+file in the current directory:
+
+dd if=/dev/zero of=testfile-100K bs=1025 count=100
+
+Now the tests can be modified as follows to attach a file when the
+data object is published:
+
+haggletest -k -b 10 pub file testfile-100K ContentType=TotalOrder abc
+haggletest -k -b 10 pub file testfile-100K ContentType=DelByRelTTL purge_after_seconds=20 abc
+haggletest -k -b 10 pub file testfile-100K ContentType=TotalOrder ContentType=DelByRelTTL purge_after_seconds=20 abc
+
+Note that Haggle always takes ownership of a file passed to the
+deamon.  The content together with the file will be managed by Haggle,
+even if it located in the current directory, like testfile-100K.  The
+option -k instructs haggletest to make a uniquely named copy of the
+file before attaching it to the data object. In this way Haggle takes
+only ownership of the copy.

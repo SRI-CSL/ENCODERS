@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE eventgenerator SYSTEM "file:///usr/share/emane/dtd/eventgenerator.dtd">
+<eventgenerator name="emanegeneel" library="eelgenerator">
+  <param name="inputfile" value="scenario.eel"/>
+  <param name="loader" value="location:eelloaderlocation:delta"/>
+</eventgenerator>
+

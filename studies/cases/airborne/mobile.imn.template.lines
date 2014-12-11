@@ -1,0 +1,392 @@
+node n1 {
+    type router
+    model PC
+    network-config {
+	hostname n1
+	!
+	interface eth1
+	 ip address 10.0.10.20/24
+	 ipv6 address 2001:10::20/64
+	!
+	interface eth0
+	 ip address 10.0.0.20/24
+	 ipv6 address 2001:0::20/64
+	!
+    }
+    canvas c1
+    iconcoords {62.0 86.0}
+    labelcoords {62.0 118.0}
+    interface-peer {eth0 n6}
+    interface-peer {eth1 n9}
+    services {DefaultRoute HaggleService}
+}
+
+node n2 {
+    type router
+    model PC
+    network-config {
+	hostname n2
+	!
+	interface eth1
+	 ip address 10.0.11.20/24
+	 ipv6 address 2001:11::20/64
+	!
+	interface eth0
+	 ip address 10.0.1.20/24
+	 ipv6 address 2001:1::20/64
+	!
+    }
+    canvas c1
+    iconcoords {141.0 114.0}
+    labelcoords {143.0 154.0}
+    interface-peer {eth0 n6}
+    interface-peer {eth1 n9}
+    services {DefaultRoute HaggleService}
+}
+
+node n3 {
+    type router
+    model PC
+    network-config {
+	hostname n3
+	!
+	interface eth1
+	 ip address 10.0.8.20/24
+	 ipv6 address 2001:8::20/64
+	!
+	interface eth0
+	 ip address 10.0.2.20/24
+	 ipv6 address 2001:2::20/64
+	!
+    }
+    canvas c1
+    iconcoords {51.0 240.0}
+    labelcoords {51.0 272.0}
+    interface-peer {eth0 n5}
+    interface-peer {eth1 n9}
+    services {DefaultRoute HaggleService}
+}
+
+node n4 {
+    type router
+    model PC
+    network-config {
+	hostname n4
+	!
+	interface eth1
+	 ip address 10.0.9.20/24
+	 ipv6 address 2001:9::20/64
+	!
+	interface eth0
+	 ip address 10.0.3.20/24
+	 ipv6 address 2001:3::20/64
+	!
+    }
+    canvas c1
+    iconcoords {141.0 208.0}
+    labelcoords {141.0 244.0}
+    interface-peer {eth0 n5}
+    interface-peer {eth1 n9}
+    services {DefaultRoute HaggleService}
+}
+
+node n5 {
+    type router
+    model PC
+    network-config {
+	hostname n5
+	!
+	interface eth4
+	 ip address 10.0.12.20/24
+	 ipv6 address 2001:12::20/64
+	!
+	interface eth3
+	 ip address 10.0.6.20/24
+	 ipv6 address 2001:6::20/64
+	!
+	interface eth2
+	 ip address 10.0.4.20/24
+	 ipv6 address 2001:4::20/64
+	!
+	interface eth1
+	 ip address 10.0.3.21/24
+	 ipv6 address 2001:3::21/64
+	!
+	interface eth0
+	 ip address 10.0.2.21/24
+	 ipv6 address 2001:2::21/64
+	!
+    }
+    canvas c1
+    iconcoords {324.0 167.0}
+    labelcoords {324.0 199.0}
+    interface-peer {eth0 n3}
+    interface-peer {eth1 n4}
+    interface-peer {eth2 n6}
+    interface-peer {eth3 n7}
+    interface-peer {eth4 n9}
+    services {DefaultRoute HaggleService}
+}
+
+node n6 {
+    type router
+    model PC
+    network-config {
+	hostname n6
+	!
+	interface eth4
+	 ip address 10.0.13.20/24
+	 ipv6 address 2001:13::20/64
+	!
+	interface eth3
+	 ip address 10.0.5.20/24
+	 ipv6 address 2001:5::20/64
+	!
+	interface eth2
+	 ip address 10.0.4.21/24
+	 ipv6 address 2001:4::21/64
+	!
+	interface eth1
+	 ip address 10.0.1.21/24
+	 ipv6 address 2001:1::21/64
+	!
+	interface eth0
+	 ip address 10.0.0.21/24
+	 ipv6 address 2001:0::21/64
+	!
+    }
+    canvas c1
+    iconcoords {318.0 72.0}
+    labelcoords {318.0 104.0}
+    interface-peer {eth0 n1}
+    interface-peer {eth1 n2}
+    interface-peer {eth2 n5}
+    interface-peer {eth3 n7}
+    interface-peer {eth4 n9}
+    services {DefaultRoute HaggleService}
+}
+
+node n7 {
+    type router
+    model PC
+    network-config {
+	hostname n7
+	!
+	interface eth3
+	 ip address 10.0.14.20/24
+	 ipv6 address 2001:14::20/64
+	!
+	interface eth2
+	 ip address 10.0.7.20/24
+	 ipv6 address 2001:7::20/64
+	!
+	interface eth1
+	 ip address 10.0.6.21/24
+	 ipv6 address 2001:6::21/64
+	!
+	interface eth0
+	 ip address 10.0.5.21/24
+	 ipv6 address 2001:5::21/64
+	!
+    }
+    canvas c1
+    iconcoords {476.0 130.0}
+    labelcoords {476.0 162.0}
+    interface-peer {eth0 n6}
+    interface-peer {eth1 n5}
+    interface-peer {eth2 n8}
+    interface-peer {eth3 n9}
+    services {DefaultRoute HaggleService}
+}
+
+node n8 {
+    type router
+    model PC
+    network-config {
+	hostname n8
+	!
+	interface eth1
+	 ip address 10.0.15.20/24
+	 ipv6 address 2001:15::20/64
+	!
+	interface eth0
+	 ip address 10.0.7.21/24
+	 ipv6 address 2001:7::21/64
+	!
+    }
+    canvas c1
+    iconcoords {644.0 142.0}
+    labelcoords {644.0 174.0}
+    interface-peer {eth0 n7}
+    interface-peer {eth1 n9}
+    services {DefaultRoute HaggleService}
+}
+
+node n9 {
+    type router
+    model PC
+    network-config {
+	hostname n9
+	!
+	interface eth7
+	 ip address 10.0.15.21/24
+	 ipv6 address 2001:15::21/64
+	!
+	interface eth6
+	 ip address 10.0.14.21/24
+	 ipv6 address 2001:14::21/64
+	!
+	interface eth5
+	 ip address 10.0.13.21/24
+	 ipv6 address 2001:13::21/64
+	!
+	interface eth4
+	 ip address 10.0.12.21/24
+	 ipv6 address 2001:12::21/64
+	!
+	interface eth3
+	 ip address 10.0.11.21/24
+	 ipv6 address 2001:11::21/64
+	!
+	interface eth2
+	 ip address 10.0.10.21/24
+	 ipv6 address 2001:10::21/64
+	!
+	interface eth1
+	 ip address 10.0.9.21/24
+	 ipv6 address 2001:9::21/64
+	!
+	interface eth0
+	 ip address 10.0.8.21/24
+	 ipv6 address 2001:8::21/64
+	!
+    }
+    canvas c1
+    iconcoords {465.0 486.0}
+    labelcoords {465.0 518.0}
+    interface-peer {eth0 n3}
+    interface-peer {eth1 n4}
+    interface-peer {eth2 n1}
+    interface-peer {eth3 n2}
+    interface-peer {eth4 n5}
+    interface-peer {eth5 n6}
+    interface-peer {eth6 n7}
+    interface-peer {eth7 n8}
+    services {DefaultRoute HaggleService}
+}
+
+link l1 {
+    delay 160
+    nodes {n1 n6}
+    bandwidth 10000000
+}
+
+link l2 {
+    delay 160
+    nodes {n2 n6}
+    bandwidth 10000000
+}
+
+link l3 {
+    delay 160
+    nodes {n3 n5}
+    bandwidth 10000000
+}
+
+link l4 {
+    delay 160
+    nodes {n4 n5}
+    bandwidth 10000000
+}
+
+link l5 {
+    delay 160
+    nodes {n5 n6}
+    bandwidth 10000000
+}
+
+link l6 {
+    delay 160
+    nodes {n6 n7}
+    bandwidth 10000000
+}
+
+link l7 {
+    delay 160
+    nodes {n5 n7}
+    bandwidth 10000000
+}
+
+link l8 {
+    delay 160
+    nodes {n7 n8}
+    bandwidth 10000000
+}
+
+link l9 {
+    delay 160
+    nodes {n3 n9}
+    bandwidth 10000000
+}
+
+link l10 {
+    delay 160
+    nodes {n4 n9}
+    bandwidth 10000000
+}
+
+link l11 {
+    delay 160
+    nodes {n1 n9}
+    bandwidth 10000000
+}
+
+link l12 {
+    delay 160
+    nodes {n2 n9}
+    bandwidth 10000000
+}
+
+link l13 {
+    delay 160
+    nodes {n5 n9}
+    bandwidth 10000000
+}
+
+link l14 {
+    delay 160
+    nodes {n6 n9}
+    bandwidth 10000000
+}
+
+link l15 {
+    delay 160
+    nodes {n7 n9}
+    bandwidth 10000000
+}
+
+link l16 {
+    delay 160
+    nodes {n8 n9}
+    bandwidth 10000000
+}
+
+canvas c1 {
+    name {Canvas1}
+}
+
+option global {
+    interface_names no
+    ip_addresses yes
+    ipv6_addresses yes
+    node_labels yes
+    link_labels yes
+    ipsec_configs yes
+    exec_errors yes
+    show_api no
+    background_images no
+    annotations yes
+    grid yes
+    traffic_start 0
+}
+
