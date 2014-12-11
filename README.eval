@@ -1,0 +1,45 @@
+CBMEN ENCODERS Evaluation Branch
+================================
+
+This branch contains studies (parametrized tests which are
+based on a test generation/running framework) and tests (which
+are non-parametrized).
+
+Tests
+=====
+
+These tests are located inside the tests/ directory.
+To run a specific test, please go inside its folder and
+follow appropriate instructions.
+
+Studies
+=======
+
+This branch contains the evaluation framework (see directory
+studies/framework) which uses NRL's CORE/EMANE 4.3 (a slightly
+modified version included as source code) together with Linux
+Containers to run automated tests and parameter studies. The framework
+includes a Python-based test script generator that uses BonnMotion
+(Java-based scenario generator) as a component.
+
+See the docs directory for further documentation.
+A two-slide overview can be found under docs/demo_slides/slides.pdf.
+
+Various sample studies can be found in the studies directory. Most
+subdirectories correspond to paramter studies. All studies assume that
+Haggle with the approriate CBMEN features has been built and installed
+on the Linux host. We have use Ubuntu 11.10 and 12.04 in our tests.
+
+The typical sequence to run those studies (e.g. milcom-dissemination) is ... 
+
+cd studies/framework/lxc/bin
+./clean.sh milcom-dissemination
+./generate.sh milcom-dissemination
+./generate_test_list.sh milcom-dissemination
+./run.sh milcom-dissemination
+
+To regenerate the test scripts, e.g. after modifying test_spec.json,
+you may want to delete the Testsuite directory.
+
+Similarly, it is advisable to remove the TestOutput directory
+before rerunning if the old reports and logs are not needed anymore.
