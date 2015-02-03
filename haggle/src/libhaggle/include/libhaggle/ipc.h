@@ -9,6 +9,7 @@
  *   Joshua Joy (JJ, jjoy)
  *   Sam Wood (SW)
  *   Hasnain Lakhani (HL)
+ *   Hasanat Kazmi (HK)
  */
 
 /* Copyright 2008 Uppsala University
@@ -48,6 +49,8 @@ typedef enum event_type {
 	LIBHAGGLE_EVENT_NEW_DATAOBJECT,
 	// Interest list
 	LIBHAGGLE_EVENT_INTEREST_LIST,
+	// Interests Policy list // IRD, HK
+	LIBHAGGLE_EVENT_INTERESTS_POLICIES_LIST, // IRD, HK
 	// The number of possible events
 	_LIBHAGGLE_NUM_EVENTS
 } haggle_event_type_t;
@@ -57,6 +60,7 @@ typedef struct event {
 	union {
 		struct dataobject *dobj;
 		struct attributelist *interests;
+		struct attributelist *interests_policies; // IRD, HK
 		struct nodelist *neighbors;
 		unsigned int shutdown_reason;
 	};
@@ -125,6 +129,7 @@ typedef enum control_type {
 	CTRL_TYPE_SET_PARAM,
 	CTRL_TYPE_CONFIGURE_SECURITY, // CBMEN, HL
 	CTRL_TYPE_DYNAMIC_CONFIGURE,
+	CTRL_TYPE_GET_INTERESTS_POLICIES, // IRD, HK
 } control_type_t;
 	
 #define DATAOBJECT_METADATA_APPLICATION "Application"
@@ -191,6 +196,14 @@ typedef enum control_type {
 #define DATAOBJECT_METADATA_APPLICATION_CONTROL_OBSERVER_CONFIGURATION_OBSERVE_DATA_STORE_DUMP "ObserveDataStoreDump"
 #define DATAOBJECT_METADATA_APPLICATION_CONTROL_DYNAMIC_CONFIGURATION "DynamicConfiguration"
 // CBMEN, HL, End
+
+// IRD, HK, Begin
+#define DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICIES_METADATA "InterestsPolicies"
+#define DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICY_METADATA "Policy"
+#define DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICY_NAME_PARAM "name" 
+#define DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICY_VALUE_PARAM "value" 
+#define DATAOBJECT_METADATA_APPLICATION_CONTROL_INTEREST_POLICY "Policy"
+// IRD, HK, End
 
 /* Attribute name definitions */
 #define HAGGLE_ATTR_CONTROL_NAME "HaggleIPC"  // <-- all control messages should have at this one.
@@ -418,6 +431,18 @@ HAGGLE_API int haggle_ipc_update_configuration_dynamic(haggle_handle_t hh,
 HAGGLE_API int haggle_ipc_get_application_interests_async(haggle_handle_t hh);
 
 /**
+	IRD, HK
+
+	Get the currently registered policies on application interests for this application.
+	The application interests will be asynchrounously returned in a response
+	data object, which the applications receive in one of its event handlers.
+	The response data object must be handled by the application itself.
+
+	@returns positive value on success, negative (error code) on failure.
+*/
+HAGGLE_API int haggle_ipc_get_application_interests_policices_async(haggle_handle_t hh);
+
+/**
 	Get the data objects that match the currently registered application 
 	interests for this application. The application interests will be 
 	asynchrounously returned as usual. MOS: Most importantly, this function
@@ -526,6 +551,15 @@ HAGGLE_API int haggle_ipc_authorize_nodes_for_certification(haggle_handle_t hh, 
 	@returns an error code.
 */
 HAGGLE_API int haggle_ipc_authorize_role_for_attributes(haggle_handle_t hh, const char *roleName, const struct attributelist *encryption, const struct attributelist *decryption);
+
+/** IRD, HK - New API call added
+
+	Authorizes a role for the given attributes
+
+	@returns an error code.
+*/
+HAGGLE_API int haggle_ipc_add_interests_policies(haggle_handle_t hh, const struct attributelist *al);
+
 
 /**
 	Send shutdown event to Haggle daemon.

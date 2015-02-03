@@ -7,6 +7,7 @@
  *   Hasnain Lakhani (HL)
  *   James Mathewson (JM, JLM)
  *   Sam Wood (SW)
+ *   Hasanat Kazmi (HK)
  */
 
 // test program for Haggle API
@@ -34,6 +35,7 @@ static bool terminate = false;
 
 static haggle_handle_t  haggle;
 struct attributelist *cur_interests = NULL;
+struct attributelist *cur_interests_policies = NULL; // IRD, HK
 
 static int num_data_objects_received = 0;
 static int num_data_objects_published = 0;
@@ -235,6 +237,29 @@ int on_interests(haggle_event_t *e, void* nix){
   return 0;
 }
 
+// IRD, HK, Begin
+int on_interestsPolicies(haggle_event_t *e, void* nix){
+  ht_printf("\nReceived application interests policies event\n");
+  if (e->interests_policies) {
+    cur_interests_policies = haggle_attributelist_copy(e->interests_policies);
+    int i = 0;
+    while(true){
+      struct attribute *a = haggle_attributelist_get_attribute_n(cur_interests_policies,i);
+      if(a == NULL) break;
+      ht_printf(" attribute %s, policy %s\n",  
+       haggle_attribute_get_name(a), 
+       haggle_attribute_get_value(a));
+      i++;
+    }
+    if(i == 0){
+      ht_printf(" no interest policies attributes registered\n");
+    }
+  }
+  done = true;
+  return 0;
+}
+// IRD, HK, End
+
 int is_subscribe(char *s)
 {
   return strcmp(s,"subscribe") == 0 || strcmp(s,"sub") == 0;
@@ -264,6 +289,18 @@ int is_nop(char *s)
 {
   return strcmp(s,"nop") == 0;
 }
+
+// IRD, HK, Begin
+int is_setpolicy(char *s)
+{
+  return strcmp(s,"setPolicy") == 0 || strcmp(s, "sp") == 0;
+}
+
+int is_listpolicy(char *s)
+{
+  return strcmp(s,"listPolicy") == 0 || strcmp(s, "lp") == 0;
+}
+// IRD, HK, ENd
 
 // CBMEN, HL, Begin
 int is_add_role_shared_secrets(char *s)
@@ -312,6 +349,8 @@ void usage()
     ht_printf("       %s [<options>] [<app>] sub|subscribe <attribute-name>[=<value>[:<weight>]]\n", argv[0]);
     ht_printf("       %s [<options>] [<app>] unsub|unsubscribe <attribute-name>[=<value>[:<weight>]]\n", argv[0]);
     ht_printf("       %s [<options>] [<app>] resub|resubscribe <attribute-name>[=<value>[:<weight>]]\n", argv[0]);
+    ht_printf("       %s [<options>] [<app>] setPolicy|sp <attribute-name>=<\"policy\">\n", argv[0]); // IRD, HK
+    ht_printf("       %s [<options>] [<app>] listPolicy|lp\n", argv[0]); // IRD, HK
     ht_printf("       %s [<options>] [<app>] addRoleSharedSecrets <role-name>=<shared-secret>\n", argv[0]); // CBMEN, HL
     ht_printf("       %s [<options>] [<app>] addNodeSharedSecrets <node-id>=<shared-secret>\n", argv[0]); // CBMEN, HL
     ht_printf("       %s [<options>] [<app>] addAuthorities <auth-name>=<auth-id>\n", argv[0]); // CBMEN, HL
@@ -567,6 +606,17 @@ int main(int argc_, char *argv_[]){
   } else {
     ht_printf("OK\n\n");
   }
+
+  // IRD, HK, Begin  
+  ht_printf("Register interests policies list event ...\n");
+  retcode = haggle_ipc_register_event_interest(haggle, LIBHAGGLE_EVENT_INTERESTS_POLICIES_LIST, on_interestsPolicies);  
+  if (retcode != HAGGLE_NO_ERROR) {
+    fprintf(stderr, "Could not register interest list event interest\n");
+    exit(-1);
+  } else {
+    ht_printf("OK\n\n");
+  }
+  // IRD, HK, End 
   
   ht_printf("Start event loop ...\n");
   if (haggle_event_loop_run_async(haggle) != HAGGLE_NO_ERROR) {
@@ -704,6 +754,8 @@ int main(int argc_, char *argv_[]){
         fprintf(stderr, "error: no authorities specified\n");
       else if(is_authorize_nodes_for_certification(cmd))
         fprintf(stderr, "error: no nodes specified\n");
+      else if(is_setpolicy(cmd)) // IRD, HK
+        fprintf(stderr, "error: no policy specified\n"); // IRD, HK
       else
         fprintf(stderr, "error: no attributes specified\n");
     }
@@ -883,6 +935,32 @@ int main(int argc_, char *argv_[]){
           haggle_attributelist_free(decryption);
       }
       // CBMEN, HL, End
+
+      // IRD, HK, Begin
+      if (is_setpolicy(cmd)) {
+        for(i = 0; i < al->num_attributes; i++) {
+          struct attribute *a = haggle_attributelist_get_attribute_n(al, i);
+          ht_printf("Helo Adding role %s with shared secret %s\n",
+                    haggle_attribute_get_name(a), haggle_attribute_get_value(a));
+        }
+        retcode = haggle_ipc_add_interests_policies(haggle, al);
+        if (retcode != HAGGLE_NO_ERROR) {
+          fprintf(stderr, "Could not add interests policies.\n");
+          exit(-1);
+        } else {
+          ht_printf("Successfully added interests policies.\n");
+        }
+      }
+
+      // if (is_listpolicy(cmd)) {
+      //   retcode = haggle_ipc_list_interests_policies(haggle);
+      //   if (retcode != HAGGLE_NO_ERROR) {
+      //     fprintf(stderr, "Could not list interests policies.\n");
+      //     exit(-1);
+      //   }
+      // }
+
+      // IRD, HK, End
 
       done = false;
       if(interests) {

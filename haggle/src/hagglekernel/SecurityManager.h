@@ -9,6 +9,7 @@
  *   Ashish Gehani (AG)
  *   Mark-Oliver Stehr (MOS)
  *   Hasnain Lakhani (HL)
+ *   Hasanat Kazmi (HK)
  */
 
 /* Copyright 2008-2009 Uppsala University
@@ -105,6 +106,12 @@ typedef enum {
     SECURITY_TASK_DECRYPT_ATTRIBUTE_BUCKETS,
     // CBMEN, HL, End
     SECURITY_TASK_UPDATE_WAITING_QUEUES, // CBMEN, AG
+    // IRD, HK, Begin
+    SECURITY_TASK_GENERATE_INTERESTS_CAPABILITY,
+    SECURITY_TASK_USE_INTERESTS_CAPABILITY,
+    SECURITY_TASK_ENCRYPT_INTERESTS,
+    SECURITY_TASK_DECRYPT_INTERESTS,
+    // IRD, HK, End
 } SecurityTaskType_t;
 
 class SecurityTask {
@@ -144,7 +151,7 @@ class SecurityHelper : public ManagerModule<SecurityManager> {
     void sendSecurityDataRequest(DataObjectRef& dObj);
     void handleSecurityDataRequest(DataObjectRef& dObj);
     void handleSecurityDataResponse(DataObjectRef& dObj);
-    void requestSpecificKeys(List<string>& keys, DataObjectRef& dObj, NodeRefList *targets, bool publicKeys = true);
+    void requestSpecificKeys(List<string>& keys, DataObjectRef& dObj, NodeRefList *targets, bool publicKeys = true, bool interests = false); // IRD, HK
     void requestAllKeys(string authName, string authID, bool publicKeys = true);
     bool signCertificate(string subject, Metadata *m, Metadata *response);
     bool sendSpecificPublicKeys(string subject, Metadata *m, Metadata *response);
@@ -156,10 +163,16 @@ class SecurityHelper : public ManagerModule<SecurityManager> {
     bool saveReceivedKeys(Metadata *m, bool publicKeys = true);
     bool issuePublicKeys(List<string>& names);
     bool issuePrivateKey(string fullName, string subject, string &privkey, bool self = false);
-    bool updateWaitingQueues(bool publicKeys = true);
+    bool updateWaitingQueues(bool publicKeys = true, bool interests = false); // IRD, HK
     bool verifyAuthorityCertificate(CertificateRef caCert);
     typedef HashMap<string,CertificateRef> CertificateStore_t;
     // CBMEN, HL, End
+    // IRD, HK, Begin
+    bool generateInterestsCapability(DataObjectRef& dObj, NodeRefList *targets);
+    bool useInterestsCapability(DataObjectRef& dObj, NodeRefList *targets);
+    bool encryptDataObjectInterests(DataObjectRef& dObj, NodeRefList *targets); 
+    bool decryptDataObjectInterests(DataObjectRef &dObj, NodeRefList *targets); 
+    // IRD, HK, End
     bool updateSignatureChain(DataObjectRef& dObj, RSA *key); // CBMEN, HL, AG
 	void doTask(SecurityTask *task);
 	bool run();
@@ -187,6 +200,8 @@ private:
 	RecursiveMutex certStoreMutex;
 	CertificateRef myCert;
     HashMap<string, string> pendingDecryption; // CBMEN, AG
+    HashMap<string, string > policyInterests; // IRD, HK 
+    HashMap<string, string > hashCache; // IRD, HK
     // CBMEN, HL, Begin
     HashMap<string, Pair<string, unsigned char *> > policyCache;
     HashMap<string, unsigned char *> capabilityCache;
@@ -232,6 +247,10 @@ private:
     HashMap<string, string> privKeysFromConfig; // Ones that we've read from config but not necessarily sent to charm
     HashMap<DataObjectRef, NodeRefList*> waitingForPubKey;
     HashMap<DataObjectRef, NodeRefList*> waitingForPrivKey;
+    // IRD, HK, Begin
+    HashMap<DataObjectRef, NodeRefList*> waitingForPubKeyInt;
+    HashMap<DataObjectRef, NodeRefList*> waitingForPrivKeyInt;
+    // IRD, HK, End
     string charmPersistenceData;
     string tempFilePath;
     size_t rsaKeyLength;
@@ -261,6 +280,7 @@ private:
     // CBMEN, HL, Begin
     // Must be Recursive or there will be deadlocks since handleSecurityDataResponse() calls requestSpecificKeys() and both need to hold this mutex.
     RecursiveMutex dynamicConfigurationMutex; 
+    bool configureInterestsPolicies(Metadata *dm, bool fromConfig = true); // IRD, HK
     bool configureNodeSharedSecrets(Metadata *dm, bool fromConfig = true);
     bool configureRoleSharedSecrets(Metadata *dm, bool fromConfig = true);
     bool configureAuthorities(Metadata *dm, bool fromConfig = true);
@@ -272,6 +292,8 @@ private:
     void onSecurityConfigure(Event *e);
     // CBMEN, HL, End
 	
+    void onInterestsPoliciesRequested(Event *e); // IRD, HK
+
 	void onPrepareStartup();
     void onStartup(); // CBMEN, HL
 	void onPrepareShutdown();

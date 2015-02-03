@@ -7,6 +7,7 @@
  * Authors:
  *   Mark-Oliver Stehr (MOS)
  *   Sam Wood (SW)
+ *   Hasanat Kazmi (HK)
  */
 
 /* Copyright 2008 Uppsala University
@@ -49,6 +50,7 @@ struct dataobject {
 	FILE *fp;
 	unsigned char hash[SHA1_DIGEST_LENGTH];
 	char *hash_str;
+	char *interestsPolicy; // IRD, HK
 	char *thumbnail_str;
 	struct attributelist *al;
 	unsigned char *raw; // The raw metadata as a string
@@ -1114,6 +1116,20 @@ int haggle_dataobject_add_hash(struct dataobject *dobj)
 
         return HAGGLE_NO_ERROR;
 }
+
+// IRD, HK, Begin
+int haggle_dataobject_add_interest_policy(struct dataobject *dobj, char *policy_name)
+{
+        int ec = HAGGLE_INTERNAL_ERROR;
+        if(policy_name == "") 
+        	return ec;
+        strcpy(dobj->interestsPolicy, policy_name);
+
+        ec =  HAGGLE_NO_ERROR;
+        LIBHAGGLE_DBG( "adding new interest policy was a %s\n", (ec==HAGGLE_NO_ERROR?"SUCCESS":"FALIURE") );
+        return ec;
+}
+// IRD, HK, End
 
 int haggle_dataobject_set_thumbnail(struct dataobject *dobj, char *data, size_t len)
 {

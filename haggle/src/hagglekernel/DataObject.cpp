@@ -8,6 +8,7 @@
  *   Mark-Oliver Stehr (MOS)
  *   Sam Wood (SW)
  *   Hasnain Lakhani (HL)
+ *   Hasanat Kazmi (HK)
  */
 
 /* Copyright 2008-2009 Uppsala University
@@ -123,6 +124,7 @@ DataObject::DataObject(InterfaceRef _localIface, InterfaceRef _remoteIface, cons
 		isThisNodeDesc(false), controlMessage(false), putData_data(NULL), 
 		dataState(DATA_STATE_UNKNOWN),
 		fatalError(false),
+		attrsHashed(false), // IRD, HK
 		encryptedFilePath(""), encryptedFileLength(0), ABEStatus(ABE_NOT_NEEDED) // CBMEN, HL
 {
 	memset(id, 0, sizeof(DataObjectId_t));
@@ -149,6 +151,7 @@ DataObject::DataObject(const DataObject& dObj) :
 		isThisNodeDesc(dObj.isThisNodeDesc),
                 controlMessage(dObj.controlMessage), putData_data(NULL), dataState(dObj.dataState),
 		fatalError(dObj.fatalError),
+		attrsHashed(dObj.attrsHashed), // IRD, HK
 		encryptedFilePath(dObj.encryptedFilePath), // CBMEN, HL
 		encryptedFileLength(dObj.encryptedFileLength), ABEStatus(dObj.ABEStatus) // CBMEN, HL
 {
