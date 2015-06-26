@@ -1,0 +1,14 @@
+language: c++
+
+compiler:
+  - g++
+
+#dependencies
+install:
+  - sudo apt-get update
+  - sudo apt-get install automake autoconf build-essential libtool libsqlite3-dev libxml2-dev libbluetooth-dev libdbus-1-3 libdbus-1-dev libssl-dev
+
+script:
+  - ./autogen.sh
+  - ./configure 
+  - make
