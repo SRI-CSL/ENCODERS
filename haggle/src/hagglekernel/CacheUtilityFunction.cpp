@@ -150,6 +150,7 @@ CacheUtilityAggregateSum::getPrettyName()
         first = false;
     }
     pretty = pretty + "))";
+
     return pretty;
 }
 
@@ -192,6 +193,7 @@ CacheUtilityAggregateSum::compute(string do_id, string &strResult)
        strResult.append(buffer);
        strResult.append("), ");
     }
+
     return normalized*weight;
 }
 
