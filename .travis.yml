@@ -9,6 +9,7 @@ install:
   - sudo apt-get install automake autoconf build-essential libtool libsqlite3-dev libxml2-dev libbluetooth-dev libdbus-1-3 libdbus-1-dev libssl-dev
 
 script:
+  - cd haggle 
   - ./autogen.sh
   - ./configure 
   - make
