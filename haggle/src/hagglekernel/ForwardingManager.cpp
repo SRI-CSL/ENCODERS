@@ -689,7 +689,7 @@ bool ForwardingManager::shouldForward(const DataObjectRef& dObj, const NodeRef& 
         }
     }
 
-    HAGGLE_DBG( "Checking if data object %s should be forwarded to node %s \n", idStr, node->getName().c_str());
+    HAGGLE_DBG("Checking if data object %s should be forwarded to node %s \n", idStr, node->getName().c_str());
 
     // Make sure we use the node in the node store
     peer = kernel->getNodeStore()->retrieve(node, false);
