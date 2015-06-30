@@ -71,7 +71,6 @@ CacheUtilityAggregate::onConfig(const Metadata& m)
     HAGGLE_DBG("Aggregate loaded %d functions, faild to load: %d functions.\n", loaded, failed);
 }
 
-
 void 
 CacheUtilityAggregate::notifyInsertion(DataObjectRef dObj)
 {
@@ -217,6 +216,7 @@ CacheUtilityAggregateMin::getPrettyName()
         first = false;
     }
     pretty = pretty + "))";
+
     return pretty;
 }
 
@@ -258,6 +258,7 @@ CacheUtilityAggregateMin::compute(string do_id, string &strResult)
        strResult.append(buffer);
        strResult.append("), ");
     }
+
     return weight*normalized;
 }
 
