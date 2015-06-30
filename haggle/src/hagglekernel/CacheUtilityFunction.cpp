@@ -2559,7 +2559,6 @@ CacheUtilityLocal::compute(string do_id /**< string id of the data object */, st
         }
 	return weight;
     }
-
 }
 
 /**
@@ -2577,7 +2576,6 @@ CacheUtilityLocal::notifyDelete(DataObjectRef dObj)
         local_map.erase(it);
         //local_size -= dObj->getOrigDataLen();
     }
-
 }
 
 /**
@@ -2593,12 +2591,11 @@ CacheUtilityLocal::notifyDelete(DataObjectRef dObj)
 void
 CacheUtilityLocal::notifyInsertion(DataObjectRef dObj)
 {
-
     bool isLocal = dObj->getRemoteInterface() && dObj->getRemoteInterface()->isApplication();
+
     if (!isLocal) {
         return;
     }
     local_map.insert(make_pair(dObj->getIdStr(), dObj->getOrigDataLen() ));
     //local_size += dObj->getOrigDataLen();
-
 }
