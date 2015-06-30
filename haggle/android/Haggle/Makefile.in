@@ -1,0 +1,35 @@
+APP=Haggle
+DEBUG=bin/$(APP)-debug
+RELEASE=bin/$(APP)-unsigned
+RELEASE_SIGNED=bin/$(APP)
+ANT=ant -q
+TOP_BIN_DIR=@top_builddir@/bin
+
+SRC = \
+	src/org/haggle/kernel/Haggle.java \
+	src/org/haggle/kernel/StatusView.java \
+	src/org/haggle/kernel/BluetoothConnectivity.java \
+	src/org/haggle/kernel/Utils.java \
+	libs/armeabi/libhagglekernel_jni.so
+
+all: debug
+
+debug: $(DEBUG).apk
+release: $(RELEASE).apk
+
+$(DEBUG).apk: build.xml $(SRC)
+	$(ANT) debug
+	cp -f $@ $(TOP_BIN_DIR)
+
+$(RELEASE).apk: build.xml $(SRC)
+	$(ANT) release
+	cp -f $@ $(TOP_BIN_DIR)
+
+deploy: debug
+	adb uninstall org.haggle.kernel
+	adb install $(DEBUG).apk
+
+clean:
+	rm -f *~
+	ant -q clean
+
