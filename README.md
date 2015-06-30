@@ -1,3 +1,5 @@
+https://travis-ci.org/SRI-CSL/ENCODERS.svg?branch=master
+
 This git repository contains the CBMEN ENCODERS code and related
 documents under development by the SRI team. For integration testing,
 it also contains the CBMEN code and documents from Drexel University. 
