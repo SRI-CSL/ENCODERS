@@ -1614,7 +1614,7 @@ MemoryCache::getNodeIdsForDataObject(
                 List<Pair <string, int> > interests;
                 node->getInterests(&interests);
                 bool skip_interest = false;
-                for (List<Pair <string, int> >::iterator ity = interests.begin(); it != interests.end(); it++) {
+                for (List<Pair <string, int> >::iterator ity = interests.begin(); ity != interests.end(); ity++) {
                     string node_keyval = (*ity).first;
                     int node_weight = (*ity).second;
                     if (keyval == node_keyval  && node_weight == 0) {
