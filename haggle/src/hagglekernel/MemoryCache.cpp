@@ -1468,8 +1468,8 @@ MemoryCache::getDataObjectIdsForNode(
                 string dobj_id = (*it).second;
                 int attr_matched;
                 double sat = computeSatisfaction(node_id, dobj_id, &attr_matched); 
-                Map<string, bool>::iterator it = inList.find(dobj_id);
-                bool isInList = (it != inList.end());
+                Map<string, bool>::iterator itt = inList.find(dobj_id);
+                bool isInList = (itt != inList.end());
                 if (!isInList && attr_matched >= min_attr_match && sat*100 >= matchThreshold) {
                     sortedStringListInsert(matchList, dobj_id, sat);
                     inList.insert(make_pair(dobj_id, true));
@@ -1494,8 +1494,8 @@ MemoryCache::getDataObjectIdsForNode(
                 string dobj_id = (*it).first;
                 int attr_matched;
                 double sat = computeSatisfaction(node_id, dobj_id, &attr_matched); 
-                Map<string, bool>::iterator it = inList.find(dobj_id);
-                bool isInList = (it != inList.end());
+                Map<string, bool>::iterator itt = inList.find(dobj_id);
+                bool isInList = (itt != inList.end());
                 if (!isInList && attr_matched >= min_attr_match && sat*100 >= matchThreshold) {
                     sortedStringListInsert(matchList, dobj_id, sat);
                     inList.insert(make_pair(dobj_id, true));
@@ -1598,13 +1598,13 @@ MemoryCache::getNodeIdsForDataObject(
                 break;
             }
 
-            node_id_to_node_t::iterator it = node_id_to_node->find(node_id);
-            if (it == node_id_to_node->end()) {
+            node_id_to_node_t::iterator itx = node_id_to_node->find(node_id);
+            if (itx == node_id_to_node->end()) {
                 HAGGLE_ERR("Node %s is missing from cache\n", node_id.c_str());
                 errorCount++;
                 continue;
             }
-            AbstractNode *node = (*it).second;
+            AbstractNode *node = (*itx).second;
             if (!node) {
                 HAGGLE_ERR("NULL node.\n");
                 continue;
@@ -1614,9 +1614,9 @@ MemoryCache::getNodeIdsForDataObject(
                 List<Pair <string, int> > interests;
                 node->getInterests(&interests);
                 bool skip_interest = false;
-                for (List<Pair <string, int> >::iterator it = interests.begin(); it != interests.end(); it++) {
-                    string node_keyval = (*it).first;
-                    int node_weight = (*it).second;
+                for (List<Pair <string, int> >::iterator ity = interests.begin(); it != interests.end(); it++) {
+                    string node_keyval = (*ity).first;
+                    int node_weight = (*ity).second;
                     if (keyval == node_keyval  && node_weight == 0) {
                         skip_interest = true;
                         break;  // get out of the interest for loop
@@ -1658,13 +1658,13 @@ MemoryCache::getNodeIdsForDataObject(
         for (HashMap<string, int>::iterator it = key_star_to_node_ids->begin(); it != key_star_to_node_ids->end(); it++) {
             string node_id = (*it).first;
 
-            node_id_to_node_t::iterator it = node_id_to_node->find(node_id);
-            if (it == node_id_to_node->end()) {
+            node_id_to_node_t::iterator itz = node_id_to_node->find(node_id);
+            if (itz == node_id_to_node->end()) {
                 HAGGLE_ERR("Node %s is missing from cache\n", node_id.c_str());
                 errorCount++;
                 continue;
             }
-            AbstractNode *node = (*it).second;
+            AbstractNode *node = (*itz).second;
             long matchThreshold = node->getMatchThreshold();
             int attr_matched;
             double sat = computeSatisfaction(node_id, dobj_id, &attr_matched);
