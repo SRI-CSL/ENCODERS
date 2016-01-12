@@ -13,8 +13,7 @@ install:
 script:
   - cd ${ENCODERS_HOME}/haggle 
   - ./autogen.sh
-  - ./configure 
-  - make
+  - ./configure --enable-gcov && make && make check
   
 after_script:
   - coveralls -r .. -b . --gcov-options '\-lp';
