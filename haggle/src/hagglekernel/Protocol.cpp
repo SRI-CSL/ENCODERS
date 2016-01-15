@@ -700,8 +700,6 @@ const string Protocol::ctrlmsgToStr(struct ctrlmsg *m) const
 			return buf;
 		}
         }
-        // Shouldn't be able to get here, but still...
-        return "Bad control message";
 }
 
 
