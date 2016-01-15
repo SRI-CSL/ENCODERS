@@ -5666,10 +5666,6 @@ int SQLDataStore::_doDataObjectQueryForReplacementTotalOrder(DataStoreReplacemen
             DataObjectRef dObj; 
             const char *metricStr;
 
-            if (ret != SQLITE_ROW) {
-                continue;
-            }
-
             metricStr = (const char *)sqlite3_column_text(stmt, view_dataobjects_attributes_as_namevalue_value);
             if (!metricStr) {
                 HAGGLE_ERR("Could not get metric.\n");
