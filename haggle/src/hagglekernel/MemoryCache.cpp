@@ -2140,6 +2140,7 @@ do {
     }
 
 } while (false);
+    delete m;
 
     return pass;
 }

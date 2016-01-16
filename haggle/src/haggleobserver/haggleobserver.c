@@ -289,6 +289,9 @@ int computeAverageHopCount() {
     sum += haggle_attribute_get_weight(attr);
   }
 
+  if (count == 0)
+	  return 0;
+
   return (sum / count);
 }
 
