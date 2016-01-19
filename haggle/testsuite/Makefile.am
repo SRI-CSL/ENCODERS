@@ -29,7 +29,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/utils \
 	-I$(top_srcdir)/src/libcpphaggle/include \
 	-I$(top_srcdir)/src/libhaggle/include \
-	$(XML_CPPFLAGS)
+	$(XML_CPPFLAGS) $(PYCFLAGS) 
 
 libhagglemain_a_SOURCES = hagglemain.cpp
 
