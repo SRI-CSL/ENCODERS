@@ -16,7 +16,7 @@ LDFLAGS = -lpthread -lxml2 -lcrypto -lsqlite3
 AM_LDFLAGS = -DDEBUG
 AM_CPPFLAGS =
 
-
+LIBS += -lpthread
 
 
 if OS_LINUX

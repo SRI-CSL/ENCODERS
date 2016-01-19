@@ -7,6 +7,7 @@ CPPFLAGS += -I$(HAGGLE_KERNEL_DIR) -I$(UTILS_DIR) -I.. -I$(LIBCPPHAGGLE_DIR)incl
 LDFLAGS = -lxml2
 if OS_LINUX
 LDFLAGS += -lpthread
+LIBS += -lpthread
 endif
 
 bin_PROGRAMS=timeval refcount newmap newlist stringimpl

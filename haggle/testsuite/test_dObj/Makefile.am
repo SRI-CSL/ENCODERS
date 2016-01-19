@@ -10,6 +10,7 @@ AM_LDFLAGS = -lxml2 -lcrypto
 
 if OS_LINUX
 AM_LDFLAGS += -lpthread
+LIBS += -lpthread
 endif
 if OS_MACOSX
 AM_LDFLAGS += -framework IOKit -framework CoreFoundation -framework CoreServices

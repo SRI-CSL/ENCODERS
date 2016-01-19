@@ -7,6 +7,7 @@ CPPFLAGS += -I$(HAGGLE_KERNEL_DIR) -I$(UTILS_DIR) -I$(LIBCPPHAGGLE_DIR)include/ 
 LDFLAGS = $(XML_LIBS)
 if OS_LINUX
 LDFLAGS += -lpthread
+LIBS += -lpthread
 endif
 
 bin_PROGRAMS=metadata

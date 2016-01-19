@@ -8,6 +8,7 @@ LDFLAGS = $(XML_LIBS) -lcrypto
 
 if OS_LINUX
 LDFLAGS += -lpthread
+LIBS += -lpthread 
 endif
 
 bin_PROGRAMS=certificate

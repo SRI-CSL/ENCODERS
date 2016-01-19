@@ -14,6 +14,7 @@ AM_CPPFLAGS = -I$(HAGGLE_KERNEL_DIR) -I$(UTILS_DIR) -I.. -I$(LIBCPPHAGGLE_DIR)in
 AM_LDFLAGS = -lxml2 -lcrypto
 if OS_LINUX
 AM_LDFLAGS += -lpthread
+LIBS += -lpthread
 endif
 if OS_MACOSX
 AM_LDFLAGS += -framework CoreServices -framework IOKit

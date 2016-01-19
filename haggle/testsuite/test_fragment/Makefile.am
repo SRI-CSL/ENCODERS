@@ -41,6 +41,8 @@ LDADD+=../libtesthlp.a
 LDADD+=../hagglemain.o
 LDADD+= -lcrypto -lpthread -lxml2 -lsqlite3 
 
+LIBS += -lpthread
+
 
 test: \
 	testfragmentservice

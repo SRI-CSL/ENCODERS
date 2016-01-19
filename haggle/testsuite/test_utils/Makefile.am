@@ -8,6 +8,7 @@ LDFLAGS =
 
 if OS_LINUX
 LDFLAGS += -lpthread
+LIBS += -lpthread
 endif
 
 bin_PROGRAMS=test64 bloom shatest bloom_count
