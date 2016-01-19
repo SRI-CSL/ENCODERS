@@ -18,6 +18,9 @@ script:
   - cd ${ENCODERS_HOME}/haggle 
   - ./autogen.sh
   - ./configure --enable-gcov && make && make check
+  - cd testsuite/test_metadata
+  - make 
+  - ./metadata
   
 after_script:
   - coveralls -r .. -b . --gcov-options '\-lp';
