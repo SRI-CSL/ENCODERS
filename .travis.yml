@@ -8,7 +8,10 @@ install:
   - sudo apt-get update
   - sudo apt-get install -y automake sqlite3 build-essential autoconf libtool git libxml2 libxml2-dev sqlite libsqlite3-dev python-dev libbluetooth-dev libdbus-1-3 libdbus-1-dev libssl-dev
   - export ENCODERS_HOME=`pwd`
-  - pip install --user cpp-coveralls;
+  - export OVERALLS_REPO_TOKEN="nH2mlC2UZLYNHofvhH5QCjb94UJxwfmUP"
+  - sudo pip install --user cpp-coveralls;
+  - sudo pip install pyyaml;
+  - export PATH=$PATH:${HOME}/.local/bin
 
 script:
   - cd ${ENCODERS_HOME}/haggle 
