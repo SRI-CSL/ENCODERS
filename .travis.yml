@@ -22,4 +22,4 @@ script:
   - make test_thread 
   
 after_script:
-  - coveralls -r .. -b . -i src/libcpphaggle/include -y ../.coveralls.yml --verbose --gcov-options '\-lp';
+  - coveralls -r .. -b . -i haggle/src --verbose --gcov-options '\-lp';
