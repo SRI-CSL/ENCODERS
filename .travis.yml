@@ -19,7 +19,7 @@ script:
   - ./autogen.sh
   - ./configure --enable-gcov
   - make 
-  - make test_thread 
+  - make test_kernel 
   
 after_script:
-  - coveralls -r .. -b . -i haggle/src --verbose --gcov-options '\-lp';
+  - coveralls -r .. -b testsuite/test_kernel -i haggle/src --verbose --gcov-options '\-lp';
