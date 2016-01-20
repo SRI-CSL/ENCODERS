@@ -23,7 +23,7 @@ LDADD += -lcrypto
 if OS_LINUX
 
 LDFLAGS += -lpthread
-LIBS += -lpthread
+LIBS += -lssl -lcrypto -lpython2.7 -lsqlite3 -lpthread
 
 if HAVE_DBUS
 LDFLAGS += `pkg-config --cflags --libs dbus-1`
