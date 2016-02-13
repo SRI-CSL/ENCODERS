@@ -5,3 +5,5 @@ APP_MODULES := \
 
 APP_OPTIM=release
 APP_BUILD_SCRIPT=jni/Android.mk
+APP_PLATFORM := android-17
+APP_STL := gnustl_static

@@ -21,7 +21,7 @@
 #include "codetorrent.h"
 //#include "main.cpp"
 //for time-stamp
-#include <sys/timeb.h>
+//#include <sys/timeb.h>
 #include <sys/time.h>
 //#include <time.h>
 

@@ -15,21 +15,21 @@ CodeTorrentUtility::~CodeTorrentUtility() {
 
 }
 
-void CodeTorrentUtility::freeCodedBlock(CodedBlockPtr* codedBlockPtrPtr) {
+void CodeTorrentUtility::freeCodedBlock(BlockyPacket** codedBlockPtrPtr) {
     if( codedBlockPtrPtr == NULL || *codedBlockPtrPtr == NULL ) {
         return;
     }
 
-    CodedBlockPtr block = *codedBlockPtrPtr;
+    BlockyPacket* block = *codedBlockPtrPtr;
 
     if( block->coeffs ) {
         free(block->coeffs);
         block->coeffs = NULL;
     }
 
-    if( block->sums ) {
-        free(block->sums);
-        block->sums = NULL;
+    if( block->data ) {
+        free(block->data);
+        block->data = NULL;
     }
 
     if( block ) {

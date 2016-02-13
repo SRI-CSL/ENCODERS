@@ -13,6 +13,7 @@
 #include "DataObject.h"
 #include "Event.h"
 
+#include "networkcoding/blocky/src/blockycoderfile.h"
 #include "networkcoding/codetorrentdecoder.h"
 #include "networkcoding/NetworkCodingConstants.h"
 #include <libcpphaggle/Map.h>

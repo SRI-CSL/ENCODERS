@@ -1,0 +1,6 @@
+gen
+obj
+project.properties
+proguard-project.txt
+extlibs/zlib
+

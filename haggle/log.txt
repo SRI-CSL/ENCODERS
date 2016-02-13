@@ -1,0 +1,31 @@
+make  all-recursive
+make[1]: Entering directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle'
+Making all in doc
+make[2]: Entering directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/doc'
+make[3]: Entering directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/doc'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/doc'
+make[2]: Leaving directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/doc'
+Making all in src
+make[2]: Entering directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/src'
+Making all in utils
+make[3]: Entering directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/src/utils'
+make[3]: Nothing to be done for `all'.
+make[3]: Leaving directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/src/utils'
+Making all in libcpphaggle
+make[3]: Entering directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/src/libcpphaggle'
+make[3]: Nothing to be done for `all'.
+make[3]: Leaving directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/src/libcpphaggle'
+Making all in hagglekernel
+make[3]: Entering directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/src/hagglekernel'
+rm -f git_ref.h
+(cd ../..; ./mkgitref)
+make  all-am
+make[4]: Entering directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/src/hagglekernel'
+g++-4.6 -DHAVE_CONFIG_H -I. -I../..  -Wall -fstack-protector-all -I/usr/include/libxml2 -I../../src/utils -I../../src/libcpphaggle/include -I../../src/libhaggle/include -I/usr/include/python2.7 -I/usr/include/x86_64-linux-gnu/python2.7 -fno-strict-aliasing -D_FORTIFY_SOURCE=2 -g -fstack-protector --param=ssp-buffer-size=4 -Wformat -DNDEBUG -g -fwrapv -O2 -Wall -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include    -DOS_LINUX -DENABLE_BLUETOOTH -DENABLE_ETHERNET -DDEBUG  -g -O2 -Wall -fno-rtti -MT libhagglekernel_a-HaggleKernel.o -MD -MP -MF .deps/libhagglekernel_a-HaggleKernel.Tpo -c -o libhagglekernel_a-HaggleKernel.o `test -f 'HaggleKernel.cpp' || echo './'`HaggleKernel.cpp
+mv -f .deps/libhagglekernel_a-HaggleKernel.Tpo .deps/libhagglekernel_a-HaggleKernel.Po
+g++-4.6 -DHAVE_CONFIG_H -I. -I../..  -Wall -fstack-protector-all -I/usr/include/libxml2 -I../../src/utils -I../../src/libcpphaggle/include -I../../src/libhaggle/include -I/usr/include/python2.7 -I/usr/include/x86_64-linux-gnu/python2.7 -fno-strict-aliasing -D_FORTIFY_SOURCE=2 -g -fstack-protector --param=ssp-buffer-size=4 -Wformat -DNDEBUG -g -fwrapv -O2 -Wall -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include    -DOS_LINUX -DENABLE_BLUETOOTH -DENABLE_ETHERNET -DDEBUG  -g -O2 -Wall -fno-rtti -MT libhagglekernel_a-NetworkCodingManager.o -MD -MP -MF .deps/libhagglekernel_a-NetworkCodingManager.Tpo -c -o libhagglekernel_a-NetworkCodingManager.o `test -f 'networkcoding/manager/NetworkCodingManager.cpp' || echo './'`networkcoding/manager/NetworkCodingManager.cpp
+make[4]: Leaving directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/src/hagglekernel'
+make[3]: Leaving directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/src/hagglekernel'
+make[2]: Leaving directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle/src'
+make[1]: Leaving directory `/home/zeeshan/Desktop/ENCODERS-Backup/haggle'

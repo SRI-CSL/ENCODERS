@@ -22,5 +22,5 @@
   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
   <uses-permission android:name="android.permission.BLUETOOTH" />
   <uses-permission android:name="android.permission.VIBRATE" />
-  <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="7"></uses-sdk>
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="21"></uses-sdk>
 </manifest> 

@@ -8,12 +8,12 @@
 #define CODETORRENTUTILITY_H_
 
 #include "codetorrent.h"
-
+#include "networkcoding/blocky/src/blockypacket.h"
 class CodeTorrentUtility {
 public:
     CodeTorrentUtility();
     virtual ~CodeTorrentUtility();
-    void freeCodedBlock(CodedBlockPtr* codedBlockPtr);
+    void freeCodedBlock(BlockyPacket** codedBlockPtr);
 };
 
 #endif /* CODETORRENTUTILITY_H_ */

@@ -1,5 +1,8 @@
 package org.haggle.LuckyMe;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.haggle.Handle;
 import org.haggle.Interface;
 import org.haggle.Node;
@@ -44,12 +47,26 @@ public class LuckyView extends Activity {
 	private Thread mHaggleStatusThread = null;
 	private HaggleStatusChecker mHaggleStatusChecker = null;
 	private ServiceConnection mConnection = null;
+
+	private Process suProcess = null;
+
+	private DataOutputStream os_su = null;
 	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		try {
+			suProcess = Runtime.getRuntime().exec("su");
+			os_su = new DataOutputStream(suProcess.getOutputStream());
+			os_su.writeBytes("am startservice -a android.intent.action.MAIN -n org.haggle.kernel/"
+					+ "org.haggle.kernel.Haggle\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		Log.d(LUCKY_VIEW_TAG, "onCreate() called");
 

@@ -151,14 +151,23 @@ DataObjectRef NetworkCodingDecoderService::decodeDataObject(
 
     HAGGLE_DBG2("Read block from file sucessfully\n");
 
-    int coeffsLen = decoderref->getNumberOfBlocksPerGen();
+    int coeffsLen = decoderref->getBlocksPerGeneration();
     size_t blockSize = this->networkCodingConfiguration->getBlockSize();
     int numberOfBlocksPerDataObject = this->networkCodingConfiguration->getNumberOfBlockPerDataObject();
 
     for(int x=0;x<numberOfBlocksPerDataObject;x++) {
         HAGGLE_DBG2("coeffsLen=%d\n", coeffsLen);
-        bool isInnovative = decoderref->store_block(0, storagePutDataPointer,
-                storagePutDataPointer + coeffsLen);
+        BlockyPacket block;
+        block.generation = 0;
+        block.numBlocks = (size_t)coeffsLen;
+        block.blockSize = blockSize;
+        uint8_t * coeffs = new uint8_t[coeffsLen];
+        uint8_t *data = new uint8_t[blockSize];
+        memcpy(coeffs, storagePutDataPointer, coeffsLen);
+        memcpy(data, storagePutDataPointer+coeffsLen, blockSize);
+        block.data = data;
+        block.coeffs = coeffs;
+        bool isInnovative = decoderref->store(block);
         HAGGLE_STAT("Received innovative block: %d for %s\n", isInnovative,originalDataObjectId.c_str());
 	size_t numberOfBlocks = originalDataFileSize / this->networkCodingConfiguration->getBlockSize();
 	HAGGLE_STAT("Number blocks: %d for %s\n",numberOfBlocks,originalDataObjectId.c_str());
@@ -180,7 +189,7 @@ DataObjectRef NetworkCodingDecoderService::decodeDataObject(
 //                originalDataObjectId);
 
         //generate received event
-        string codetorrentDecoderDecodedFilePath = decoderref->getFilepath();
+        string codetorrentDecoderDecodedFilePath = decoderref->getFilePath().c_str();
         HAGGLE_DBG2("codetorrentDecoderDecodedFilePath=%s decodedFilePath=%s decodedFile=%s originalFileName=%s\n",
                 codetorrentDecoderDecodedFilePath.c_str(), decodedFilePath.c_str(), decodedFile.c_str(), originalFileName);
         DataObjectRef dataObjectReceived = DataObject::create(

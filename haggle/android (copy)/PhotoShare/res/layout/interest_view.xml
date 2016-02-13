@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:orientation="vertical"
+                android:gravity="center"
+    			android:layout_width="fill_parent"
+    			android:layout_height="wrap_content">
+   <RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dip">
+
+    <TextView
+        android:id="@+id/interest_label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:text="@string/new_interests_text"/>
+
+    <!--
+        Put the EditText field under the TextView
+        Also give it a standard background (the "android:"
+        part in @android:drawable/editbox_background
+        means it is system resource rather than
+        an application resource.
+    -->
+    <EditText
+        android:id="@+id/entry"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:layout_below="@id/interest_label" 
+        android:minHeight="30sp" 
+        android:textSize="20sp"/>
+
+    <!--
+        The OK button goes below the EditText field.
+        It is also aligned to the right edge of the parent
+        (respecting the parent's padding).
+        The OK button comes first so the Cancel button
+        can be specified relative to the OK button.
+    -->
+    <Button
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/entry"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dip"
+        android:minWidth="80sp" android:text="@string/add_button_text"/>
+
+    <!--
+        The Cancel button is aligned with the top of
+        the OK button and positioned to the left of it.
+        Since the OK button has a left margin of 10, there
+        is some space between the two buttons.
+    -->
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/add_button"
+        android:layout_alignTop="@id/add_button"
+        android:minWidth="80sp" android:text="@string/cancel_button_text"/>
+	</RelativeLayout>
+   	<TextView  
+     xmlns:android="http://schemas.android.com/apk/res/android"  
+     android:id="@+id/list_header"  
+     android:layout_width="fill_parent"  
+     android:layout_height="wrap_content"  
+     android:paddingTop="2dip"  
+     android:paddingBottom="2dip"  
+     android:paddingLeft="5dip"
+     style="?android:attr/listSeparatorTextViewStyle" android:text="@string/my_interests_text"/>  
+    <ListView android:id="@+id/interest_list"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:divider="#eeeeee"
+    	android:dividerHeight="1sp"
+    	android:choiceMode="singleChoice"/>
+</LinearLayout>

@@ -12,11 +12,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+ #include "networkcoding/blocky/src/blockycoderfile.h"
+
 #include "DataObject.h"
 #include "networkcoding/codetorrentencoder.h"
 #include <libcpphaggle/Reference.h>
 
-typedef Reference<codetorrentencoder> codetorrentencoderref;
+typedef Reference<BlockyCoderFile> codetorrentencoderref;
 
 typedef Map<string, codetorrentencoderref> encoder_t;
 typedef Reference<encoder_t> encoder_ref_t;
