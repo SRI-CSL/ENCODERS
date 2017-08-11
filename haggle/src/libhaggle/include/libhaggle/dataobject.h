@@ -323,6 +323,16 @@ HAGGLE_API const char *haggle_dataobject_set_filepath(struct dataobject *dobj, c
 */
 HAGGLE_API int haggle_dataobject_add_hash(struct dataobject *dobj);
 
+
+/** IRD, HK - New API call added
+	Adds an interest to the given data object.
+	
+	The data object and string is property of the caller.
+	
+	@returns an error code.
+*/
+HAGGLE_API int haggle_dataobject_add_interest_policy(struct dataobject *dobj, char *policy_name);
+
 /**
 	Attaches a thumbnail to a data object by embedding the thumbnail
         in the data object's metadata.

@@ -702,6 +702,8 @@ static const char *ctrl_type_names[] = {
 	"set_param", 
     "configure_security", // CBMEN, HL
     "dynamic_configure",
+    "get_interests_policies", // IRD, HK
+    "send_interests_policies", // IRD, HK
 	NULL 
 };
 
@@ -1322,6 +1324,13 @@ HAGGLE_API int haggle_ipc_update_configuration_dynamic(haggle_handle_t hh,
     return ret;
 }
 
+// IRD, HK, Begin
+int haggle_ipc_get_application_interests_policices_async(haggle_handle_t hh)
+{
+	return haggle_ipc_generate_and_send_control_dataobject(hh, CTRL_TYPE_GET_INTERESTS_POLICIES);
+}
+// IRD, HK, End
+
 int haggle_ipc_get_application_interests_async(haggle_handle_t hh)
 {
 	return haggle_ipc_generate_and_send_control_dataobject(hh, CTRL_TYPE_GET_INTERESTS);
@@ -1850,6 +1859,37 @@ HAGGLE_API int haggle_ipc_authorize_role_for_attributes(haggle_handle_t hh, cons
 
 // CBMEN, HL, End
 
+// IRD, HK, Start
+// API call to add multiple interests polocies
+HAGGLE_API int haggle_ipc_add_interests_policies(haggle_handle_t hh, const struct attributelist *al) {
+    metadata_t *policies = NULL;
+    list_t *pos;
+    int ret;
+    
+    if (!hh || !al)
+        return HAGGLE_PARAM_ERROR;
+
+    policies = metadata_new(DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICIES_METADATA, NULL, NULL);
+    if (!policies)
+        return HAGGLE_ALLOC_ERROR;
+
+    list_for_each(pos, &al->attributes) {
+        haggle_attr_t *a = (haggle_attr_t *)pos;
+        metadata_t *policy = metadata_new(DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICY_METADATA, NULL, policies);
+        
+        if (policy) {
+            metadata_set_parameter(policy, DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICY_NAME_PARAM, haggle_attribute_get_name(a));
+            metadata_set_parameter(policy, DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICY_VALUE_PARAM, haggle_attribute_get_value(a));
+        }
+        
+    }
+
+    ret = haggle_ipc_configure_security(hh, policies);
+    
+    return ret;
+}
+// IRD, HK, End
+
 int haggle_event_loop_is_running(haggle_handle_t hh)
 {
         return (hh ? hh->event_loop_running : HAGGLE_HANDLE_ERROR);
@@ -1956,6 +1996,34 @@ static int handle_event(struct haggle_handle *hh, haggle_event_type_t type, stru
 				ret = -1;
 			}
 			break;
+		// IRD, HK, Begin	
+		case LIBHAGGLE_EVENT_INTERESTS_POLICIES_LIST:
+			e.interests_policies = haggle_attributelist_new();
+			
+			if (e.interests_policies) {
+				metadata_t *m = metadata_get(event_m, DATAOBJECT_METADATA_APPLICATION_CONTROL_INTEREST);
+				
+				while (m) {
+					const char *name = metadata_get_parameter(m, DATAOBJECT_METADATA_APPLICATION_CONTROL_INTEREST_POLICY);
+					// const char *weight_str = metadata_get_parameter(m, DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICY_VALUE_PARAM);
+					// const unsigned long weight = weight_str ? strtoul(weight_str, NULL, 10) : 1;
+					// struct attribute *a = haggle_attribute_new_weighted(name, metadata_get_content(m), weight);
+					struct attribute *a = haggle_attribute_new(name, metadata_get_content(m));
+					haggle_attributelist_add_attribute(e.interests_policies, a);
+					m = metadata_get_next(event_m);
+				}
+					
+				ret = hh->handlers[type].handler(&e, hh->handlers[type].arg);
+                                
+				if (ret != 1 && e.interests_policies)
+					haggle_attributelist_free(e.interests_policies);
+                                
+				ret = 0;
+			} else {
+				ret = -1;
+			}
+			break;
+		// IRD, HK, End	
 		case LIBHAGGLE_EVENT_NEW_DATAOBJECT:
 			e.dobj = dobj;
 			/* Remove the application metadata */
@@ -1986,6 +2054,16 @@ static int handle_event(struct haggle_handle *hh, haggle_event_type_t type, stru
 			
 			ret = 0;
 			break;
+        // CBMEN, HL, Begin
+        case LIBHAGGLE_EVENT_OBSERVER_DATAOBJECT:
+            e.dobj = dobj;
+            /* Remove the application metadata */
+            if (app_m)
+                metadata_free(app_m);
+
+            ret = hh->handlers[type].handler(&e, hh->handlers[type].arg);
+            break;
+        // CBMEN, HL, End
 		default:
 			break;
 	}

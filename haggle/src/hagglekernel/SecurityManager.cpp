@@ -10,6 +10,7 @@
  *   Joshua Joy (JJ, jjoy)
  *   Ashish Gehani (AG)
  *   Hasnain Lakhani (HL)
+ *   Hasanat Kazmi (HK)
  */
 
 /* Copyright 2008-2009 Uppsala University
@@ -549,6 +550,64 @@ bool SecurityHelper::decryptStringBase64(string ciphertext,
 }
 // CBMEN, HL, End
 
+// IRD, HK, Begin
+// List of all attributes that should be ignore during attribute/interest encryption
+// Always add any new attribute that might be added/modified in the system
+static const char* attr_ignore_list[] = { 
+    "HaggleIPC" ,
+    "SecurityDataRequest" ,
+    "SecurityDataRequestSubject" ,
+    "SecurityDataResponse" ,
+    "SecurityDataRequestAuthority",
+    "authorityID" ,
+    "ContentOriginator" ,
+    "ContentCreationTime" ,
+    "ContentOrigin",
+    "ContentType",
+    "RoutingType",
+    // NC related
+    "_NC_BLOCK_",
+    "_NC_ORIG_CREATE_TIME_",
+    "_NC_ORIG_DATA_LEN_",
+    "_NC_ORIG_FILE_NAME_",
+    "_NC_ORIG_ID_",
+    "_NC_ORIG_SIGNATURE_",
+    "_NC_ORIG_SIGNEE_",
+    "purge_after_seconds",
+    "INTERESTS_META",
+    NULL 
+};
+
+static bool is_in_attr_ignore_list(string name)
+{
+    unsigned int i = 0;
+    
+    while (attr_ignore_list[i]) {
+        if (strcmp(attr_ignore_list[i], name.c_str()) == 0) {
+            return true;
+        }
+        i++;
+    }
+    
+    return false;
+}
+
+bool hashString64(string plaintext, string& hashedstr) 
+{
+    unsigned char hash[SHA_DIGEST_LENGTH];
+    SHA1( (unsigned char*)plaintext.c_str(), plaintext.size(), hash );
+
+    char * encodedStr = NULL;
+    if (base64_encode_alloc((char *)hash, SHA_DIGEST_LENGTH, &encodedStr) > 0) {
+        hashedstr = encodedStr;
+        free(encodedStr);
+
+        return true;
+    }
+    return false;
+}
+// IRD, HK, End
+
 // CBMEN, AG, Begin
 
 bool SecurityHelper::startPython()
@@ -884,6 +943,412 @@ bool SecurityHelper::updateSignatureChain(DataObjectRef& dObj, RSA *key) {
 }
 
 // CBMEN, HL, AG, End
+
+
+
+// IRD, HK, Begin
+
+bool SecurityHelper::generateInterestsCapability(DataObjectRef& dObj, NodeRefList *targets)
+{
+    List<string> notfound;
+    for (Attributes::const_iterator it = dObj->getAttributes()->begin(); it != dObj->getAttributes()->end(); it++) {
+        if (is_in_attr_ignore_list((*it).second.getName())) {
+            continue;
+        }
+        HashMap<string, string>::iterator itt = getManager()->policyInterests.find((*it).second.getName());
+        if (itt != getManager()->policyInterests.end()) { // application has set policy for this attribute            
+            string policy = (*itt).second;
+
+            if (getManager()->policyCache.find(policy) == getManager()->policyCache.end()) {
+                // Do we have all the pubkeys?
+                HAGGLE_DBG("Checking attributes for policy %s\n", policy.c_str());
+                List<string> attributes = getAttributes(policy);
+                for (List<string>::iterator ittt = attributes.begin(); ittt != attributes.end(); ittt++) {
+                    HAGGLE_DBG("Checking for attribute %s\n", (*ittt).c_str());
+                    if (getManager()->pubKeys.find(*ittt) == getManager()->pubKeys.end()) {
+                        HAGGLE_DBG("Attribute %s not found!\n", (*ittt).c_str());
+                        notfound.push_back(*ittt);
+                    }
+                }
+            }
+        }
+    }
+
+    if (notfound.size() > 0) {
+        HAGGLE_STAT("Missing some encryption attributes, can not generate capability for interests in Data Object [%s].\n", dObj->getIdStr()); // CBMEN, AG
+        
+        if(getManager()->tooManyOutstandingSecurityDataRequests()) return false; // MOS // CBMEN, AG, HL
+            
+        requestSpecificKeys(notfound, dObj, targets->copy(), true, true);
+        return false;
+    }
+
+
+    
+    Metadata *m = NULL;
+    m = dObj->getMetadata()->addMetadata(DATAOBJECT_METADATA_INTERESTS_ABE);
+
+    if (!m) {
+        HAGGLE_ERR("ABE Interest Metadata not found for Data Object [%s].\n", dObj->getIdStr());
+        return false;
+    }
+
+    List<string> policies;
+    for (Attributes::const_iterator it = dObj->getAttributes()->begin(); it != dObj->getAttributes()->end(); it++) {
+        if (is_in_attr_ignore_list((*it).second.getName())) {
+            continue;
+        }
+        HashMap<string, string>::iterator itt = getManager()->policyInterests.find((*it).second.getName());
+        if (itt != getManager()->policyInterests.end()) {             
+            string policy = (*itt).second;
+
+            bool temp = true;
+            for(List<string>::iterator p = policies.begin(); p != policies.end(); p++) {
+                if ((*p) == policy) temp = false;
+            }
+            if (temp) policies.push_back(policy);
+        }
+    }
+
+    for (List<string>::iterator it = policies.begin(); it != policies.end(); it++) {
+        unsigned char *key = NULL;
+        size_t keysize = 16 * sizeof(unsigned char);
+        string policy = (*it);
+        string capability;
+        Pair<string, unsigned char *> cacheVal;
+        cacheVal.second = NULL;
+        
+        HashMap<string, Pair<string, unsigned char *> >::iterator ittt = getManager()->policyCache.find(policy);
+        
+        if (ittt != getManager()->policyCache.end())
+        {
+            cacheVal = (*ittt).second;
+            capability = cacheVal.first;
+            key = cacheVal.second;
+
+            HAGGLE_DBG("Using cached encryption key and capability for interests in Data Object [%s].\n", dObj->getIdStr());       
+
+        } 
+
+        else {
+
+
+            char *b64_key = NULL;           
+
+            key = (unsigned char *) malloc(keysize);
+            if (!key)
+                return false; 
+
+            RAND_bytes((unsigned char *) key, keysize);
+
+            HAGGLE_DBG("Key generated, sending capability generation request to charm for Data Object [%s].\n", dObj->getIdStr()); 
+
+            size_t base64_encoded_len = base64_encode_alloc((char *)key, keysize, &b64_key);            
+
+            if (base64_encoded_len <= 0) {
+                HAGGLE_ERR("Couldn't encode key to send it to Charm for Data Object [%s].\n", dObj->getIdStr());
+                return false;
+            }
+
+            if (!b64_key) {
+                HAGGLE_ERR("Couldn't allocate memory.\n");
+                return false;
+            }
+
+            string b64_key_s(reinterpret_cast<char*>(b64_key));
+            b64_key_s = b64_key_s.substr(0, base64_encoded_len);
+
+            if (bridge::encrypt(string(b64_key_s), policy, capability)) {
+                HAGGLE_ERR("Error retrieving capability from Charm for Data Object [%s].\n", dObj->getIdStr());
+                free(b64_key);
+                return false;
+            } else {
+                HAGGLE_DBG("Successfully retrieved capability from Charm for Data Object [%s].\n", dObj->getIdStr());
+                free(b64_key);
+                    getManager()->policyCache.insert(make_pair(policy, make_pair(capability, key)));
+            }
+
+
+        }
+
+
+
+        Metadata *temp;
+        temp = new XMLMetadata(DATAOBJECT_METADATA_INTEREST_ABE_POLICY);
+        if (!temp) {
+            HAGGLE_ERR("Couldn't allocate Interests ABE metadata.\n");
+            return false;
+        }
+
+        temp->setParameter(DATAOBJECT_METADATA_INTEREST_ABE_POLICY_NAME_PARAM, policy);
+        temp->setParameter(DATAOBJECT_METADATA_INTEREST_ABE_POLICY_CAPABILITY_PARAM, capability);
+
+        dObj.lock(); // MOS
+        m->addMetadata(temp);
+        dObj.unlock();
+    }
+    
+
+    HAGGLE_DBG("Enqueuing encryption task for interests in Data Object [%s].\n", dObj->getIdStr());
+
+    addTask(new SecurityTask(SECURITY_TASK_ENCRYPT_INTERESTS, dObj, NULL, targets)); 
+
+    return true;
+}
+
+bool SecurityHelper::encryptDataObjectInterests(DataObjectRef& dObj, NodeRefList *targets)
+{
+    Metadata *m = NULL;
+    m = dObj->getMetadata()->getMetadata(DATAOBJECT_METADATA_INTERESTS_ABE);
+
+    List<Attribute> attrSwaper;
+    for (Attributes::const_iterator it = dObj->getAttributes()->begin(); it != dObj->getAttributes()->end(); it++) {
+        if (is_in_attr_ignore_list((*it).second.getName())) {
+            continue;
+        }
+
+        HashMap<string, string>::iterator itt = getManager()->policyInterests.find((*it).second.getName());
+        if (itt != getManager()->policyInterests.end())   
+            attrSwaper.push_back((*it).second);
+    }
+
+    dObj.lock(); // MOS
+    for (List<Attribute>::iterator it = attrSwaper.begin(); it != attrSwaper.end(); it++) {
+
+        string ct_k, ct_v;
+        unsigned char *AESKey = NULL;
+        size_t keysize = 16 * sizeof(unsigned char);
+
+        string policy;
+    
+        HashMap<string, string>::iterator itt = getManager()->policyInterests.find((*it).getName());
+        if (itt != getManager()->policyInterests.end()) {
+            policy = (*itt).second;
+    
+            HashMap<string, Pair<string, unsigned char *> >::iterator ittt = getManager()->policyCache.find(policy);
+            
+            if (ittt != getManager()->policyCache.end()) {
+                AESKey = (*ittt).second.second;
+                
+                HAGGLE_DBG("Using cached encryption key and capability for Data Object [%s].\n", dObj->getIdStr());
+            }
+        }
+
+        if (AESKey) {
+
+            string AESKey_s(reinterpret_cast<char*>(AESKey));
+
+            AESKey_s = AESKey_s.substr(0, 16);
+
+            if (! encryptStringBase64((*it).getName(), AESKey_s, ct_k)) {
+                HAGGLE_ERR("Could not encrypt interest attribute for Data Object [%s].\n", dObj->getIdStr());
+                return false;
+            }
+
+            if (! encryptStringBase64((*it).getValue(), AESKey_s, ct_v)) {
+                HAGGLE_ERR("Could not encrypt interest attribute for Data Object [%s].\n", dObj->getIdStr());
+                return false;
+            }
+
+            HAGGLE_DBG("Changing interest attribue [k = %s] with encrypted one for Data Object [%s].\n", (*it).getName().c_str(), dObj->getIdStr());
+        
+            Metadata *mm = m->getMetadata(DATAOBJECT_METADATA_INTEREST_ABE_POLICY);
+            do {
+                if (mm->getParameter(DATAOBJECT_METADATA_INTEREST_ABE_POLICY_NAME_PARAM) == policy) {
+                    Metadata *temp;
+                    temp = new XMLMetadata(DATAOBJECT_ATTRIBUTE_NAME);
+                    if (!temp) {
+                        HAGGLE_ERR("Couldn't allocate Interests ABE metadata.\n");
+                        return false;
+                    }
+                    temp->setParameter(DATAOBJECT_ATTRIBUTE_NAME_PARAM, ct_k);
+                    temp->setParameter(DATAOBJECT_ATTRIBUTE_WEIGHT_PARAM, (*it).getWeight());
+                    temp->setContent(ct_v);
+                    mm->addMetadata(temp);
+                    dObj->setAttrsHashed(); 
+
+                    dObj->removeAttribute( (*it).getName(), (*it).getValue() );
+                    break;
+                }
+            } while(mm  = m->getNextMetadata());
+        }
+
+    }
+    dObj.unlock(); // MOS
+
+    return true;
+}
+
+bool SecurityHelper::useInterestsCapability(DataObjectRef& dObj, NodeRefList *targets)
+{
+    // We do not delete those attributes which we can not decrypt because it will ruin caching.
+    const Metadata *m = NULL;
+
+    m = dObj->getMetadata()->getMetadata(DATAOBJECT_METADATA_INTERESTS_ABE)->copy();
+    if (!m) {
+        HAGGLE_DBG("No meta data DATAOBJECT_METADATA_INTERESTS_ABE found for Data Object [%s]\n", dObj->getIdStr());
+        return false;
+    }
+
+    List<string> notfound;
+    unsigned char *key = NULL;
+    string capability, tmp;
+    size_t keylen = 0;
+    base64_decode_context ctx;
+    const Metadata *mm = NULL;
+
+    mm = m->getMetadata(DATAOBJECT_METADATA_INTEREST_ABE_POLICY);
+    if (mm) {
+        do{
+
+            capability = string((char *) mm->getParameter(DATAOBJECT_METADATA_INTEREST_ABE_POLICY_CAPABILITY_PARAM));
+
+            HashMap<string, unsigned char *>::iterator it = getManager()->capabilityCache.find(capability);
+
+            if (it != getManager()->capabilityCache.end()) {
+               key = (*it).second;
+            }
+
+            else {
+
+        	    if (capability == "") {
+                        HAGGLE_DBG("Capability is empty string\n");
+                    }
+                    else if (bridge::decrypt(capability, tmp)) {
+                        HAGGLE_DBG("Charm could not decrypt interests capability for Data Object [%s].\n", dObj->getIdStr());
+                        
+                        // Do we have all privkeys?
+                        string policy = mm->getParameter(DATAOBJECT_METADATA_INTEREST_ABE_POLICY_NAME_PARAM);
+                        List<string> attributes = getAttributes(policy);
+                        for (List<string>::iterator it = attributes.begin(); it != attributes.end(); it++) {
+                            HAGGLE_DBG("Checking for Attribute %s\n", (*it).c_str());
+                            if (getManager()->privKeys.find(*it) == getManager()->privKeys.end()) {
+                                HAGGLE_DBG("Attribute %s not found!\n", (*it).c_str());
+                                notfound.push_back(*it);
+                            }
+                        }           
+                    }
+                    else {
+
+                        base64_decode_ctx_init(&ctx);
+                        if (!base64_decode_alloc(&ctx, tmp.c_str(), tmp.length(), (char **)&key, &keylen)) {
+                            HAGGLE_ERR("Couldn't decode capability for interests.\n");
+                            return false;
+                        }
+
+                        if (!key) {
+                            HAGGLE_ERR("Couldn't allocate memory.\n");
+                            return false;
+                        }
+                        
+                        if (keylen != 16) {
+                            HAGGLE_ERR("Key is of wrong length.\n");
+                            free(key);
+                            return false;
+                        }
+                        
+                        HashMap<string, unsigned char *>::iterator it = getManager()->capabilityCache.find(capability);
+                        if (it == getManager()->capabilityCache.end()) {
+                           getManager()->capabilityCache.insert(make_pair(capability, key));
+                        }
+                    }
+               }
+
+        } while((mm = m->getNextMetadata()));
+    }
+
+    if (notfound.size() > 0) {
+        HAGGLE_DBG("Missing some decryption attributes, can not decrypt capability for Data Object [%s].\n", dObj->getIdStr());
+        if(getManager()->tooManyOutstandingSecurityDataRequests()) return false; // MOS // CBMEN, AG, HL
+        requestSpecificKeys(notfound, dObj, targets->copy(), false, true);
+        return false;
+    }
+
+    HAGGLE_DBG("Enqueueing decryption task for interests in Data Object [%s].\n", dObj->getIdStr());
+
+    addTask(new SecurityTask(SECURITY_TASK_DECRYPT_INTERESTS, dObj, NULL, targets, NULL)); 
+
+    return true; 
+}
+
+
+
+bool SecurityHelper::decryptDataObjectInterests(DataObjectRef &dObj, NodeRefList *targets)
+{
+    const Metadata *m = NULL;
+    m = dObj->getMetadata()->getMetadata(DATAOBJECT_METADATA_INTERESTS_ABE)->copy();
+
+    if (!m) {
+        HAGGLE_DBG("No meta data DATAOBJECT_METADATA_INTERESTS_ABE found for Data Object [%s]\n", dObj->getIdStr());
+        return false;
+    }
+
+    List<string> notfound;
+    unsigned char *key = NULL;
+    size_t keysize = 16 * sizeof(unsigned char);
+    string capability, tmp;
+    const Metadata *mm = NULL;
+    const Metadata *mmm = NULL;
+
+    mm = m->getMetadata(DATAOBJECT_METADATA_INTEREST_ABE_POLICY);
+    if (mm) {
+        do{
+            capability = mm->getParameter(DATAOBJECT_METADATA_INTEREST_ABE_POLICY_CAPABILITY_PARAM);
+            HashMap<string, unsigned char *>::iterator it = getManager()->capabilityCache.find(capability);
+            if (it != getManager()->capabilityCache.end())
+                key = (*it).second;
+            else {
+                HAGGLE_DBG("Key not found in Cache for Data Object [%s].", dObj->getIdStr());
+            }
+
+            mmm = mm->getMetadata(DATAOBJECT_ATTRIBUTE_NAME);
+            do {
+                string ct_k = mmm->getParameter(DATAOBJECT_ATTRIBUTE_NAME_PARAM);
+                const char* weight_ = mmm->getParameter(DATAOBJECT_ATTRIBUTE_WEIGHT_PARAM);
+                string ct_v = mmm->getContent();
+                unsigned long weight = 0;
+                
+                if (weight_) {
+                    char *ptr = NULL;
+                    weight = strtoul(weight_, &ptr, 10);
+                    if (!(ptr && ptr != weight_ && *ptr == '\0')) {
+                        HAGGLE_DBG("Could not convert Weight to valid unsigned long [%s]\n", weight_);
+                        return false;
+                    }
+                }
+
+                string hashed_k, hashed_v;
+              
+                string key_s(reinterpret_cast<char*>(key));
+                key_s = key_s.substr(0, 16);
+
+                if (! decryptStringBase64(ct_k, key_s, hashed_k)) {
+                    HAGGLE_ERR("Could not decrypt interest attribute for Data Object [%s].\n", dObj->getIdStr());
+                    return false;
+                }
+
+                if (! decryptStringBase64(ct_v, key_s, hashed_v)) {
+                    HAGGLE_ERR("Could not dencrypt interest attribute for Data Object [%s].\n", dObj->getIdStr());
+                    return false;
+                }
+                dObj->setAttrsHashed(); 
+                HAGGLE_DBG("Changing interest attribue [k = %s] with decrypted one for Data Object [%s].\n", ct_k.c_str(), dObj->getIdStr());
+
+                dObj->encryptedAttrCache.insert(make_pair(Attribute(hashed_k, hashed_v, weight), Attribute(ct_k, ct_v, weight) ));                
+
+                dObj->addAttribute(hashed_k, hashed_v, weight);
+
+            } while(mmm  = mm->getNextMetadata());
+
+
+        } while((mm = m->getNextMetadata()));
+    }
+
+    return true;
+}
+// IRD, HK, End
+
+
 
 // CBMEN, HL, Begin
 bool SecurityHelper::generateCapability(DataObjectRef& dObj)
@@ -2093,6 +2558,12 @@ void SecurityHelper::handleSecurityDataResponse(DataObjectRef& dObj) {
 
         if (!updateWaitingQueues(isPublic))
             goto err_m;
+
+        // IRD, HK, Begin
+        if (!updateWaitingQueues(isPublic, true))
+            goto err_m;
+        // IRD, HK, End
+
     } else if (type == "composite") {
         dm = m->getMetadata("certificate");
         if (!dm)
@@ -2173,11 +2644,16 @@ err_fin:
     HAGGLE_DBG("Error while trying to handle security data response.\n");
 }
 
-void SecurityHelper::requestSpecificKeys(List<string>& keys, DataObjectRef& dObj, NodeRefList *targets, bool publicKeys) {
-
+void SecurityHelper::requestSpecificKeys(List<string>& keys, DataObjectRef& dObj, NodeRefList *targets, bool publicKeys, bool interests) { // IRD, HK
+    
     Mutex::AutoLocker l(getManager()->dynamicConfigurationMutex);
     HashMap<string, string>* map = &(getManager()->pubKeysNeeded);
     HashMap<DataObjectRef, NodeRefList*>* waitingMap = &(getManager()->waitingForPubKey);
+    // IRD, HK, Begin
+    if (interests) {
+        waitingMap = &(getManager()->waitingForPubKeyInt);
+    }
+    // IRD, HK, End
     string request_type = "pubkey_specific";
     string tag = "PublicKeys";
     List<string> toIssue;
@@ -2188,6 +2664,11 @@ void SecurityHelper::requestSpecificKeys(List<string>& keys, DataObjectRef& dObj
         request_type = "privkey_specific";
         tag = "PrivateKeys";
         waitingMap = &(getManager()->waitingForPrivKey);
+        // IRD, HK, Begin
+        if (interests) {
+            waitingMap = &(getManager()->waitingForPrivKeyInt);
+        }
+        // IRD, HK, End
     }
 
     for (List<string>::iterator it = keys.begin(); it != keys.end(); it++) {
@@ -2921,16 +3402,29 @@ bool SecurityHelper::issuePrivateKey(string fullName, string subject, string& pr
     }
 }
 
-bool SecurityHelper::updateWaitingQueues(bool publicKeys) {
+bool SecurityHelper::updateWaitingQueues(bool publicKeys, bool interests) { // IRD, HK
     // If publicKeys = true, we're working with the public key queue
     // if publicKeys = false, we're working with the private key queue
     HashMap<DataObjectRef, NodeRefList*>* map = &(getManager()->waitingForPubKey);
     SecurityTaskType_t type = SECURITY_TASK_GENERATE_CAPABILITY;
-
-    HAGGLE_DBG("Updating waiting queues. Public: %d, Map: %p, Map Size: %d\n", publicKeys, map, map->size());
+    // IRD, HK, Begin
+    if (interests) {
+        map = &(getManager()->waitingForPubKeyInt);
+        type = SECURITY_TASK_GENERATE_INTERESTS_CAPABILITY;
+    }
+    // IRD, HK, End
+    
+    HAGGLE_DBG("Updating waiting queues. Public: %d, Interests: %d, Map: %p, Map Size: %d\n", publicKeys, interests, map, map->size());
     if (!publicKeys) {
         map = &(getManager()->waitingForPrivKey);
         type = SECURITY_TASK_USE_CAPABILITY;
+        // IRD, HK, Begin
+        if (interests) {
+            map = &(getManager()->waitingForPrivKeyInt);
+            type = SECURITY_TASK_USE_INTERESTS_CAPABILITY;
+        }
+        // IRD, HK, End
+
         HAGGLE_DBG("Map: %p, Map size: %d\n", map, map->size());
     }
 
@@ -3137,6 +3631,80 @@ void SecurityHelper::doTask(SecurityTask *task)
             } // CBMEN, AG, End
 
             break;
+            
+
+            // IRD, HK, Begin
+        
+        case SECURITY_TASK_GENERATE_INTERESTS_CAPABILITY:
+
+            if (!getManager()->pythonRunning) { 
+                if(!startPython()) {
+                    HAGGLE_ERR("Python not running. Need Python to generate capability.\n");
+                    break;
+                }
+            } 
+            
+            if (generateInterestsCapability(task->dObj, task->targets)) {
+                HAGGLE_DBG("Capability successfully generated for interests in Data Object [%s]\n", task->dObj->getIdStr());
+            } else {
+                HAGGLE_DBG("Couldn't generate capability for interests in Data Object [%s]\n", task->dObj->getIdStr());
+            }
+
+            break;    
+
+        case SECURITY_TASK_ENCRYPT_INTERESTS:
+
+            if (!getManager()->pythonRunning) { 
+                if(!startPython()) {
+                    HAGGLE_ERR("Python not running. Need Python to encrypt Interests.\n");
+                    break;
+                }
+            } 
+            
+            if (encryptDataObjectInterests(task->dObj, task->targets)) {
+                HAGGLE_DBG("Finished encrypting interests - new encrypted interests in Data Object [%s].\n", task->dObj->getIdStr());
+#ifdef DEBUG
+  if(Trace::trace.getTraceType() <= TRACE_TYPE_DEBUG1) {
+    task->dObj->print(NULL, true); // MOS - NULL means print to debug trace
+  }
+#endif
+            } else {
+                HAGGLE_ERR("Couldn't encrypt interests in Data Object [%s].\n", task->dObj->getIdStr());
+            }
+            break;
+
+            case SECURITY_TASK_USE_INTERESTS_CAPABILITY:
+
+                if (!getManager()->pythonRunning) { 
+                    if(!startPython()) {
+                        HAGGLE_ERR("Python not running. Need Python to use interest capability.\n");
+                        break;
+                    }
+                } 
+
+                if (useInterestsCapability(task->dObj, task->targets)) {
+                    HAGGLE_DBG("Capability successfully used for interests in Data Object [%s]\n", task->dObj->getIdStr());
+                } else {
+                    HAGGLE_DBG("Couldn't use capability for interests in Data Object [%s]\n", task->dObj->getIdStr());
+                }
+            break;
+
+            case SECURITY_TASK_DECRYPT_INTERESTS:
+
+            if (!getManager()->pythonRunning) { 
+                if(!startPython()) {
+                    HAGGLE_ERR("Python not running. Need Python to decrypt Interests.\n");
+                    break;
+                }
+            } 
+
+            if (decryptDataObjectInterests(task->dObj, task->targets)) {
+                    HAGGLE_DBG("Finished decrypting of interests in Data Object [%s].\n", task->dObj->getIdStr());
+                } else {
+                    HAGGLE_ERR("Couldn't decrypt interests in Data Object [%s].\n", task->dObj->getIdStr());
+                }            
+                break;
+            // IRD, HK, End
 
             // CBMEN, HL, Begin
 
@@ -3278,6 +3846,14 @@ void SecurityHelper::doTask(SecurityTask *task)
                 HAGGLE_DBG("Updating private attribute waiting queues\n");
                 updateWaitingQueues(false);
 
+                // IRD, HK, Begin
+                HAGGLE_DBG("Updating public attribute waiting queues for interests\n");
+                updateWaitingQueues(true, true);
+                
+                HAGGLE_DBG("Updating private attribute waiting queues for interests\n");
+                updateWaitingQueues(false, true);
+                // IRD, HK, End
+            
             break;
 
         // CBMEN, AG, End
@@ -3471,6 +4047,17 @@ bool SecurityManager::init_derived()
 
     // CBMEN, HL, End
 
+    // IRD, HK, Begin
+
+    ret = setEventHandler(EVENT_TYPE_APP_NODE_INTERESTS_POLICIES_REQUESTED, onInterestsPoliciesRequested);
+    
+    if (ret < 0) {
+        HAGGLE_ERR("Could not register event handler\n");
+        return false;
+    }
+
+    // IRD, HK, End
+	
     setEventHandler(EVENT_TYPE_DEBUG_CMD, onDebugCmdEvent);
 
     if (ret < 0) {
@@ -4621,6 +5208,30 @@ void SecurityManager::onSecurityTaskComplete(Event *e)
             break;
             // CBMEN, HL, End
 
+            // IRD, HK, Begin
+            case SECURITY_TASK_GENERATE_INTERESTS_CAPABILITY:
+            break;
+
+            case SECURITY_TASK_USE_INTERESTS_CAPABILITY:
+            break;
+
+            case SECURITY_TASK_ENCRYPT_INTERESTS:
+                {
+                HAGGLE_DBG("Successfully encrypted interest attributes for Data Object [%s]\n", task->dObj->getIdStr());
+                kernel->addEvent(new Event(EVENT_TYPE_DATAOBJECT_SEND, task->dObj, *(task->targets)));
+                }                
+            break;
+
+            case SECURITY_TASK_DECRYPT_INTERESTS:
+            {
+                HAGGLE_DBG("Successfully decrypted interest attributes for Data Object [%s]\n", task->dObj->getIdStr());
+                task->dObj->setSignatureStatus(DataObject::SIGNATURE_VALID);
+                // kernel->addEvent(new Event(EVENT_TYPE_DATAOBJECT_INCOMING, task->dObj));
+                kernel->addEvent(new Event(EVENT_TYPE_DATAOBJECT_RECEIVED, task->dObj));
+            }
+            break;
+            // IRD, HK, End
+                
             // CBMEN, AG, Begin
             case SECURITY_TASK_UPDATE_WAITING_QUEUES:
                 break;
@@ -4655,6 +5266,131 @@ void SecurityManager::onReceivedDataObject(Event *e)
 	if ((isApplication && !dObj->getAttribute(HAGGLE_ATTR_CONTROL_NAME))) {
 	  HAGGLE_DBG("Received data object %s, which was added by an application.\n", dObj->getIdStr());
 	}
+
+
+    // IRD, HK, Begin
+
+    if (securityLevel >= SECURITY_LEVEL_VERY_HIGH && isApplication && dObj->getAttribute(HAGGLE_ATTR_CONTROL_NAME)) {
+      Metadata *m = dObj->getMetadata()->getMetadata(DATAOBJECT_METADATA_APPLICATION);
+      if(m) {
+        Metadata *mc = m->getMetadata(DATAOBJECT_METADATA_APPLICATION_CONTROL);
+        if (mc) {
+            while (mc) {
+                const char *type_str = mc->getParameter(DATAOBJECT_METADATA_APPLICATION_CONTROL_TYPE_PARAM);
+                if (string(type_str) == "register_interest" || string(type_str) == "remove_interest") {
+                    Metadata *interest = mc->getMetadata(DATAOBJECT_METADATA_APPLICATION_CONTROL_INTEREST);
+                    while (interest) {
+                        const char *interest_name_str = interest->getParameter(DATAOBJECT_METADATA_APPLICATION_CONTROL_INTEREST_NAME_PARAM);
+                        if (interest_name_str) { 
+
+
+                            string hashed_k, hashed_v;
+                            
+                            HashMap<string, string>::iterator it = hashCache.find(interest_name_str);
+                            if (it != hashCache.end()) 
+                                hashed_k = (*it).second;
+
+                            it = hashCache.find(string(interest->getContent()));
+                            if (it != hashCache.end())
+                                hashed_v = (*it).second;
+
+
+
+                            if(hashed_k.empty()) {
+                                if ( ! hashString64(string(interest_name_str), hashed_k) ) { 
+                                    HAGGLE_ERR("Could not hash interest attribute for Data Object [%s].\n", dObj->getIdStr());
+                                    return;
+                                }
+                                hashCache.insert(make_pair(string(interest_name_str), hashed_k));
+                            }
+
+                            if(hashed_v.empty()) {
+                                if ( ! hashString64(interest->getContent(), hashed_v) ) { 
+                                    HAGGLE_ERR("Could not hash interest attribute for Data Object [%s].\n", dObj->getIdStr());
+                                    return;
+                                }
+                                hashCache.insert(make_pair(interest->getContent(), hashed_v));
+                                HAGGLE_DBG("Interest with v = %s are now hashed to v = %s for Data Object [%s].\n", interest->getContent().c_str(), hashed_v.c_str(), dObj->getIdStr());
+                            }
+
+                            HashMap<string, string>::iterator itt = policyInterests.find(hashed_k);
+                            if (itt != policyInterests.end()) { 
+                                dObj.lock();
+                                interest->setParameter(DATAOBJECT_METADATA_APPLICATION_CONTROL_INTEREST_NAME_PARAM, hashed_k);
+                                interest->setContent(hashed_v); 
+                                HAGGLE_DBG("Interest was replaced with hashed one as policy is specified for this attribute\n");
+                                dObj.unlock();
+                                dObj->setAttrsHashed(); 
+                            }
+
+                        }
+
+                        interest = mc->getNextMetadata();
+                    }
+                }
+                mc = m->getNextMetadata();
+            }
+        }
+      }
+    } 
+
+
+    // handle hashing of interests from publisher application
+    if(securityLevel >= SECURITY_LEVEL_VERY_HIGH && isApplication && !dObj->isControlMessage() && !dObj->areAttrsHashed()) {  
+        List<Attribute> attrSwaper;
+        for (Attributes::const_iterator it = dObj->getAttributes()->begin(); it != dObj->getAttributes()->end(); it++) {
+            if (is_in_attr_ignore_list((*it).second.getName())) {
+                continue;
+            }
+            attrSwaper.push_back((*it).second);
+        }
+
+        dObj.lock();
+        for (List<Attribute>::iterator it = attrSwaper.begin(); it != attrSwaper.end(); it++) {
+
+            string hashed_k, hashed_v;
+
+            if ( ! hashString64((*it).getName(), hashed_k) ) { 
+                HAGGLE_ERR("Could not hash interest attribute for Data Object [%s].\n", dObj->getIdStr());
+                return;
+            }
+
+            HashMap<string, string>::iterator itt = policyInterests.find(hashed_k);
+            if (itt != policyInterests.end()) {
+        
+                if ( ! hashString64((*it).getValue(), hashed_v) ) { 
+                    HAGGLE_ERR("Could not hash interest attribute for Data Object [%s].\n", dObj->getIdStr());
+                    return;
+                }
+                            
+                dObj->addAttribute(hashed_k, hashed_v, (*it).getWeight());
+                dObj->removeAttribute((*it));
+                dObj->setAttrsHashed();
+            }
+
+
+        }
+        dObj.unlock();
+        
+        // dObj->setAttrsHashed();
+        // dObj->setSignatureStatus(DataObject::SIGNATURE_VALID); // FIX ME! 
+
+        if (dObj->areAttrsHashed()) {
+            dObj->setSignatureStatus(DataObject::SIGNATURE_VALID); 
+            kernel->addEvent(new Event(EVENT_TYPE_DATAOBJECT_RECEIVED, dObj));
+            return;
+        }
+    }
+
+
+    // At the end of Incoming dataObject this function will be called even if decryption is in process. To stop it 
+    Metadata *m = NULL;
+    m = dObj->getMetadata()->getMetadata(DATAOBJECT_METADATA_INTERESTS_ABE);
+    if (securityLevel >= SECURITY_LEVEL_VERY_HIGH && m && !dObj->areAttrsHashed()) { // attr are set as hashed after decryption
+        return;
+    }
+    // IRD, HK, End
+
     
     // CBMEN, HL, Begin - Handle eager encryption
     const Attribute *policy = dObj->getAttribute(DATAOBJECT_ATTRIBUTE_ABE_POLICY);
@@ -4721,6 +5457,13 @@ void SecurityManager::onReceivedDataObject(Event *e)
     } else if (dObj->signatureIsUnverified() &&
         ((dObj->isNodeDescription() && signNodeDescriptions) ||
          (securityLevel >= SECURITY_LEVEL_HIGH))) {
+
+        // IRD, HK, Begin
+        if (securityLevel >= SECURITY_LEVEL_VERY_HIGH) {
+            dObj->setSignatureStatus(DataObject::SIGNATURE_VALID);
+        }
+        // IRD, HK, End
+
         helper->addTask(new SecurityTask(SECURITY_TASK_VERIFY_DATAOBJECT, dObj));
     } else {
         kernel->addEvent(new Event(EVENT_TYPE_DATAOBJECT_VERIFIED, dObj));
@@ -4838,6 +5581,59 @@ void SecurityManager::onIncomingDataObject(Event *e)
 
         // CBMEN, AG, End
     }
+
+
+    // IRD, HK, Begin
+
+
+    m = dObj->getMetadata()->getMetadata(DATAOBJECT_METADATA_INTERESTS_ABE);
+    const Attribute *int_meta = dObj->getAttribute(DATAOBJECT_ATTRIBUTE_INTERESTS);
+    
+    if (securityLevel >= SECURITY_LEVEL_VERY_HIGH && !m && int_meta) {
+        unsigned char *raw = NULL;
+        size_t len = 0;
+        base64_decode_context bctx;
+        Metadata *meta;
+
+        base64_decode_ctx_init(&bctx);
+        if (!base64_decode_alloc(&bctx, int_meta->getValue().c_str(), int_meta->getValue().length(), (char **) &raw, &len)) {
+            HAGGLE_ERR("Error base64 decoding of Interest ABE MetaData!\n");
+            return;
+        }
+
+        meta = new XMLMetadata;
+        if (!meta) {
+            HAGGLE_ERR("Couldn't allocate Interest MetaData for Data Object [%s].\n", dObj->getIdStr());            
+            return;
+        }
+
+        if (!meta->initFromRaw(raw, len)) {
+            HAGGLE_ERR("Couldn't convert Interest MetaData from plain text for Data Object [%s].\n", dObj->getIdStr());            
+            return;            
+        }
+
+        meta->setContent(""); 
+
+        dObj.lock();
+
+        if (!dObj->getMetadata()->addMetadata(meta)) {
+            HAGGLE_ERR("Couldn't add Interest MetaData as Attribute for Data Object [%s].\n", dObj->getIdStr());            
+            return;            
+        }
+
+        dObj.unlock();
+
+
+    }
+
+
+    // Handle interests decryption (both publisher and intermediate nodes)
+    m = dObj->getMetadata()->getMetadata(DATAOBJECT_METADATA_INTERESTS_ABE);
+    if (securityLevel >= SECURITY_LEVEL_VERY_HIGH && m && dObj->encryptedAttrCache.size()==0) {   
+        helper->addTask(new SecurityTask(SECURITY_TASK_USE_INTERESTS_CAPABILITY, dObj, NULL, &(e->getNodeList())));
+    }  
+    // IRD, HK, End
+
 }
 
 /*
@@ -4890,6 +5686,96 @@ void SecurityManager::onSendDataObject(Event *e)
       }
     }
 
+
+    // IRD, HK, Begin 
+
+    // Handle interests encryption
+    
+    Metadata *m = NULL;
+    m = dObj->getMetadata()->getMetadata(DATAOBJECT_METADATA_INTERESTS_ABE);
+
+    if (!m && securityLevel >= SECURITY_LEVEL_VERY_HIGH && !dObj->getIsForLocalApp()) {
+        if (dObj->getAttributes()->size()>0) {
+                
+           for (Attributes::const_iterator it = dObj->getAttributes()->begin(); it != dObj->getAttributes()->end(); it++) {
+
+                if (!is_in_attr_ignore_list((*it).second.getName())) {
+
+                    string hashed_k;
+                    hashed_k = (*it).second.getName(); // attr is already hashed 
+                    
+                    HashMap<string, string>::iterator ittt = policyInterests.find(hashed_k);
+
+                    if(ittt != policyInterests.end()) {
+                        // user has set a policy for this 
+
+                        HAGGLE_DBG("Raising generate capability for attribute: %s\n", (*it).second.getName().c_str());
+                        NodeRefList targets = e->getNodeList();
+                        helper->addTask(new SecurityTask(SECURITY_TASK_GENERATE_INTERESTS_CAPABILITY, dObj->copy(), NULL, &targets));
+                        return;
+
+                    }
+                } 
+            }
+        } 
+    }
+
+    // Remove encryptedAttrCache here
+    else if(m && dObj->encryptedAttrCache.size()>0 && securityLevel >= SECURITY_LEVEL_VERY_HIGH && !dObj->getIsForLocalApp()) {
+        DataObjectRef newDObj = dObj->copy();
+        for(HashMap<Attribute, Attribute>::iterator it = dObj->encryptedAttrCache.begin(); it != dObj->encryptedAttrCache.end(); it++) {
+            if (newDObj->hasAttribute((*it).first)) {
+                newDObj->removeAttribute((*it).first);
+                HAGGLE_DBG("Attributes for Data object [%s] for which publisher has set a policy have been processed.\n", newDObj->getIdStr());
+            }
+        }
+        NodeRefList targets = e->getNodeList();
+        newDObj->encryptedAttrCache.clear();
+        newDObj->setSignatureStatus(DataObject::SIGNATURE_VALID);
+        kernel->addEvent(new Event(EVENT_TYPE_DATAOBJECT_SEND, newDObj, targets));
+        return;
+    }
+    
+
+
+
+    // Network Coding drops meta that we add, so we add that as Attr to pass through
+    m = dObj->getMetadata()->getMetadata(DATAOBJECT_METADATA_INTERESTS_ABE);
+    if (!dObj->getIsForLocalApp() && securityLevel >= SECURITY_LEVEL_VERY_HIGH && m && !dObj->getAttribute(DATAOBJECT_ATTRIBUTE_INTERESTS)) {
+
+        unsigned char *raw = NULL;
+        char *encoded = NULL;
+        size_t len;
+
+        if (!m->getRawAlloc(&raw, &len)) {
+            HAGGLE_ERR("Couldn't encode key to send it to Charm for Data Object [%s].\n", dObj->getIdStr());
+            return;
+        }
+
+        if (base64_encode_alloc((char *) raw, len, &encoded) <= 0) {
+            HAGGLE_ERR("Couldn't encode key to send it to Charm for Data Object [%s].\n", dObj->getIdStr());
+            return;
+        }
+
+        dObj.lock();
+        if (!dObj->addAttribute(DATAOBJECT_ATTRIBUTE_INTERESTS, encoded)) {  // convert raw into string
+            HAGGLE_ERR("Couldn't add Interest MetaData as Attribute for Data Object [%s].\n", dObj->getIdStr());            
+            return;
+        }
+        // Remove meta.
+        if( !dObj->getMetadata()->removeMetadata(DATAOBJECT_METADATA_INTERESTS_ABE) ) {
+            HAGGLE_ERR("Couldn't remove Interest MetaData for Data Object [%s].\n", dObj->getIdStr());            
+            return;            
+        }
+
+        dObj.unlock();
+
+        
+    }
+
+    // IRD, HK, End
+
+
     // CBMEN, HL, Begin
     const Attribute *policy = dObj->getAttribute(DATAOBJECT_ATTRIBUTE_ABE_POLICY);
     const Attribute *capability = dObj->getAttribute(DATAOBJECT_ATTRIBUTE_ABE);
@@ -4923,6 +5809,56 @@ void SecurityManager::onSendDataObject(Event *e)
     } else if (capability) {
         HAGGLE_DBG("Not trying to use capability for data object [%s] - data object has already been decrypted or is not for a local application.\n", dObj->getIdStr()); // CBMEN, AG
     }
+
+
+    // IRK, HK, BEGIN
+    if (dObj->getIsForLocalApp() && securityLevel >= SECURITY_LEVEL_VERY_HIGH) {
+        List<Attribute> attrSwaper;
+        for (Attributes::const_iterator it = dObj->getAttributes()->begin(); it != dObj->getAttributes()->end(); it++) {
+            if (is_in_attr_ignore_list((*it).second.getName())) {
+                continue;
+            }
+            attrSwaper.push_back((*it).second);
+        }
+
+        for (Attributes::const_iterator it = dObj->getAttributes()->begin(); it != dObj->getAttributes()->end(); it++) {
+
+            string plaintext_k, plaintext_v;
+            for (HashMap<string, string>::iterator itt = hashCache.begin(); itt != hashCache.end(); ++itt ) {
+                if ((*itt).second == (*it).second.getName()) {
+                    plaintext_k = (*itt).first;
+                }
+                if ((*itt).second == (*it).second.getValue()) {
+                    plaintext_v = (*itt).first;
+                }
+            }
+
+            if(!plaintext_k.empty() && !plaintext_v.empty()) {
+                dObj->removeAttribute((*it).second.getName(), (*it).second.getValue());
+                dObj->addAttribute(plaintext_k, plaintext_v, (*it).second.getWeight());
+                dObj->setAttrsHashed(false);
+                HAGGLE_DBG("Attribute for Data Object [%s] changed from hashed to simpletext.\n", dObj->getIdStr());
+            }
+
+        }
+        
+        if (dObj->getAttribute(DATAOBJECT_ATTRIBUTE_INTERESTS)) {
+            const Attribute * x = dObj->getAttribute(DATAOBJECT_ATTRIBUTE_INTERESTS);
+            dObj->removeAttribute((*x).getName(), (*x).getValue());
+        }
+
+        if (dObj->getMetadata()->getMetadata(DATAOBJECT_METADATA_INTERESTS_ABE)) {
+            dObj.lock();
+            dObj->getMetadata()->removeMetadata(DATAOBJECT_METADATA_INTERESTS_ABE);
+            dObj.unlock();
+        }
+
+        HAGGLE_DBG("Sending Data Object [%s] to Application after decoding attributes using ABE policies\n", dObj->getIdStr());
+
+    }
+
+    // IRD, HK, END
+
 
     if (dObj->getIsForLocalApp() &&
         dObj->getABEStatus() == DataObject::ABE_DECRYPTION_DONE &&
@@ -5053,6 +5989,57 @@ void SecurityManager::onNodeUpdated(Event *e)
 
 }
 // CBMEN, AG, HL, End
+
+// IRD, HK, Begin
+bool SecurityManager::configureInterestsPolicies(Metadata *dm, bool fromConfig) {
+    Mutex::AutoLocker l(dynamicConfigurationMutex);
+    Metadata *policy = NULL;
+    bool added = false;
+    string name, value;
+
+    if (!dm)
+        return false;
+
+    policy = dm->getMetadata(DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICY_METADATA);
+    if (!policy)
+        return false;
+
+    do {
+        name = policy->getParameter(DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICY_NAME_PARAM);
+        value = policy->getParameter(DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICY_VALUE_PARAM);
+        HAGGLE_DBG("Application is configuring policy name %s, value %s\n", name.c_str(), value.c_str());
+
+        string hashed_k;
+        if (value != "") {
+            HashMap<string, string>::iterator itt = hashCache.find(name);
+            if (itt != hashCache.end())
+                hashed_k = (*itt).second;
+            else if ( hashString64(name, hashed_k) ) {
+                hashCache.insert(make_pair(name, hashed_k));
+            } else { 
+                HAGGLE_ERR("Could not hash interest attribute [%s].\n", name.c_str());
+                return false;
+            }
+
+            HashMap<string, string>::iterator it = policyInterests.find(hashed_k);
+            if (it != policyInterests.end()) {
+                policyInterests.erase(it);
+                HAGGLE_DBG("Replaced policy interest for policy %s\n", name.c_str());
+            } else if (fromConfig) {
+                HAGGLE_DBG("Loaded policy interest for policy %s\n", name.c_str());
+            } else {
+                HAGGLE_DBG("Added policy interest for policy %s\n", name.c_str());
+            }
+
+            policyInterests.insert(make_pair(hashed_k, getPolicy(value)));
+        }
+        added = true;
+
+    } while ((policy = dm->getNextMetadata()));
+
+    return added;
+}
+// IRD, HK, End
 
 // CBMEN, HL, Begin
 bool SecurityManager::configureNodeSharedSecrets(Metadata *dm, bool fromConfig) {
@@ -5536,6 +6523,19 @@ void SecurityManager::onSecurityConfigure(Event *e) {
         }
     }
 
+    // IRD, HK, Begin
+    dm = m->getMetadata(DATAOBJECT_METADATA_APPLICATION_CONTROL_SECURITY_CONFIGURATION_INTERESTS_POLICIES_METADATA);
+
+    if (dm) {
+        HAGGLE_DBG("Control message has new interests policies, loading!\n");
+        if (configureInterestsPolicies(dm, false)) {
+            added = true;
+        } else {
+            HAGGLE_ERR("Unable to load new interests policies.\n");
+        }
+    }    
+    // IRD, HK, End
+
     if (added) {
         HAGGLE_DBG("Successfully updated security configuration.\n");
     }
@@ -5543,6 +6543,47 @@ void SecurityManager::onSecurityConfigure(Event *e) {
 }
 
 // CBMEN, HL, End
+
+
+// IRD, HK, Start
+
+void SecurityManager::onInterestsPoliciesRequested(Event *e)
+{
+
+    NodeRef node = e->getNode();
+    if (!node) {
+        HAGGLE_ERR("Node does not exits\n");
+    }
+
+    DataObjectRef dObj = DataObject::create();
+
+    if (!dObj) {
+        HAGGLE_ERR("Could not create data object\n");
+        return;
+    }
+
+    for (HashMap<string, string>::iterator it = policyInterests.begin(); it != policyInterests.end(); it++) {
+        string attr_name = (*it).first;
+        string policy = (*it).second;
+
+        string plaintext_k;
+
+        for (HashMap<string, string>::iterator itt = hashCache.begin(); itt != hashCache.end(); ++itt ) {
+            if ((*itt).second == attr_name) {
+                plaintext_k = (*itt).first;
+                dObj->addAttribute(plaintext_k, policy);
+                break;
+            }
+        }
+    }
+
+    dObj->setAttrsHashed(false);
+
+    kernel->addEvent(new Event(EVENT_TYPE_APP_NODE_INTERESTS_POLICIES_SEND, dObj, node));
+    //HAGGLE_DBG("Sending all interests policies to Application.\n");
+
+}
+// IRD, HK, End
 
 void SecurityManager::onConfig(Metadata *m)
 {
@@ -5722,6 +6763,13 @@ void SecurityManager::onConfig(Metadata *m)
         HAGGLE_DBG("Disabling authority mode\n");
         isAuthority = false;
     }
+    
+    // IRD, HK, Begin
+    dm = m->getMetadata("InterestsPolicies");
+    if (dm) {
+        configureInterestsPolicies(dm);
+    }    
+    // IRD, HK, End
 
     // CBMEN, HL, AG, Begin
 
