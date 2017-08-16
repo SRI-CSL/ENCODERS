@@ -7,7 +7,6 @@
  * Authors:
  *   Mark-Oliver Stehr (MOS)
  *   Sam Wood (SW)
- *   Hasanat Kazmi (HK)
  */
 
 /* Copyright 2008-2009 Uppsala University
@@ -75,14 +74,6 @@ typedef unsigned char DataHash_t[SHA_DIGEST_LENGTH];
 #define DATAOBJECT_ATTRIBUTE_ABE "_ABE_"
 #define DATAOBJECT_ATTRIBUTE_ABE_POLICY "Access"
 // CBMEN, HL, Begin
-
-// IRD, HK, Begin
-#define DATAOBJECT_ATTRIBUTE_INTERESTS "INTERESTS_META"
-#define DATAOBJECT_METADATA_INTERESTS_ABE "InterestsABE"
-#define DATAOBJECT_METADATA_INTEREST_ABE_POLICY "Policy"
-#define DATAOBJECT_METADATA_INTEREST_ABE_POLICY_NAME_PARAM "Name"
-#define DATAOBJECT_METADATA_INTEREST_ABE_POLICY_CAPABILITY_PARAM "Capability"
-// IRD, HK, End
 
 #define DATAOBJECT_METADATA_SIGNATURE "Signature"
 #define DATAOBJECT_METADATA_SIGNATURE_SIGNEE_PARAM "signee"
@@ -214,8 +205,6 @@ class DataObject
         ABE_DECRYPTION_DONE,
     } ABEStatus_t;
     // CBMEN, HL, End
-    	HashMap<Attribute, Attribute> encryptedAttrCache;	// IRD, HK
-
     private:
 	friend class DataObjectDataRetrieverImplementation;
 	SignatureStatus_t signatureStatus;
@@ -295,8 +284,6 @@ class DataObject
 	DataState_t dataState;
 
 	bool fatalError; // MOS - fatal error condition associated with this data object
-
-	bool attrsHashed; // IRD, HK
 
     // CBMEN, HL, Begin
     string encryptedFilePath;
@@ -414,8 +401,6 @@ public:
 	bool isObsolete() const { return obsolete; } // MOS
 	void setFatalError() { fatalError = true; } // MOS
 	bool hasFatalError() const { return fatalError; } // MOS
-	void setAttrsHashed(bool _attrsHashed = true) { attrsHashed = _attrsHashed; } // IRD, HK
-	bool areAttrsHashed() const { return attrsHashed; } // IRD, HK
 
 	// Metadata functions
 	const Metadata *toMetadata() const;

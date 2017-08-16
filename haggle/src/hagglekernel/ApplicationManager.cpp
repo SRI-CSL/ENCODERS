@@ -9,7 +9,6 @@
  *   Joshua Joy (JJ, jjoy)
  *   Sam Wood (SW)
  *   Hasnain Lakhani (HL)
- *   Hasanat Kazmi (HK)
  */
 
 /* Copyright 2008-2009 Uppsala University
@@ -40,7 +39,6 @@
 #include "Node.h"
 #include "Utility.h"
 #include "XMLMetadata.h" // CBMEN, HL
-#include "SecurityManager.h"	// IRD, HK
 
 #include <malloc.h> // CBMEN, HL
 #include <sys/time.h> // CBMEN, HL
@@ -162,15 +160,6 @@ bool ApplicationManager::init_derived()
 		HAGGLE_ERR("Could not register event\n");
 		return false;
 	}
-
-	// IRD, HK Begin
-	ret = setEventHandler(EVENT_TYPE_APP_NODE_INTERESTS_POLICIES_SEND, onSendInterestsPolicies);
-
-	if (ret < 0) {
-		HAGGLE_ERR("Could not register event\n");
-		return false;
-	}
-	// IRD, HK End
 
 	/* MOS - why should this be signaled to applications 
                  (too many unnecessary events with periodic refresh)
@@ -812,13 +801,6 @@ void ApplicationManager::onApplicationFilterMatchEvent(Event *e)
 			    continue;
 			}
 
-			// CBMEN, HL, Begin
-			if (e->getType() == EVENT_TYPE_SEND_OBSERVER_DATAOBJECT) {
-				HAGGLE_ERR("Should never have a filter match for EVENT_TYPE_SEND_OBSERVER_DATAOBJECT\n");
-				continue;
-			}
-			// CBMEN, HL, End
-
 			// Have we already sent this data object to this app?
 			if (app->getBloomfilter()->has(dObj)) {
 				// Yep. Don't resend.
@@ -947,70 +929,6 @@ void ApplicationManager::onNeighborStatusChange(Event *e)
 	sendToAllApplications(dObj, LIBHAGGLE_EVENT_NEIGHBOR_UPDATE);
 }
 
-// IRD, HK, Begin
-void ApplicationManager::onSendInterestsPolicies(Event *e)
-{
-
- 	NodeRef node = e->getNode();
-
- 	if (!node) {
- 		HAGGLE_ERR("Node not found in Event\n");
- 		return;
- 	}
-
- 	if (!e->getDataObject()) {
- 		HAGGLE_ERR("Data Object not found in Event\n");
- 	}
-
-	DataObjectRef dObj = DataObject::create();
-	
-	if (!dObj) {
-		HAGGLE_ERR("Could not create Data Object\n");
-		return;
-	}
-	
-	Metadata *ctrl_m = addControlMetadata(CTRL_TYPE_EVENT, node->getName(), dObj->getMetadata());
-							
-	if (!ctrl_m) {
-		HAGGLE_ERR("Could not add control metadata\n");
-		return;
-	}
-
-	Metadata *event_m = ctrl_m->addMetadata(DATAOBJECT_METADATA_APPLICATION_CONTROL_EVENT);
-	
-	if (!event_m) {
-		HAGGLE_ERR("Could not add event metadata\n");
-		return;
-	}
-
-	event_m->setParameter(DATAOBJECT_METADATA_APPLICATION_CONTROL_EVENT_TYPE_PARAM, intToStr(LIBHAGGLE_EVENT_INTERESTS_POLICIES_LIST));
-
-	node.lock();
-	
-	const Attributes *attrs = e->getDataObject()->getAttributes();
-	
-	for (Attributes::const_iterator it = attrs->begin(); it != attrs->end(); it++) {
-		const Attribute& a = (*it).second;
-		HAGGLE_DBG("Adding interest policy %s to the reply\n", a.getString().c_str());
-		
-		Metadata *interest = event_m->addMetadata(DATAOBJECT_METADATA_APPLICATION_CONTROL_INTEREST, a.getValue());
-		
-		if (interest) {
-			interest->setParameter(DATAOBJECT_METADATA_APPLICATION_CONTROL_INTEREST_POLICY, a.getName());
-		}
-	}
-	node.unlock();
-	
-	dObj->setControlMessage(); // MOS
-	dObj->setAttrsHashed(false);
-
-	HAGGLE_DBG("Sending application interests policies\n");
-	
-	ApplicationNodeRef appNode = node;
-	sendToApplication(dObj, appNode);
-}
-// IRD, HK, End
-
 void ApplicationManager::onRetrieveNode(Event *e)
 {
 	if (!e || !e->hasData())
@@ -1085,8 +1003,6 @@ static const char *ctrl_type_names[] = {
 	"set_param", 
 	"configure_security", // CBMEN, HL
 	"dynamic_configure",
-	"get_interests_policies",  // IRD, HK
-	"send_interests_policies",  // IRD, HK
 	NULL 
 };
 
@@ -1525,7 +1441,6 @@ void ApplicationManager::onReceiveFromApplication(Event *e)
 						
 						dObjReply->setControlMessage(); // MOS
 
-
 						HAGGLE_DBG("Sending application interests\n");
 						
 						sendToApplication(dObjReply, appNode);
@@ -1633,18 +1548,6 @@ void ApplicationManager::onReceiveFromApplication(Event *e)
 						HAGGLE_DBG("Application %s asking to configure security\n", name_str);
 						kernel->addEvent(new Event(EVENT_TYPE_SECURITY_CONFIGURE, dObj));
 					break;
-
-					// IRD, HK, Begin
-					case CTRL_TYPE_GET_INTERESTS_POLICIES:
-						if (getState() >= MANAGER_STATE_PREPARE_SHUTDOWN) {
-							HAGGLE_DBG("Ignoring get interests policies from application since we are in shutdown\n");
-							break;
-						}
-						
-						HAGGLE_DBG("Application %s requesting interests policies.\n", name_str);
- 						kernel->addEvent(new Event(EVENT_TYPE_APP_NODE_INTERESTS_POLICIES_REQUESTED, node));
-						break;					
-					// IRD, HK, End
 					case CTRL_TYPE_DYNAMIC_CONFIGURE:
 					{
 						if (getState() >= MANAGER_STATE_PREPARE_SHUTDOWN) {

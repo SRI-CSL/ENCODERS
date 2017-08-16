@@ -11,7 +11,6 @@
  *   Ashish Gehani (AG)
  *   Hasnain Lakhani (HL)
  *   Tim McCarthy (TTM)
- *   Hasanat Kazmi (HK)
  */
 
 /* Copyright 2008-2009 Uppsala University
@@ -937,28 +936,6 @@ void ProtocolManager::onSendDataObject(Event *e)
     }
 
     // CBMEN, AG, End
-    
-    // IRD, HK, Begin
-    // for locally generated publisher
-    if (kernel->getManager((char *)"SecurityManager") &&
-        ((SecurityManager *)(kernel->getManager((char *)"SecurityManager")))->getSecurityLevel() >= SECURITY_LEVEL_VERY_HIGH  &&
-        e->getDataObject()->encryptedAttrCache.size()>0 && !e->getDataObject()->getIsForLocalApp()) {
-            // do not send object with only hashed interest attributes
-            // encryptedAttrCache can only grow when encrypting interest attributes is enabled.
-            HAGGLE_DBG("Not sending data object [%s] with hashed interests but not encrypted interests\n", e->getDataObject()->getIdStr());
-            return;
-    }
-
-    if (kernel->getManager((char *)"SecurityManager") &&
-        ((SecurityManager *)(kernel->getManager((char *)"SecurityManager")))->getSecurityLevel() >= SECURITY_LEVEL_VERY_HIGH &&
-        !e->getDataObject()->getAttribute(DATAOBJECT_ATTRIBUTE_INTERESTS) && e->getDataObject()->areAttrsHashed()) {
-        HAGGLE_DBG("Not sending data object [%s] with hashed interests but without relevant meta data\n", e->getDataObject()->getIdStr());
-        // not sending published dObj without encrypting attributes
-
-        return;
-    }
-
-    // IRD, HK, End
 
     // CBMEN, HL, Begin
     // Send only encrypted objects if the security level is high enough.

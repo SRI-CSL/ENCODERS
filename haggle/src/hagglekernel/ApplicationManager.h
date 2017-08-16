@@ -9,7 +9,6 @@
  *   Joshua Joy (JJ, jjoy)
  *   Sam Wood (SW)
  *   Hasnain Lakhani (HL)
- *   Hasanat Kazmi (HK)
  */
 
 /* Copyright 2008-2009 Uppsala University
@@ -142,7 +141,6 @@ class ApplicationManager : public Manager
 	void onDeletedDataObject(Event *e);
         void onReceiveFromApplication(Event *e);
         void onNeighborStatusChange(Event *e);
-        void onSendInterestsPolicies(Event *e); // IRD, HK
 	void onRetrieveNode(Event *e);
 	void onAppNodeUpdated(Event *e); // MOS
 	void onRetrieveAppNodes(Event *e);
