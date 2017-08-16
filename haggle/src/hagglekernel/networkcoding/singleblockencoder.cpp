@@ -9,7 +9,7 @@
 #include <errno.h>
 #include "singleblockencoder.h"
 //for time-stamp
-#include <sys/timeb.h>
+//#include <sys/timeb.h>
 #include <sys/time.h>
 
 #include <Trace.h>

@@ -35,17 +35,18 @@ bool NetworkCodingEncoderService::writeCodedBlocks(FILE* _pnetworkCodedBlockFile
         codetorrentencoderref& _encoderref, int numberOfBlocks) {
     size_t totalBytesWritten = 0;
     for (int cnt = 0; cnt < numberOfBlocks; cnt++) {
-        int coeffsSize = _encoderref->getNumberOfBlocksPerGen();
+        int coeffsSize = _encoderref->getBlocksPerGeneration();
         HAGGLE_DBG2("Encoding block with coefficients size: %d\n", coeffsSize);
 
-        CodedBlockPtr block = _encoderref->encode();
+        BlockyPacket* block = new BlockyPacket();
+        _encoderref->encode(*block, cnt);
 	if(block == NULL) {
 	  HAGGLE_DBG2("Encoding failure\n");
 	  return false;
 	}
 
         totalBytesWritten = fwrite(block->coeffs, 1, coeffsSize, _pnetworkCodedBlockFile);
-        totalBytesWritten += fwrite(block->sums, 1,
+        totalBytesWritten += fwrite(block->data, 1,
                 this->networkCodingConfiguration->getBlockSize(), _pnetworkCodedBlockFile);
         this->codeTorrentUtility->freeCodedBlock(&block);
     }
@@ -167,14 +168,10 @@ DataObjectRef NetworkCodingEncoderService::encodeFragment(
 	HAGGLE_DBG2("Bytes read: %d\n", bytesRead);
 	fclose(fragmentDataObjectFilePointer);
 
-	//generate coded block file
-	SingleBlockEncoder* encoderref = new SingleBlockEncoder(NETWORKCODING_FIELDSIZE);
+	
 	/*codetorrentencoderref encoderref = this->networkCodingEncoderStorage->getEncoder(parentDataObjectId,
 		networkCodingDataObjectUtility->getFilePath(fragDataObject), this->networkCodingConfiguration->getBlockSize());*/
-	if (!encoderref) {
-		HAGGLE_ERR("Unable create single block encoder for file %s\n", networkCodingDataObjectUtility->getFilePath(fragDataObject).c_str());
-		return NULL;
-	}
+	
 
 	//create a NC data object name based on the frag data object name
     string originalName = this->fragmentationDataObjectUtility->getFragmentParentDataObjectInfo(fragDataObject).fileName;
@@ -198,10 +195,20 @@ DataObjectRef NetworkCodingEncoderService::encodeFragment(
 	double doubleBlockSize = static_cast<double>(fragmentSize);
 	double doubleNumBlocks = ceil( doubleFileSize * 8 / doubleFieldSize / doubleBlockSize );
 	int numBlock = static_cast<int>(doubleNumBlocks);
+    int blockSize = static_cast<int>(doubleBlockSize);
 	HAGGLE_DBG2("total number of blocks: %d\n", numBlock);
 
 	//sequencenumber must -1 since nc sequence number starts from 0
-	CodedBlockPtr block = encoderref->EncodeSingleBlock(0, sequenceNumber-1, reinterpret_cast<unsigned char *> (buffer), fragmentSize, numBlock);
+	BlockyPacket* block = new BlockyPacket();
+    //generate coded block file
+    BlockyCoderFile* encoderref = BlockyCoderFile::createEncoder((size_t)blockSize, (size_t)numBlock, originalName.c_str());
+    
+    if (!encoderref) {
+        HAGGLE_ERR("Unable create single block encoder for file %s\n", networkCodingDataObjectUtility->getFilePath(fragDataObject).c_str());
+        return NULL;
+    }
+
+    encoderref->encode(*block, sequenceNumber-1);
 	if(block == NULL) {
 		HAGGLE_ERR("Encoding failure\n");
 		return NULL;
@@ -209,7 +216,7 @@ DataObjectRef NetworkCodingEncoderService::encodeFragment(
 
 	int coeffsSize = numBlock;
 	size_t totalBytesWritten = fwrite(block->coeffs, 1, coeffsSize, pnetworkCodedBlockFile);
-	totalBytesWritten += fwrite(block->sums, 1,
+	totalBytesWritten += fwrite(block->data, 1,
 			this->networkCodingConfiguration->getBlockSize(), pnetworkCodedBlockFile);
 	this->codeTorrentUtility->freeCodedBlock(&block);
 	fclose(pnetworkCodedBlockFile);

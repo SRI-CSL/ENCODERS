@@ -15,7 +15,7 @@ AC_PROG_INSTALL
 
 # Basic compiler flag configuration
 # Enforce no usage of runtime type identification (RTTI)
-BASIC_CXXFLAGS="-Wall -fno-rtti" 
+BASIC_CXXFLAGS="-Wall -fno-rtti -std=c++0x" 
 BASIC_CFLAGS="-Wall"
 
 CXXFLAGS="${CXXFLAGS} ${BASIC_CXXFLAGS}"

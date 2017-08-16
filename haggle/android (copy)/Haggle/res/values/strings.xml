@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Haggle</string>
+  <string name="remote_service_started">Haggle started</string>
+  <string name="remote_service_stopped">Haggle stopped</string>
+  <string name="remote_service_label">Haggle</string>
+<string name="stop_button">Stop Haggle</string>
+</resources>

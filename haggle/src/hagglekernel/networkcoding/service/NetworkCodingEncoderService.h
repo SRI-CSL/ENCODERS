@@ -15,6 +15,7 @@
 #include "DataObject.h"
 #include "Event.h"
 
+#include "networkcoding/blocky/src/blockypacket.h"
 #include "networkcoding/NetworkCodingFileUtility.h"
 #include "networkcoding/databitobject/NetworkCodingDataObjectUtility.h"
 #include "networkcoding/storage/NetworkCodingEncoderStorage.h"

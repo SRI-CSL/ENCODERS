@@ -65,8 +65,8 @@ bool NetworkCodingDecoderStorage::haveDecoder(string dataObjectId) {
 codetorrentdecoderref& NetworkCodingDecoderStorage::createAndAddDecoder(
         const string originalDataObjectId, const size_t originalDataFileSize,
         const char* decodedFilePath, size_t blockSize) {
-    codetorrentdecoder* decoder = new codetorrentdecoder(originalDataFileSize,
-            decodedFilePath, blockSize);
+    BlockyCoderFile* decoder = BlockyCoderFile::createDecoder(blockSize, 1, originalDataFileSize,
+            decodedFilePath);
     this->decoderStorage->operator [](originalDataObjectId) = decoder;
     this->trackDecoderLastUsedTime(originalDataObjectId);
     return this->decoderStorage->operator [](originalDataObjectId);

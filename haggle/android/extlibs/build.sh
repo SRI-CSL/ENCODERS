@@ -21,7 +21,7 @@ source .ndkconfig
 NDK_BUILD=$NDK_PATH/ndk-build
 NDK_PROJECT_PATH=$PWD
 BOARD_HAVE_BLUETOOTH=true
-GIT_PROTOCOL=http
+GIT_PROTOCOL=https
 ANDROID_SOURCE_HOST=android.googlesource.com
 GIT_TAG=android-2.3.7_r1
 
@@ -124,4 +124,4 @@ fi
 
 pushd
 
-$NDK_BUILD "$@"
+#$NDK_BUILD "$@"

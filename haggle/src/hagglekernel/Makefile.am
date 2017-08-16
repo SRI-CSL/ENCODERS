@@ -169,6 +169,10 @@ libhagglekernel_a_SOURCES = \
 	networkcoding/managermodule/decoder/NetworkCodingDecoderManagerModuleProcessor.cpp \
 	networkcoding/managermodule/encoder/NetworkCodingEncoderManagerModuleProcessor.cpp \
 	networkcoding/bloomfilter/NetworkCodingBloomFilterHelper.cpp \
+	networkcoding/blocky/src/blockycoderfile.cpp \
+	networkcoding/blocky/src/blockycoder.cpp \
+	networkcoding/blocky/src/coder.cpp \
+	networkcoding/blocky/src/gf28.cpp \
 	fragmentation/managermodule/encoder/FragmentationEncoderAsynchronousManagerModule.cpp \
 	fragmentation/manager/FragmentationManager.cpp \
 	fragmentation/fragment/FragmentationFileUtility.cpp \

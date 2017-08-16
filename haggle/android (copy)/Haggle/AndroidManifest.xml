@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	  package="org.haggle.kernel"
+	  android:versionCode="1"
+	  android:versionName="0.4">
+  <application android:label="Haggle"	       
+	       android:icon="@drawable/haggle_launch_icon" >
+    <service android:enabled="true" 
+	     android:exported="true" 
+	     android:name=".Haggle" 
+	     android:icon="@drawable/ic_stat_notify_haggle"/>
+    <activity android:name="StatusView"
+              android:label="@string/app_name">
+      <intent-filter>
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+  <uses-permission android:name="android.permission.BLUETOOTH" />
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="7"></uses-sdk>
+</manifest> 

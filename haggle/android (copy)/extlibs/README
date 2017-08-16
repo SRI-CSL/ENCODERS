@@ -1,0 +1,18 @@
+External library dependencies for Android
+=========================================
+
+The files in this directory are used to build external library
+dependencies for Haggle on the Android platforms. These libraries are
+not provided with the Android NDK, which means they must be built
+separately before Haggle can be built. The dependencies include:
+
+* zlib
+* sqlite
+* openssl
+* libcutils (Android specific)
+* dbus
+* bluetooth
+
+To build, make sure you have Git (git.kernel.org) and the Android NDK
+installed on your system. Then simply run the build.sh script and
+follow any instructions.

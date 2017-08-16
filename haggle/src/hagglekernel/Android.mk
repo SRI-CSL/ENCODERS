@@ -194,6 +194,10 @@ LOCAL_SRC_FILES := \
         fragmentation/utility/FragmentationDataObjectUtility.cpp \
         fragmentation/protocol/FragmentationProtocolHelper.cpp \
         fragmentation/configuration/FragmentationConfiguration.cpp \
+	networkcoding/blocky/src/blockycoderfile.cpp \
+	networkcoding/blocky/src/blockycoder.cpp \
+	networkcoding/blocky/src/coder.cpp \
+	networkcoding/blocky/src/gf28.cpp \
         dataobject/DataObjectTypeIdentifierUtility.cpp \
         time/TimeStampUtility.cpp \
         fragmentation/concurrent/encoder/FragmentationEncodingTask.cpp \
@@ -300,7 +304,7 @@ LOCAL_MODULE := libhagglekernel_jni
 
 # Charm Crypto Bridge Python Blob - Embedded inside the binary.
 CCB_PYTHON_FILE=../../../ccb/python/ccb.py
-LOCAL_LDFLAGS += -Wl,--format=binary -Wl,$(CCB_PYTHON_FILE) -Wl,--format=default
+LOCAL_LDFLAGS += -Wl,--format=binary -Wl,$(CCB_PYTHON_FILE) -Wl,--format=elf
 
 include $(BUILD_SHARED_LIBRARY)
 

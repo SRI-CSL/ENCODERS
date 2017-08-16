@@ -18,6 +18,7 @@
 #include "Event.h"
 
 #include "networkcoding/codetorrentdecoder.h"
+#include "networkcoding/blocky/src/blockycoderfile.h"
 #include "networkcoding/NetworkCodingConstants.h"
 #include "networkcoding/databitobject/NetworkCodingDataObjectUtility.h"
 #include "networkcoding/manager/NetworkCodingConfiguration.h"
@@ -25,7 +26,7 @@
 #include <libcpphaggle/Map.h>
 #include <libcpphaggle/Reference.h>
 
-typedef Reference<codetorrentdecoder> codetorrentdecoderref;
+typedef Reference<BlockyCoderFile> codetorrentdecoderref;
 typedef Reference<List<string> > codedblocksidlistref;
 
 typedef Map<string, codetorrentdecoderref> decoder_t;

@@ -1146,7 +1146,8 @@ CacheUtilitySecureCoding::notifyInsertion(DataObjectRef dObj)
     e.num_blocks = count;
     e.delete_blocks = delete_count;
     e.last_update = dObj->getReceiveTime();
-    e.total_blocks = (int) ceil(ncUtil->getOriginalDataObjectLength(dObj) / ncUtil->getBlockSize());
+    double temp = ncUtil->getOriginalDataObjectLength(dObj) / ncUtil->getBlockSize();
+    e.total_blocks = (int)ceil(temp);
 
     //JM:  if we are over ratio, mark a random block to be deleted
     double ratio = (e.num_blocks-e.delete_blocks) / ((double) e.total_blocks);

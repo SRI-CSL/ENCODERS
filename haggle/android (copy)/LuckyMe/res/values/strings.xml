@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LuckyMe</string>
+
+<string name="lucky_service_stopped">LuckyMe stopped</string>
+<string name="lucky_service_started">LuckyMe started</string>
+<string name="lucky_service_label">LuckyMe</string>
+<string name="data_objects_generated">Data objects generated:</string>
+<string name="data_objects_received">Data objects received:</string>
+<string name="zero">0</string>
+<string name="average_luck">Average luck:</string>
+<string name="test_status">Test status:</string>
+<string name="neighbors">Neighbors</string>
+<string name="not_running">Not running</string>
+<string name="haggle_status">Haggle status:</string>
+</resources>

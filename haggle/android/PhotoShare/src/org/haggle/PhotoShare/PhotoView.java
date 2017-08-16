@@ -10,7 +10,9 @@ package org.haggle.PhotoShare;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -78,6 +80,8 @@ public class PhotoView extends Activity implements OnClickListener {
 	private TextView neighlistHeader = null;
 	private boolean shouldRegisterWithHaggle = true;
 	private File takenPicture = null;
+	private Process suProcess = null;
+	private DataOutputStream os_su = null;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -91,6 +95,16 @@ public class PhotoView extends Activity implements OnClickListener {
 
         setContentView(R.layout.main_view);
         
+        
+        try {
+			suProcess = Runtime.getRuntime().exec("su");
+			os_su = new DataOutputStream(suProcess.getOutputStream());
+			os_su.writeBytes("am startservice -a android.intent.action.MAIN -n org.haggle.kernel/"
+					+ "org.haggle.kernel.Haggle\n");
+        } catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         ps = (PhotoShare)getApplication();
         ps.setPhotoView(this);
 

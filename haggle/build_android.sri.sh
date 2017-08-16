@@ -9,7 +9,7 @@
 # execute mkgitref to get latest Haggle check-in hash id
 ./mkgitref
 
-ANDROID_TARGET="android-10"
+ANDROID_TARGET="android-17"
         
 echo "using ANDROID_TARGET="$ANDROID_TARGET
 echo "using ANDROID_NDK="$ANDROID_NDK        

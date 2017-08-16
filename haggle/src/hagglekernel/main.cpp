@@ -34,9 +34,9 @@
 #include <malloc.h>
 
 #if defined(OS_ANDROID)
-extern "C" {
-  extern int dlmallopt(int  param_number, int  param_value);
-}
+// extern "C" {
+//   extern int mallopt(int  param_number, int  param_value);
+// }
 #endif
 
 #include <libcpphaggle/Platform.h>
@@ -491,7 +491,7 @@ int run_haggle()
 	int retval = EXIT_FAILURE;
 
 #if defined(OS_ANDROID)
-	dlmallopt(-1, -1); // MOS - avoid trimming
+	//mallopt(-1, -1); // MOS - avoid trimming
 #elif defined(OS_LINUX)
         mallopt(M_TRIM_THRESHOLD, -1); // MOS - avoid trimming
 #endif

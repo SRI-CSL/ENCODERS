@@ -13,6 +13,6 @@ subdirs := $(addprefix $(APP_PROJECT_PATH)/../../,$(addsuffix /Android.mk, \
         ))
 
 EXTRA_LIBS_PATH := $(APP_PROJECT_PATH)/../extlibs/external
-EXTRA_DEFINES=
+EXTRA_DEFINES= -pthread
 
 include $(subdirs)

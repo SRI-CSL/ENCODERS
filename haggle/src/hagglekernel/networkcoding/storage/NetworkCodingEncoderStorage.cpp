@@ -21,7 +21,7 @@ NetworkCodingEncoderStorage::~NetworkCodingEncoderStorage() {
 
 codetorrentencoderref NetworkCodingEncoderStorage::getEncoder(string parentDataObjectId,string filePath,size_t blockSize) {
     codetorrentencoderref& encoderref = this->encoderStorage->operator [](parentDataObjectId);
-    codetorrentencoder* encoder = encoderref.getObj();
+    BlockyCoderFile* encoder = encoderref.getObj();
     if (encoder == NULL) {
         HAGGLE_DBG2("Creating new network coding encoder for file %s parentDataObjectId %s\n", filePath.c_str(),parentDataObjectId.c_str());
 
@@ -37,7 +37,7 @@ codetorrentencoderref NetworkCodingEncoderStorage::getEncoder(string parentDataO
 	  HAGGLE_ERR("Unable to determine size of file %s\n", filePath.c_str());
 	  return NULL;
 	}
-        encoder = new codetorrentencoder(filePath.c_str(),blockSize,fileSize);
+        encoder = BlockyCoderFile::createEncoder(blockSize,1,filePath.c_str());
         this->encoderStorage->operator [](parentDataObjectId) = encoder;
     }
     return encoderref;
