@@ -11,7 +11,6 @@
  *   Mark-Oliver Stehr (MOS)
  *   Hasnain Lakhani (HL)
  *   Yu-Ting Yu (yty)
- *   Hasanat Kazmi (HK)
  */
 
 /* Copyright 2008-2009 Uppsala University
@@ -91,7 +90,6 @@ const char *Event::eventNames[MAX_NUM_EVENT_TYPES] = {
 	"EVENT_TYPE_SECURITY_CONFIGURE", // CBMEN, HL
 	"EVENT_TYPE_SEND_OBSERVER_DATAOBJECT", // CBMEN, HL
 	"EVENT_TYPE_DYNAMIC_CONFIGURE", // CBMEN, HL
-	"EVENT_TYPE_APP_NODE_INTERESTS_POLICIES_REQUESTED", // IRD, HK
 	"EVENT_TYPE_DEBUG_CMD",
 	"EVENT_TYPE_CALLBACK",
 // SW: START REPLICATION MANAGER
@@ -204,7 +202,6 @@ Event::Event(EventType _type, const NodeRef& _node, double _delay) :
 	if (node) {
 		if (EVENT_TYPE_PRIVATE(type) || 
 		    type == EVENT_TYPE_NODE_CONTACT_NEW || 
-		    type == EVENT_TYPE_APP_NODE_INTERESTS_POLICIES_REQUESTED || // IRD, HK
 		    type == EVENT_TYPE_NODE_CONTACT_END) {
 		} else {
 			HAGGLE_ERR("Event type %s does not accept a node as data!\n",
