@@ -40,6 +40,9 @@ typedef enum {
 /*
 	A Wrapper for things to watch.
 */
+
+typedef int SOCKET;
+
 class Watchable {
 	friend class Watch;
 	WatchableType_t type;

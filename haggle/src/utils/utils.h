@@ -73,6 +73,7 @@ char *StrError(long err);
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/time.h>
+#include <errno.h>
 typedef long long long64_t;
 
 #define ERRNO errno

@@ -42,6 +42,7 @@
 #endif
 
 #include <haggleutils.h>
+#include <libcpphaggle/Platform.h>
 
 // SW: START DISABLE SQLITE JOURNAL:
 // see: http://www.sqlite.org/pragma.html#pragma_journal_mode
@@ -4603,7 +4604,7 @@ int SQLDataStore::_insertRepository(DataStoreRepositoryQuery *q)
 	if (ret == SQLITE_ROW) {
 		if (query->getId() > 0) {
 			if (query->getType() == RepositoryEntry::VALUE_TYPE_BLOB) {
-				stringprintf(sqlcmd, "UPDATE " TABLE_REPOSITORY " SET type=%u, authority='%s', key='%s', value_str='-', value_blob=?, value_len="SIZE_T_CONVERSION" WHERE (rowid='%u' AND type=%u AND authority='%s');",
+				stringprintf(sqlcmd, "UPDATE " TABLE_REPOSITORY " SET type=%u, authority='%s', key='%s', value_str='-', value_blob=?, value_len='SIZE_T_CONVERSION' WHERE (rowid='%u' AND type=%u AND authority='%s');",
 					 query->getType(),
 					 query->getAuthority(), 
 					 query->getKey(), 
@@ -4612,7 +4613,7 @@ int SQLDataStore::_insertRepository(DataStoreRepositoryQuery *q)
 					 query->getType(),
 					 query->getAuthority());
 			} else {
-				stringprintf(sqlcmd, "UPDATE " TABLE_REPOSITORY " SET type=%u, authority='%s', key='%s', value_str='%s', value_len="SIZE_T_CONVERSION" WHERE (rowid='%u' AND type=%u AND authority='%s');", 
+				stringprintf(sqlcmd, "UPDATE " TABLE_REPOSITORY " SET type=%u, authority='%s', key='%s', value_str='%s', value_len='SIZE_T_CONVERSION' WHERE (rowid='%u' AND type=%u AND authority='%s');",
 					 query->getType(),
 					 query->getAuthority(), 
 					 query->getKey(), 
@@ -4624,7 +4625,7 @@ int SQLDataStore::_insertRepository(DataStoreRepositoryQuery *q)
 			}
 		} else {
 			if (query->getType() == RepositoryEntry::VALUE_TYPE_BLOB) {
-				stringprintf(sqlcmd, "UPDATE " TABLE_REPOSITORY " SET type=%u, authority='%s', key='%s', value_str='-', value_blob=?, value_len="SIZE_T_CONVERSION" WHERE (type=%u AND authority='%s' AND key='%s');", 
+				stringprintf(sqlcmd, "UPDATE " TABLE_REPOSITORY " SET type=%u, authority='%s', key='%s', value_str='-', value_blob=?, value_len='SIZE_T_CONVERSION' WHERE (type=%u AND authority='%s' AND key='%s');",
 					 query->getType(),
 					 query->getAuthority(), 
 					 query->getKey(), 
@@ -4633,7 +4634,7 @@ int SQLDataStore::_insertRepository(DataStoreRepositoryQuery *q)
 					 query->getAuthority(),
 					 query->getKey());
 			} else {
-				stringprintf(sqlcmd, "UPDATE " TABLE_REPOSITORY " SET type=%u, authority='%s', key='%s', value_str='%s', value_len="SIZE_T_CONVERSION" WHERE (type=%u AND authority='%s' AND key='%s');", 
+				stringprintf(sqlcmd, "UPDATE " TABLE_REPOSITORY " SET type=%u, authority='%s', key='%s', value_str='%s', value_len='SIZE_T_CONVERSION' WHERE (type=%u AND authority='%s' AND key='%s');",
 					 query->getType(),
 					 query->getAuthority(), 
 					 query->getKey(), 
@@ -4646,14 +4647,14 @@ int SQLDataStore::_insertRepository(DataStoreRepositoryQuery *q)
 		}
 	} else if (ret == SQLITE_DONE) {
 		if (query->getType() == RepositoryEntry::VALUE_TYPE_BLOB) {
-			stringprintf(sqlcmd, "INSERT INTO " TABLE_REPOSITORY " (type, authority, key, value_str, value_blob, value_len) VALUES (%u, '%s', '%s', '-', ?, "SIZE_T_CONVERSION");", 
+			stringprintf(sqlcmd, "INSERT INTO " TABLE_REPOSITORY " (type, authority, key, value_str, value_blob, value_len) VALUES (%u, '%s', '%s', '-', ?, 'SIZE_T_CONVERSION');",
 				 query->getType(),
 				 query->getAuthority(), 
 				 query->getKey(), 
 				 query->getValueLen());
 			
 		} else {
-			stringprintf(sqlcmd, "INSERT INTO " TABLE_REPOSITORY " (type, authority, key, value_str, value_len) VALUES (%u, '%s', '%s', '%s', "SIZE_T_CONVERSION");", 
+			stringprintf(sqlcmd, "INSERT INTO " TABLE_REPOSITORY " (type, authority, key, value_str, value_len) VALUES (%u, '%s', '%s', '%s', 'SIZE_T_CONVERSION');",
 				 query->getType(),
 				 query->getAuthority(), 
 				 query->getKey(), 
