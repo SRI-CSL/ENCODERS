@@ -17,6 +17,8 @@ popd
 make
 sudo make install
 
+cd /usr/lib
+sudo ln -s /usr/local/lib/libpbc.so.1 .
+
 cd ../ccb/c++
 make
-sudo ldconfig -v
