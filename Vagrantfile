@@ -67,5 +67,17 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
      sudo apt-get update
      sudo apt-get install -y automake sqlite3 build-essential autoconf libtool git libxml2 libxml2-dev sqlite libsqlite3-dev python-dev libbluetooth-dev libdbus-1-3 libdbus-1-dev libssl-dev
+     sudo apt-get install gcc-4.9
+     sudo apt-get install g++-4.9
+     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 49 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
+     sudo update-alternatives --set gcc "/usr/bin/gcc-4.9"
   SHELL
+
+  $haggleinstall=<<-SCRIPT
+    git clone https://github.com/internetofvehicles/ENCODERS
+    cd ENCODERS/haggle 
+    ./build_ubuntu.sh
+  SCRIPT
+
+  config.vm.provision "shell", inline: $haggleinstall, privileged: false
 end
