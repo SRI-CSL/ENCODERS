@@ -16,3 +16,7 @@ popd
 ./configure
 make
 sudo make install
+
+cd ../ccb/c++
+make
+sudo ldconfig -v
