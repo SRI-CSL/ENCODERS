@@ -75,8 +75,12 @@ Vagrant.configure(2) do |config|
 
   $haggleinstall=<<-SCRIPT
     git clone https://github.com/internetofvehicles/ENCODERS
-    cd ENCODERS/haggle 
+    pushd ENCODERS/charm
     ./build_ubuntu.sh
+    popd
+    push ENCODERS/haggle 
+    ./build_ubuntu.sh
+    popd
   SCRIPT
 
   config.vm.provision "shell", inline: $haggleinstall, privileged: false
