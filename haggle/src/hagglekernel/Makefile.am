@@ -542,5 +542,5 @@ CCB_PYTHON_FILE=../../../ccb/python/ccb.py
 
 libhagglekernel_a-CharmCryptoBridgePythonBlob.o: libhagglekernel_a-HaggleKernel.o
 	$(eval ELF := $(shell $(OBJDUMP_LINUX) -f libhagglekernel_a-HaggleKernel.o | grep format | awk '{print $$NF}'))
-	$(eval ARCH := $(shell $(OBJDUMP_LINUX) -f libhagglekernel_a-HaggleKernel.o | grep architecture | awk '{print substr($$2, 0, length($$2))}'))
+	$(eval ARCH := $(shell $(OBJDUMP_LINUX) -f libhagglekernel_a-HaggleKernel.o | grep architecture | awk '{print substr($$2, 0, length($$2)-1)}'))
 	$(OBJCOPY_LINUX) -I binary -O $(ELF) -B $(ARCH) $(CCB_PYTHON_FILE) libhagglekernel_a-CharmCryptoBridgePythonBlob.o
