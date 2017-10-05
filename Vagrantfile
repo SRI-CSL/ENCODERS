@@ -65,8 +65,10 @@ Vagrant.configure(2) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-     sudo apt-get update
-     sudo apt-get install -y automake sqlite3 build-essential autoconf libtool git libxml2 libxml2-dev sqlite libsqlite3-dev python-dev libbluetooth-dev libdbus-1-3 libdbus-1-dev libssl-dev
+     pushd /home/encoders
+     pushd haggle
+     ./dependencies_ubuntu.sh
+     popd
      sudo apt-get -y install gcc-4.9
      sudo apt-get -y install g++-4.9
      sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 49 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
@@ -82,6 +84,6 @@ Vagrant.configure(2) do |config|
     ./build_ubuntu.sh
     popd
   SCRIPT
-
+ 
   config.vm.provision "shell", inline: $haggleinstall, privileged: false
 end
