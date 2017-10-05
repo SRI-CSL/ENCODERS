@@ -84,6 +84,14 @@ Vagrant.configure(2) do |config|
     ./build_ubuntu.sh
     popd
   SCRIPT
+
+  $evaluationinstall=<<-SCRIPT
+    pushd /home/encoders
+    git checkout evaluation
+    ./dependencies_ubuntu.sh
+    ./install_ubuntu.sh
+    popd
+  SCRIPT
  
   config.vm.provision "shell", inline: $haggleinstall, privileged: false
 end
