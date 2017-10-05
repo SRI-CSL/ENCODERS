@@ -13,7 +13,7 @@ install:
 #  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 49 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 #  - sudo update-alternatives --set gcc "/usr/bin/gcc-4.9"
   - export ENCODERS_HOME=`pwd`
-  - cd ${ENCODERS_HOME/haggle} && ./dependencies_ubuntu.sh
+  - cd ${ENCODERS_HOME}/haggle && ./dependencies_ubuntu.sh
   - export COVERALLS_REPO_TOKEN="qB3LrhoMhX0VajBpJ07kQ0ThWlSf1cWko"
   - export CXXFLAGS="${CXXFLAGS} -fprofile-arcs -ftest-coverage"
   - sudo pip install --user cpp-coveralls;
