@@ -1,16 +1,17 @@
 #!/bin/bash -ev
 
-tar -xvf core-4.6-ttm.tgz
-pushd core-4.6
-./bootstrap.sh
-./configure
-make
-sudo make install
+#tar -xvf core-4.6-ttm.tgz
+#pushd core-4.6
+#./bootstrap.sh
+#./configure
+#make
+#sudo make install
 #in case there are issues with installing and configuring the serivce and core-daemon service does not appear or exist
-sudo systemctl daemon-reload
+#sudo systemctl daemon-reload
 
 #core myservices directory for ubuntu user
 sudo mkdir -p /home/ubuntu/.core/myservices
+sudo chown -R ubuntu:ubuntu ~/.core/
 popd
 
 #cpulimit
