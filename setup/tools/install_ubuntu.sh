@@ -12,7 +12,6 @@
 #core myservices directory for ubuntu user
 sudo mkdir -p /home/ubuntu/.core/myservices
 sudo chown -R ubuntu:ubuntu ~/.core/
-popd
 
 #cpulimit
 pushd cpulimit
