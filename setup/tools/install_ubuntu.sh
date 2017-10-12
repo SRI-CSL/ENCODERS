@@ -29,4 +29,6 @@ popd
 unzip -u bonnmotion-2.0.zip
 pushd bonnmotion-2.0
 echo "/usr/bin/" | ./install
+sudo cp ./bin/bm /usr/local/bin/
+sudo chmod 755 /usr/local/bin/bm
 popd
