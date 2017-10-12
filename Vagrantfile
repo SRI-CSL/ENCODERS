@@ -50,7 +50,12 @@ Vagrant.configure(2) do |config|
   #   # Customize the amount of memory on the VM:
   #   vb.memory = "1024"
   # end
-  #
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "4096"]
+    vb.customize ["modifyvm", :id, "--cpus", "4"]
+  end
+
   # View the documentation for the provider you are using for more
   # information on available options.
 
@@ -86,7 +91,10 @@ Vagrant.configure(2) do |config|
   SCRIPT
 
   $evaluationinstall=<<-SCRIPT
-    pushd /home/encoders
+    pushd /home/ubuntu
+    git clone https://github.com/internetofvehicles/ENCODERS encodersevaluation
+    pushd encodersevaluation
+    pushd setup/tools/
     git checkout evaluation
     ./dependencies_ubuntu.sh
     ./install_ubuntu.sh
@@ -94,4 +102,5 @@ Vagrant.configure(2) do |config|
   SCRIPT
  
   config.vm.provision "shell", inline: $haggleinstall, privileged: false
+  config.vm.provision "shell", inline: $evaluationinstall, privileged: false
 end
