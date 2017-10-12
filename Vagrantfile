@@ -100,6 +100,8 @@ Vagrant.configure(2) do |config|
     ./dependencies_ubuntu.sh
     ./install_ubuntu.sh
     popd
+    #make sure execute permissions set for scripts
+    find ./ -name "*.sh" -exec chmod +x {} \;
   SCRIPT
  
   config.vm.provision "shell", inline: $haggleinstall, privileged: false
