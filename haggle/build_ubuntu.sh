@@ -7,3 +7,10 @@ export CPPFLAGS="-DU_HAVE_STDINT_H=1 -DU_EXPORT= -DU_EXPORT2= -DU_IMPORT= -DU_CA
 make
 make test_thread
 sudo make install
+
+#arphelper
+pushd src/arphelper
+make clean
+make
+sudo make install
+popd
