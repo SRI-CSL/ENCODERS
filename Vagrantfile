@@ -94,8 +94,8 @@ Vagrant.configure(2) do |config|
     pushd /home/ubuntu
     git clone https://github.com/internetofvehicles/ENCODERS encodersevaluation
     pushd encodersevaluation
-    pushd setup/tools/
     git checkout evaluation
+    pushd setup/tools/
     ./dependencies_ubuntu.sh
     ./install_ubuntu.sh
     popd
