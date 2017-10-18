@@ -103,7 +103,16 @@ Vagrant.configure(2) do |config|
     #make sure execute permissions set for scripts
     find ./ -name "*.sh" -exec chmod +x {} \;
   SCRIPT
- 
+
+  $dockerinstall=<<-SCRIPT
+    pushd /home/encoders
+    pushd tools
+    ./install_docker.sh 
+    popd
+    popd
+  SCRIPT
+
   config.vm.provision "shell", inline: $haggleinstall, privileged: false
-  config.vm.provision "shell", inline: $evaluationinstall, privileged: false
+  #config.vm.provision "shell", inline: $evaluationinstall, privileged: false
+  config.vm.provision "shell", inline: $dockerinstall, privileged: false
 end
