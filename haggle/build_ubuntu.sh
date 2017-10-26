@@ -14,6 +14,8 @@ sudo make install
 popd
 
 pushd src/libhaggle/jni
+#include is looking at /Headers, not sure where to pass as variable so linking for now
+sudo ln -s /usr/lib/jvm/java-8-openjdk-amd64/include /Headers
 make
 sudo make install
 popd
