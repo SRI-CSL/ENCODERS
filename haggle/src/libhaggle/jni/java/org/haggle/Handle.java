@@ -70,19 +70,6 @@ public class Handle {
 		}
                 this.name = name;
         }
-        public class RegistrationFailedException extends Exception {
-		private int err;
-		
-                RegistrationFailedException(String msg, int err)
-                {
-                        super(msg);
-			this.err = err;
-                }
-		public int getError() 
-		{
-			return err;
-		}
-        }
 	public class AlreadyRegisteredException extends RegistrationFailedException {
                 AlreadyRegisteredException(String msg, int err)
                 {
