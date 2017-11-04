@@ -4,7 +4,7 @@ sudo apt-get install -y python2.7 python2.7-dev libgmp-dev flex bison wget
 
 #use setuptools install, not distribute.py
 sudo apt install -y python-pip
-sudo pip uninstall distribute
+#sudo pip uninstall distribute
 pip install setuptools
 
 mkdir -p dependencies
