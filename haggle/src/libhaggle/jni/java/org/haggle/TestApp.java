@@ -6,6 +6,7 @@ import org.haggle.Handle;
 import org.haggle.EventHandler;
 import org.haggle.DataObject;
 import org.haggle.LaunchCallback;
+import org.haggle.RegistrationFailedException;
 
 public class TestApp implements EventHandler {	
         private Handle h = null;
@@ -122,7 +123,7 @@ public class TestApp implements EventHandler {
 			h.shutdown();
 			Thread.sleep(2000);
 
-                } catch (Handle.RegistrationFailedException e) {
+                } catch (RegistrationFailedException e) {
                         System.out.println("Could not get handle: " + e.getMessage());
                         return;
                 } catch (InterruptedException e) {

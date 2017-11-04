@@ -18,6 +18,9 @@ pushd src/libhaggle/jni
 sudo ln -s /usr/lib/jvm/java-8-openjdk-amd64/include /Headers
 make
 sudo make install
+./dependencies.sh
+export PATH=/home/ubuntu/installs/apache-maven-3.5.2/bin:$PATH
+mvn clean install
 popd
 
 #arphelper
