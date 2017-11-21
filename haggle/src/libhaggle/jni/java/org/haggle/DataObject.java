@@ -10,6 +10,10 @@ public class DataObject {
         private native boolean newFromFile(String filepath);
         private native boolean newFromBuffer(byte[] data);
         private native void nativeFree();
+
+        public native int haggle_dataobject_set_flags(DataObject dObj,int flags);
+
+
         
 	public native boolean addAttribute(String name, String value, long weight);
 	public boolean addAttribute(String name, String value) {
