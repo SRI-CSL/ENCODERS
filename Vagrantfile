@@ -95,9 +95,12 @@ Vagrant.configure(2) do |config|
     popd
     popd
     git clone https://github.com/vehiclecloud/ENCODERS-Docker
+    pushd /ENCODERS-Docker
+    sudo docker build .
+    popd
   SCRIPT
 
   config.vm.provision "shell", inline: $haggleinstall, privileged: false
-  #config.vm.provision "shell", inline: $evaluationinstall, privileged: false
-  #config.vm.provision "shell", inline: $dockerinstall, privileged: false
+  config.vm.provision "shell", inline: $evaluationinstall, privileged: false
+  config.vm.provision "shell", inline: $dockerinstall, privileged: false
 end
