@@ -2,3 +2,10 @@
 ubuntu-xenial-16.04-cloudimg-console.log
 *.o
 *.swp
+
+
+ccb/c++/test
+haggle/compile
+haggle/src/arphelper/arphelper
+haggle/src/haggleobserver/.libs/
+haggle/src/repltest/now
