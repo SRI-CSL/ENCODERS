@@ -1,5 +1,6 @@
-from distribute_setup import use_setuptools
-use_setuptools() #bootstrap installs Distribute if not installed
+#from distribute_setup import use_setuptools
+
+#use_setuptools() #bootstrap installs Distribute if not installed
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 from distutils.core import  Command, Extension
@@ -278,7 +279,7 @@ setup(name = 'Charm-Crypto',
 	author_email = "ayo.akinyele@charm-crypto.com",
 	url = "http://charm-crypto.com/",
     install_requires = ['setuptools',
-                        'pyparsing >= 1.5.5, <=1.5.7'],
+                        'pyparsing >= 1.5.5'],
     tests_require=['pytest'],
 	packages = ['charm',
                     'charm.core',

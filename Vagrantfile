@@ -50,7 +50,12 @@ Vagrant.configure(2) do |config|
   #   # Customize the amount of memory on the VM:
   #   vb.memory = "1024"
   # end
-  #
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "4096"]
+    vb.customize ["modifyvm", :id, "--cpus", "4"]
+  end
+
   # View the documentation for the provider you are using for more
   # information on available options.
 
@@ -64,24 +69,35 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-     sudo apt-get update
-     sudo apt-get install -y automake sqlite3 build-essential autoconf libtool git libxml2 libxml2-dev sqlite libsqlite3-dev python-dev libbluetooth-dev libdbus-1-3 libdbus-1-dev libssl-dev
-     sudo apt-get -y install gcc-4.9
-     sudo apt-get -y install g++-4.9
-     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 49 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
-     sudo update-alternatives --set gcc "/usr/bin/gcc-4.9"
-  SHELL
-
   $haggleinstall=<<-SCRIPT
     pushd /home/encoders
-    pushd charm
-    ./build_ubuntu.sh
+    ./build_haggle.sh
+  SCRIPT
+
+  $evaluationinstall=<<-SCRIPT
+    pushd /home/ubuntu
+    git clone https://github.com/internetofvehicles/ENCODERS encodersevaluation
+    pushd encodersevaluation
+    git checkout evaluation
+    git pull
+    #pushd setup/tools/
+    #./dependencies_ubuntu.sh
+    #./install_ubuntu.sh
+    #popd
+    #make sure execute permissions set for scripts
+    #find ./ -name "*.sh" -exec chmod +x {} \;
+  SCRIPT
+
+  $dockerinstall=<<-SCRIPT
+    pushd /home/encoders
+    pushd tools
+    ./install_docker.sh 
     popd
-    pushd haggle 
-    ./build_ubuntu.sh
     popd
+    git clone https://github.com/vehiclecloud/ENCODERS-Docker
   SCRIPT
 
   config.vm.provision "shell", inline: $haggleinstall, privileged: false
+  #config.vm.provision "shell", inline: $evaluationinstall, privileged: false
+  #config.vm.provision "shell", inline: $dockerinstall, privileged: false
 end
