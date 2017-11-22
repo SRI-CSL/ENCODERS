@@ -23,6 +23,8 @@ install:
 script:
   - cd ${ENCODERS_HOME}
   - ./build_haggle.sh
+  - cd tools
+  - ./setup_build_dockerenvironment.sh
   
 after_script:
   - coveralls -r .. -b testsuite/test_thread -i haggle/src --verbose --gcov-options '\-lp';
