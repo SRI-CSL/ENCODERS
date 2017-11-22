@@ -1,7 +1,10 @@
+[![Build Status](https://travis-ci.org/internetofvehicles/ENCODERS.svg?branch=master)](https://travis-ci.org/internetofvehicles/ENCODERS)
 <!--[![Build Status](https://travis-ci.org/SRI-CSL/ENCODERS.svg?branch=master)](https://travis-ci.org/SRI-CSL/ENCODERS)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/7492/badge.svg)](https://scan.coverity.com/projects/7492)
 [![Coverage Status](https://coveralls.io/repos/github/SRI-CSL/ENCODERS/badge.svg?branch=master)](https://coveralls.io/github/SRI-CSL/ENCODERS?branch=master)
 --> 
+
+[DockerHub](https://hub.docker.com/r/internetofvehicles/encoders)
 
 This git repository contains the CBMEN ENCODERS code and related
 documents under development by the SRI team. For integration testing,
