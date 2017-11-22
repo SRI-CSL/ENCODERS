@@ -255,6 +255,15 @@ JNIEXPORT jstring JNICALL Java_org_haggle_DataObject_getFileName(JNIEnv *env, jo
         return (*env)->NewStringUTF(env, haggle_dataobject_get_filename((haggle_dobj_t *)get_native_handle(env, JCLASS_DATAOBJECT, obj)));
 }
 
+/*
+ * Class:     org_haggle_DataObject
+ * Method:    addPersistentFlag
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_haggle_DataObject_addPersistentFlag(JNIEnv *env, jobject obj)
+{
+        return (jint)haggle_dataobject_set_flags((haggle_dobj_t *)get_native_handle(env, JCLASS_DATAOBJECT, obj),DATAOBJECT_FLAG_PERSISTENT);
+}
 
 /*
  * Class:     org_haggle_DataObject

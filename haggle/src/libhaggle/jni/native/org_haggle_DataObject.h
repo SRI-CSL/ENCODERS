@@ -105,6 +105,14 @@ JNIEXPORT jint JNICALL Java_org_haggle_DataObject_addFileHash
 
 /*
  * Class:     org_haggle_DataObject
+ * Method:    addPersistentFlag
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_haggle_DataObject_addPersistentFlag
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     org_haggle_DataObject
  * Method:    setCreateTime
  * Signature: (JJ)I
  */

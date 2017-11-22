@@ -11,9 +11,7 @@ public class DataObject {
         private native boolean newFromBuffer(byte[] data);
         private native void nativeFree();
 
-        public static native int haggle_dataobject_set_flags(DataObject dObj,int flags);
-
-
+        public static native int addPersistentFlag();
         
 	public native boolean addAttribute(String name, String value, long weight);
 	public boolean addAttribute(String name, String value) {
