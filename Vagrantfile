@@ -91,12 +91,8 @@ Vagrant.configure(2) do |config|
   $dockerinstall=<<-SCRIPT
     pushd /home/encoders
     pushd tools
-    ./install_docker.sh 
+    ./setup_build_dockerenvironment.sh
     popd
-    popd
-    git clone https://github.com/vehiclecloud/ENCODERS-Docker
-    pushd /ENCODERS-Docker
-    sudo docker build .
     popd
   SCRIPT
 
