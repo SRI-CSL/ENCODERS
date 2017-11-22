@@ -9,13 +9,16 @@ make test_thread
 sudo make install
 
 pushd src/libhaggle
+make clean
 make
 sudo make install
 popd
 
 pushd src/libhaggle/jni
 #include is looking at /Headers, not sure where to pass as variable so linking for now
-sudo ln -s /usr/lib/jvm/java-8-openjdk-amd64/include /Headers
+#force link and remove existing
+sudo ln -sf /usr/lib/jvm/java-8-openjdk-amd64/include /Headers
+make clean
 make
 sudo make install
 ./dependencies.sh

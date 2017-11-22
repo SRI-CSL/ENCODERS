@@ -21,8 +21,8 @@ install:
   - export PATH=$PATH:${HOME}/.local/bin
 
 script:
-  - cd ${ENCODERS_HOME}/haggle 
-  - ./build_ubuntu.sh
+  - cd ${ENCODERS_HOME}
+  - ./build_haggle.sh
   
 after_script:
   - coveralls -r .. -b testsuite/test_thread -i haggle/src --verbose --gcov-options '\-lp';

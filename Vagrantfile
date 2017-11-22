@@ -71,15 +71,7 @@ Vagrant.configure(2) do |config|
   # documentation for more information about their specific syntax and use.
   $haggleinstall=<<-SCRIPT
     pushd /home/encoders
-    pushd haggle
-    ./dependencies_ubuntu.sh
-    popd
-    pushd charm
-    ./build_ubuntu.sh
-    popd
-    pushd haggle 
-    ./build_ubuntu.sh
-    popd
+    ./build_haggle.sh
   SCRIPT
 
   $evaluationinstall=<<-SCRIPT
@@ -106,6 +98,6 @@ Vagrant.configure(2) do |config|
   SCRIPT
 
   config.vm.provision "shell", inline: $haggleinstall, privileged: false
-  config.vm.provision "shell", inline: $evaluationinstall, privileged: false
-  config.vm.provision "shell", inline: $dockerinstall, privileged: false
+  #config.vm.provision "shell", inline: $evaluationinstall, privileged: false
+  #config.vm.provision "shell", inline: $dockerinstall, privileged: false
 end
