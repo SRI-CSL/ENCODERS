@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash -ev
+
+g++ --version
 
 sudo apt-get install -y python2.7 python2.7-dev libgmp-dev flex bison wget
 
